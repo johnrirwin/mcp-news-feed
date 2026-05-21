@@ -143,7 +143,7 @@ describe('FeedCard', () => {
     render(<FeedCard item={item} onClick={onClick} />)
 
     const badge = screen.getByText('test-source')
-    expect(badge).toHaveClass('bg-blue-500/20', 'text-blue-400')
+    expect(badge).toHaveClass('bg-blue-500/16', 'text-blue-300')
   })
 
   it('renders youtube source with red badge styling', () => {
@@ -153,7 +153,7 @@ describe('FeedCard', () => {
     render(<FeedCard item={item} onClick={onClick} />)
 
     const badge = screen.getByText('test-source')
-    expect(badge).toHaveClass('bg-red-500/20', 'text-red-400')
+    expect(badge).toHaveClass('bg-red-500/16', 'text-red-300')
   })
 
   it('renders image when media is provided', () => {

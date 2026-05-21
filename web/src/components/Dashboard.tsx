@@ -1,322 +1,357 @@
-import { useState, useEffect } from 'react';
-import type { Aircraft } from '../aircraftTypes';
-import type { FeedItem, SourceInfo } from '../types';
-import type { PilotSummary } from '../socialTypes';
-import type { InventoryItem, EquipmentCategory } from '../equipmentTypes';
+import { useEffect, useMemo, useState } from 'react';
 import { getAircraftImageUrl } from '../aircraftApi';
-import { getFollowers } from '../socialApi';
-import { getInventory } from '../equipmentApi';
-import { useAuth } from '../hooks/useAuth';
+import { getBatteries } from '../batteryApi';
+import { AIRCRAFT_TYPES, type Aircraft } from '../aircraftTypes';
+import { formatCapacity, formatCellCount, type Battery } from '../batteryTypes';
+import type { FeedItem, SourceInfo } from '../types';
 import { AnnouncementPlacementBanner } from './AnnouncementBanner';
 
 interface DashboardProps {
-  // Data
   recentAircraft: Aircraft[];
   recentNews: FeedItem[];
   sources: SourceInfo[];
-  // Loading states
   isAircraftLoading: boolean;
   isNewsLoading: boolean;
-  // Actions
+  onAddAircraft: () => void;
   onViewAllNews: () => void;
   onViewAllAircraft: () => void;
-  onViewAllGear: () => void;
-  onSelectGearItem: (item: InventoryItem) => void;
+  onViewAllBatteries: () => void;
   onSelectAircraft: (aircraft: Aircraft) => void;
   onSelectNewsItem: (item: FeedItem) => void;
-  onSelectPilot: (pilotId: string) => void;
-  onGoToSocial: () => void;
 }
 
-// Skeleton loader component
-function SkeletonCard({ className = '' }: { className?: string }) {
-  return (
-    <div className={`bg-slate-800 border border-slate-700 rounded-xl p-4 animate-pulse ${className}`}>
-      <div className="flex gap-4">
-        <div className="w-16 h-16 bg-slate-700 rounded-lg flex-shrink-0" />
-        <div className="flex-1 space-y-2">
-          <div className="h-4 bg-slate-700 rounded w-3/4" />
-          <div className="h-3 bg-slate-700 rounded w-1/2" />
-        </div>
-      </div>
-    </div>
-  );
+function formatAircraftTypeLabel(type: Aircraft['type']): string {
+  return AIRCRAFT_TYPES.find((option) => option.value === type)?.label ?? type.replace('_', ' ');
 }
 
-// Empty state component
-function EmptyState({
-  icon,
-  title,
-  description,
-  actionLabel,
-  onAction,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  actionLabel?: string;
-  onAction?: () => void;
-}) {
-  return (
-    <div className="bg-slate-800/50 border border-slate-700/50 border-dashed rounded-xl p-6 text-center">
-      <div className="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-3">
-        {icon}
-      </div>
-      <h4 className="text-sm font-medium text-white mb-1">{title}</h4>
-      <p className="text-xs text-slate-400 mb-3">{description}</p>
-      {actionLabel && onAction && (
-        <button
-          onClick={onAction}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white text-xs font-medium rounded-lg transition-colors"
-        >
-          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          {actionLabel}
-        </button>
-      )}
-    </div>
-  );
+function formatShortDate(dateString?: string): string {
+  if (!dateString) return 'Recently updated';
+
+  const parsed = new Date(dateString);
+  if (Number.isNaN(parsed.getTime())) return 'Recently updated';
+
+  return parsed.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: parsed.getFullYear() === new Date().getFullYear() ? undefined : 'numeric',
+  });
 }
 
-// Aircraft card for dashboard
-function DashboardAircraftCard({
-  aircraft,
-  onClick,
-}: {
-  aircraft: Aircraft;
-  onClick: () => void;
-}) {
+function formatTimeAgo(dateString?: string): string {
+  if (!dateString) return 'Just added';
+
+  const parsed = new Date(dateString);
+  if (Number.isNaN(parsed.getTime())) return 'Recently updated';
+
+  const diffMs = Date.now() - parsed.getTime();
+  const minutes = Math.floor(diffMs / 60000);
+  const hours = Math.floor(diffMs / 3600000);
+  const days = Math.floor(diffMs / 86400000);
+
+  if (minutes < 60) return `${Math.max(minutes, 1)}m ago`;
+  if (hours < 24) return `${hours}h ago`;
+  if (days < 7) return `${days}d ago`;
+  return formatShortDate(dateString);
+}
+
+function getBatteryUsageScore(battery: Battery): number {
+  const cycles = battery.total_cycles ?? 0;
+  const normalizedCycles = Math.min(cycles, 120) / 120;
+
+  if (!battery.last_logged_date) {
+    return Math.max(0.22, normalizedCycles * 0.75);
+  }
+
+  const daysSinceLog = Math.max(0, Math.floor((Date.now() - new Date(battery.last_logged_date).getTime()) / 86400000));
+  const freshness = Math.max(0.28, 1 - Math.min(daysSinceLog, 45) / 45);
+  return Math.max(0.24, Math.min(0.96, normalizedCycles * 0.55 + freshness * 0.45));
+}
+
+function SectionLinkButton({ label, onClick }: { label: string; onClick: () => void }) {
   return (
     <button
+      type="button"
       onClick={onClick}
-      className="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 hover:bg-slate-700/50 hover:border-slate-600 transition-colors text-left group"
+      className="ff-auth-chip hover:text-white"
     >
-      <div className="flex gap-4">
+      {label}
+    </button>
+  );
+}
+
+function LargeAircraftCard({ aircraft, onClick }: { aircraft: Aircraft; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="ff-auth-card ff-auth-card-hover flex h-full flex-col p-5 text-left"
+    >
+      <div className="mb-4 flex items-start justify-between gap-4">
+        <div>
+          <div className="ff-auth-chip mb-3">{formatAircraftTypeLabel(aircraft.type)}</div>
+          <h3 className="font-public text-[1.75rem] font-semibold leading-none tracking-[-0.045em] text-white">
+            {aircraft.name}
+          </h3>
+          {aircraft.nickname && (
+            <p className="mt-2 text-sm text-slate-200/78">“{aircraft.nickname}”</p>
+          )}
+        </div>
+      </div>
+
+      <div className="overflow-hidden rounded-[22px] border border-white/12 bg-black/12">
         {aircraft.hasImage ? (
           <img
             src={getAircraftImageUrl(aircraft.id)}
             alt={aircraft.name}
-            className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
+            className="h-52 w-full object-cover"
           />
         ) : (
-          <div className="w-16 h-16 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
-            <svg className="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-            </svg>
+          <div className="flex h-52 w-full items-center justify-center bg-white/6 text-6xl">
+            {AIRCRAFT_TYPES.find((option) => option.value === aircraft.type)?.icon ?? '🚁'}
           </div>
         )}
-        <div className="flex-1 min-w-0">
-          <h4 className="text-sm font-medium text-white truncate group-hover:text-primary-400 transition-colors">
-            {aircraft.name}
-          </h4>
-          {aircraft.nickname && (
-            <p className="text-xs text-slate-400 truncate">"{aircraft.nickname}"</p>
-          )}
-          <span className="inline-block mt-1 px-2 py-0.5 bg-slate-700 rounded text-xs text-slate-300 capitalize">
-            {aircraft.type.replace('_', ' ')}
-          </span>
+      </div>
+
+      <div className="mt-5 grid grid-cols-2 gap-4 text-sm">
+        <div>
+          <p className="text-slate-300/68">Profile</p>
+          <p className="mt-1 font-public text-lg font-semibold tracking-[-0.03em] text-white">
+            {formatAircraftTypeLabel(aircraft.type)}
+          </p>
+        </div>
+        <div>
+          <p className="text-slate-300/68">Updated</p>
+          <p className="mt-1 font-public text-lg font-semibold tracking-[-0.03em] text-white">
+            {formatShortDate(aircraft.updatedAt)}
+          </p>
         </div>
       </div>
     </button>
   );
 }
 
-// Category display helper
-const categoryDisplayNames: Record<EquipmentCategory, string> = {
-  frames: 'Frame',
-  vtx: 'VTX',
-  flight_controllers: 'Flight Controller',
-  esc: 'ESC',
-  aio: 'AIO',
-  stacks: 'FC/ESC Stack',
-  motors: 'Motor',
-  propellers: 'Propeller',
-  receivers: 'Receiver',
-  batteries: 'Battery',
-  cameras: 'Camera',
-  antennas: 'Antenna',
-  gps: 'GPS',
-  accessories: 'Accessory',
-};
-
-// Gear card for dashboard
-function DashboardGearCard({ 
-  item,
-  onClick,
-}: { 
-  item: InventoryItem;
-  onClick: () => void;
-}) {
+function CompactAircraftCard({ aircraft, onClick }: { aircraft: Aircraft; onClick: () => void }) {
   return (
     <button
+      type="button"
       onClick={onClick}
-      className="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 hover:bg-slate-700/50 hover:border-slate-600 transition-colors text-left group"
+      className="ff-auth-card ff-auth-card-hover flex h-full flex-col p-4 text-left"
     >
-      <div className="flex gap-4">
-        {item.imageUrl ? (
+      <div className="overflow-hidden rounded-[18px] border border-white/12 bg-black/12">
+        {aircraft.hasImage ? (
           <img
-            src={item.imageUrl}
-            alt={item.name}
-            className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+            src={getAircraftImageUrl(aircraft.id)}
+            alt={aircraft.name}
+            className="h-36 w-full object-cover"
           />
         ) : (
-          <div className="w-12 h-12 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
-            <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-            </svg>
+          <div className="flex h-36 w-full items-center justify-center bg-white/6 text-5xl">
+            {AIRCRAFT_TYPES.find((option) => option.value === aircraft.type)?.icon ?? '🚁'}
           </div>
         )}
-        <div className="flex-1 min-w-0">
-          <h4 className="text-sm font-medium text-white truncate group-hover:text-primary-400 transition-colors">
-            {item.name}
-          </h4>
-          <p className="text-xs text-slate-400 truncate">
-            {categoryDisplayNames[item.category]}
-            {item.quantity > 1 && ` × ${item.quantity}`}
-          </p>
-          {item.manufacturer && (
-            <p className="text-xs text-slate-500 mt-1 truncate">
-              {item.manufacturer}
-            </p>
-          )}
+      </div>
+
+      <div className="mt-4 flex flex-1 flex-col">
+        <h3 className="font-public text-[1.35rem] font-semibold leading-none tracking-[-0.04em] text-white">
+          {aircraft.name}
+        </h3>
+        {aircraft.nickname && (
+          <p className="mt-1 text-sm text-slate-200/76">{aircraft.nickname}</p>
+        )}
+
+        <div className="mt-auto grid grid-cols-2 gap-3 pt-4 text-sm">
+          <div>
+            <p className="text-slate-300/64">Type</p>
+            <p className="mt-1 font-medium text-white">{formatAircraftTypeLabel(aircraft.type)}</p>
+          </div>
+          <div>
+            <p className="text-slate-300/64">Updated</p>
+            <p className="mt-1 font-medium text-white">{formatTimeAgo(aircraft.updatedAt)}</p>
+          </div>
         </div>
       </div>
     </button>
   );
 }
 
-// Recent followers component
-function RecentFollowers({ 
-  followers, 
-  isLoading, 
-  onSelectPilot,
-  onViewAll 
-}: { 
-  followers: PilotSummary[]; 
-  isLoading: boolean;
-  onSelectPilot: (pilotId: string) => void;
-  onViewAll: () => void;
-}) {
-  if (isLoading) {
-    return (
-      <div className="space-y-3">
-        {[1, 2, 3].map(i => (
-          <div key={i} className="flex items-center gap-3 animate-pulse">
-            <div className="w-10 h-10 rounded-full bg-slate-700" />
-            <div className="flex-1">
-              <div className="h-4 bg-slate-700 rounded w-24" />
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  if (followers.length === 0) {
-    return (
-      <EmptyState
-        icon={
-          <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-        }
-        title="No Followers Yet"
-        description="Share your profile to get followers"
-        actionLabel="Find Pilots"
-        onAction={onViewAll}
-      />
-    );
-  }
-
-  const getDisplayName = (pilot: PilotSummary) => {
-    if (pilot.callSign) return pilot.callSign;
-    if (pilot.displayName) return pilot.displayName;
-    return 'Pilot';
-  };
-
+function AircraftSkeletonCard({ compact = false }: { compact?: boolean }) {
   return (
-    <div className="space-y-2">
-      {followers.slice(0, 4).map(follower => (
-        <button
-          key={follower.id}
-          onClick={() => onSelectPilot(follower.id)}
-          className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-slate-700/50 transition-colors text-left"
-        >
-          {follower.effectiveAvatarUrl ? (
-            <img
-              src={follower.effectiveAvatarUrl}
-              alt=""
-              className="w-10 h-10 rounded-full object-cover"
-            />
-          ) : (
-            <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center">
-              <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </div>
-          )}
-          <div className="flex-1 min-w-0">
-            <div className="text-sm font-medium text-white truncate">
-              {getDisplayName(follower)}
-            </div>
-            {follower.callSign && follower.displayName && (
-              <div className="text-xs text-slate-400 truncate">
-                {follower.displayName}
-              </div>
-            )}
-          </div>
-          <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      ))}
+    <div className={`ff-auth-card animate-pulse ${compact ? 'p-4' : 'p-5'}`}>
+      <div className={`rounded-[20px] bg-white/10 ${compact ? 'h-36' : 'h-52'}`} />
+      <div className="mt-4 space-y-3">
+        <div className="h-5 w-28 rounded-full bg-white/12" />
+        <div className="h-8 w-2/3 rounded-xl bg-white/12" />
+        <div className="h-4 w-1/2 rounded-xl bg-white/10" />
+      </div>
     </div>
   );
 }
 
-// News preview card (smaller than main feed)
-function DashboardNewsCard({
-  item,
-  source,
-  onClick,
-}: {
-  item: FeedItem;
-  source?: SourceInfo;
-  onClick: () => void;
-}) {
-  const imageUrl = item.media?.imageUrl;
-  
+function EmptyHangarState({ onAddAircraft }: { onAddAircraft: () => void }) {
   return (
-    <button
-      onClick={onClick}
-      className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 hover:bg-slate-700/50 hover:border-slate-600 transition-colors text-left group"
-    >
-      <div className="flex gap-3">
-        {imageUrl && (
-          <img
-            src={imageUrl}
-            alt=""
-            className="w-14 h-14 rounded-lg object-cover flex-shrink-0"
-          />
-        )}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            {source && (
-              <span className="text-xs text-slate-500">{source.name}</span>
-            )}
-            {item.publishedAt && (
-              <span className="text-xs text-slate-600">
-                {new Date(item.publishedAt).toLocaleDateString()}
-              </span>
-            )}
-          </div>
-          <h4 className="text-sm font-medium text-white line-clamp-2 group-hover:text-primary-400 transition-colors">
-            {item.title}
-          </h4>
-        </div>
+    <div className="ff-auth-empty-state flex min-h-[320px] flex-col items-center justify-center px-6 py-12">
+      <div className="ff-auth-glass-panel mb-5 flex h-16 w-16 items-center justify-center rounded-full text-primary-200">
+        <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+        </svg>
       </div>
-    </button>
+      <h3 className="font-public text-2xl font-semibold tracking-[-0.04em] text-white">Build your first aircraft</h3>
+      <p className="mt-3 max-w-md text-center text-sm text-slate-300/76">
+        Add a quad, wing, or cinematic rig to start building out your hangar, components, and tuned gear.
+      </p>
+      <button type="button" onClick={onAddAircraft} className="ff-auth-cta-primary mt-6">
+        Add New Aircraft
+      </button>
+    </div>
+  );
+}
+
+function BatteryTrackerPanel({
+  batteries,
+  isLoading,
+  onViewAllBatteries,
+}: {
+  batteries: Battery[];
+  isLoading: boolean;
+  onViewAllBatteries: () => void;
+}) {
+  return (
+    <section className="ff-auth-card p-5 md:p-6">
+      <div className="mb-5 flex items-start justify-between gap-4">
+        <div>
+          <p className="ff-auth-kicker">Power overview</p>
+          <h2 className="ff-auth-section-title mt-2">Battery Tracker</h2>
+        </div>
+        <SectionLinkButton label="Open Tracker" onClick={onViewAllBatteries} />
+      </div>
+
+      <div className="space-y-4">
+        {isLoading ? (
+          Array.from({ length: 3 }).map((_, index) => (
+            <div key={index} className="animate-pulse space-y-2 rounded-2xl border border-white/10 bg-white/6 p-4">
+              <div className="h-5 w-40 rounded-xl bg-white/12" />
+              <div className="h-3 w-28 rounded-xl bg-white/10" />
+              <div className="h-2 w-full rounded-full bg-white/10" />
+            </div>
+          ))
+        ) : batteries.length === 0 ? (
+          <div className="ff-auth-empty-state px-4 py-8 text-left">
+            <h3 className="font-public text-lg font-semibold tracking-[-0.03em] text-white">No battery packs yet</h3>
+            <p className="mt-2 text-sm text-slate-300/72">
+              Add packs and health logs to keep cycle history, labels, and field-readiness all in one place.
+            </p>
+            <button type="button" onClick={onViewAllBatteries} className="ff-auth-cta-secondary mt-4">
+              Open Batteries
+            </button>
+          </div>
+        ) : (
+          batteries.map((battery) => {
+            const usageScore = Math.round(getBatteryUsageScore(battery) * 100);
+            return (
+              <div key={battery.id} className="rounded-[22px] border border-white/10 bg-white/6 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <h3 className="font-public text-lg font-semibold tracking-[-0.03em] text-white">
+                      {battery.name || battery.battery_code}
+                    </h3>
+                    <p className="mt-1 text-sm text-slate-300/72">
+                      {formatCellCount(battery.cells)} • {formatCapacity(battery.capacity_mah)} • {battery.total_cycles ?? 0} cycles
+                    </p>
+                  </div>
+                  <div className="text-right text-sm text-slate-200/78">
+                    {battery.last_logged_date ? formatTimeAgo(battery.last_logged_date) : 'No logs yet'}
+                  </div>
+                </div>
+                <div className="ff-auth-progress-track mt-3">
+                  <div className="ff-auth-progress-fill" style={{ width: `${usageScore}%` }} />
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+    </section>
+  );
+}
+
+function RecentHighlightsPanel({
+  items,
+  sources,
+  isLoading,
+  onViewAllNews,
+  onSelectNewsItem,
+}: {
+  items: FeedItem[];
+  sources: SourceInfo[];
+  isLoading: boolean;
+  onViewAllNews: () => void;
+  onSelectNewsItem: (item: FeedItem) => void;
+}) {
+  const sourceMap = useMemo(() => new Map(sources.map((source) => [source.id, source])), [sources]);
+
+  return (
+    <section className="ff-auth-card p-5 md:p-6">
+      <div className="mb-5 flex items-start justify-between gap-4">
+        <div>
+          <p className="ff-auth-kicker">Field intel</p>
+          <h2 className="ff-auth-section-title mt-2">Recent Highlights</h2>
+        </div>
+        <SectionLinkButton label="View feed" onClick={onViewAllNews} />
+      </div>
+
+      <div className="space-y-3">
+        {isLoading ? (
+          Array.from({ length: 3 }).map((_, index) => (
+            <div key={index} className="animate-pulse rounded-2xl border border-white/10 bg-white/6 p-3">
+              <div className="flex gap-3">
+                <div className="h-12 w-12 rounded-xl bg-white/12" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-4 w-2/3 rounded-xl bg-white/12" />
+                  <div className="h-3 w-1/2 rounded-xl bg-white/10" />
+                </div>
+              </div>
+            </div>
+          ))
+        ) : items.length === 0 ? (
+          <div className="ff-auth-empty-state px-4 py-8 text-left">
+            <h3 className="font-public text-lg font-semibold tracking-[-0.03em] text-white">No recent highlights</h3>
+            <p className="mt-2 text-sm text-slate-300/72">
+              Refresh the feed to surface the latest drone news, creator drops, and community releases.
+            </p>
+          </div>
+        ) : (
+          items.slice(0, 4).map((item) => {
+            const source = sourceMap.get(item.source);
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => onSelectNewsItem(item)}
+                className="flex w-full items-center gap-3 rounded-[20px] border border-white/10 bg-white/6 p-3 text-left transition hover:border-white/18 hover:bg-white/10"
+              >
+                <div className="h-14 w-14 overflow-hidden rounded-2xl border border-white/10 bg-black/16">
+                  {item.media?.imageUrl ? (
+                    <img src={item.media.imageUrl} alt="" className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-slate-300/70">
+                      <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="line-clamp-2 font-medium text-white">{item.title}</p>
+                  <p className="mt-1 text-xs text-slate-300/68">
+                    {source?.name || item.source} • {formatTimeAgo(item.publishedAt)}
+                  </p>
+                </div>
+              </button>
+            );
+          })
+        )}
+      </div>
+    </section>
   );
 }
 
@@ -326,214 +361,136 @@ export function Dashboard({
   sources,
   isAircraftLoading,
   isNewsLoading,
+  onAddAircraft,
   onViewAllNews,
   onViewAllAircraft,
-  onViewAllGear,
-  onSelectGearItem,
+  onViewAllBatteries,
   onSelectAircraft,
   onSelectNewsItem,
-  onSelectPilot,
-  onGoToSocial,
 }: DashboardProps) {
-  const { user, isAuthenticated } = useAuth();
-  const [recentFollowers, setRecentFollowers] = useState<PilotSummary[]>([]);
-  const [isFollowersLoading, setIsFollowersLoading] = useState(false);
-  const [gearItems, setGearItems] = useState<InventoryItem[]>([]);
-  const [isGearLoading, setIsGearLoading] = useState(false);
-  const sourceMap = new Map(sources.map(s => [s.id, s]));
+  const [batteries, setBatteries] = useState<Battery[]>([]);
+  const [isBatteryLoading, setIsBatteryLoading] = useState(true);
 
-  // Load recent followers
   useEffect(() => {
-    if (user?.id && isAuthenticated) {
-      setIsFollowersLoading(true);
-      getFollowers(user.id, 4, 0)
-        .then(response => setRecentFollowers(response.pilots))
-        .catch(() => setRecentFollowers([]))
-        .finally(() => setIsFollowersLoading(false));
-    }
-  }, [user?.id, isAuthenticated]);
+    let cancelled = false;
 
-  // Load gear items
-  useEffect(() => {
-    if (isAuthenticated) {
-      setIsGearLoading(true);
-      getInventory({ limit: 3 })
-        .then(response => setGearItems(response.items || []))
-        .catch(() => setGearItems([]))
-        .finally(() => setIsGearLoading(false));
-    }
-  }, [isAuthenticated]);
+    setIsBatteryLoading(true);
+    getBatteries({ limit: 4, sort_by: 'logged', sort_order: 'desc' })
+      .then((response) => {
+        if (!cancelled) {
+          setBatteries(response.batteries ?? []);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setBatteries([]);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setIsBatteryLoading(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const featuredAircraft = recentAircraft.slice(0, 2);
+  const supportAircraft = recentAircraft.slice(2, 5);
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="p-4 md:p-6 max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-6 md:mb-8">
-          <h1 className="text-2xl font-bold text-white mb-2">Dashboard</h1>
-          <p className="text-slate-400">Welcome back! Here's your FlyingForge overview.</p>
-        </div>
-
-        <AnnouncementPlacementBanner placement="dashboard" className="mb-6" />
-
-        {/* Main Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-          {/* My Aircraft */}
-          <section className="bg-slate-800/30 border border-slate-700/50 rounded-2xl p-4 md:p-5">
-            <div className="flex items-center justify-between mb-3 md:mb-4">
-              <h2 className="text-base md:text-lg font-semibold text-white flex items-center gap-2">
-                <svg className="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                </svg>
-                My Aircraft
-              </h2>
-              <button
-                onClick={onViewAllAircraft}
-                className="text-xs text-primary-400 hover:text-primary-300 transition-colors"
-              >
-                View All →
+      <div className="mx-auto w-full max-w-[1320px] px-4 pb-24 pt-6 md:px-6 md:pb-8 md:pt-8">
+        <header className="mb-6 md:mb-8">
+          <p className="ff-auth-kicker">Authenticated hangar</p>
+          <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <h1 className="ff-auth-page-title">My Hangar</h1>
+              <p className="ff-auth-page-subtitle mt-3 max-w-2xl text-sm md:text-base">
+                Keep aircraft, batteries, and field-ready highlights in one cockpit-inspired workspace.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <button type="button" onClick={onAddAircraft} className="ff-auth-cta-primary">
+                Add New Aircraft
+              </button>
+              <button type="button" onClick={onViewAllAircraft} className="ff-auth-cta-secondary">
+                View All Aircraft
               </button>
             </div>
-            <div className="space-y-3">
-              {isAircraftLoading ? (
-                <>
-                  <SkeletonCard />
-                  <SkeletonCard />
-                </>
-              ) : recentAircraft.length === 0 ? (
-                <EmptyState
-                  icon={
-                    <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                    </svg>
-                  }
-                  title="No Aircraft Yet"
-                  description="Add your first drone to start tracking builds and settings"
-                  actionLabel="View Aircraft"
-                  onAction={onViewAllAircraft}
-                />
-              ) : (
-                recentAircraft.slice(0, 3).map(aircraft => (
-                  <DashboardAircraftCard
-                    key={aircraft.id}
-                    aircraft={aircraft}
-                    onClick={() => onSelectAircraft(aircraft)}
-                  />
-                ))
+          </div>
+        </header>
+
+        <AnnouncementPlacementBanner placement="dashboard" className="mb-6 md:mb-8" />
+
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_320px]">
+          <section className="ff-auth-card p-5 md:p-6">
+            <div className="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <p className="ff-auth-kicker">Fleet overview</p>
+                <h2 className="ff-auth-section-title mt-2">Aircraft Cards</h2>
+              </div>
+              {recentAircraft.length > 0 && (
+                <SectionLinkButton label="Manage hangar" onClick={onViewAllAircraft} />
               )}
             </div>
-          </section>
 
-          {/* My Inventory */}
-          <section className="bg-slate-800/30 border border-slate-700/50 rounded-2xl p-4 md:p-5">
-            <div className="flex items-center justify-between mb-3 md:mb-4">
-              <h2 className="text-base md:text-lg font-semibold text-white flex items-center gap-2">
-                <svg className="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
-                My Inventory
-              </h2>
-              <button
-                onClick={onViewAllGear}
-                className="text-xs text-primary-400 hover:text-primary-300 transition-colors"
-              >
-                View All →
-              </button>
-            </div>
-            <div className="space-y-3">
-              {isGearLoading ? (
-                <>
-                  <SkeletonCard />
-                  <SkeletonCard />
-                </>
-              ) : gearItems.length === 0 ? (
-                <EmptyState
-                  icon={
-                    <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                    </svg>
-                  }
-                  title="No Gear Yet"
-                  description="Add your equipment to track your inventory"
-                  actionLabel="Add Gear"
-                  onAction={onViewAllGear}
-                />
-              ) : (
-                gearItems.map(item => (
-                  <DashboardGearCard 
-                    key={item.id} 
-                    item={item}
-                    onClick={() => onSelectGearItem(item)}
-                  />
-                ))
-              )}
-            </div>
-          </section>
-
-          {/* Recent Followers */}
-          <section className="bg-slate-800/30 border border-slate-700/50 rounded-2xl p-4 md:p-5">
-            <div className="flex items-center justify-between mb-3 md:mb-4">
-              <h2 className="text-base md:text-lg font-semibold text-white flex items-center gap-2">
-                <svg className="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                Recent Followers
-              </h2>
-              {recentFollowers.length > 0 && (
-                <button
-                  onClick={onGoToSocial}
-                  className="text-xs text-primary-400 hover:text-primary-300 transition-colors"
-                >
-                  View All →
-                </button>
-              )}
-            </div>
-            <RecentFollowers 
-              followers={recentFollowers} 
-              isLoading={isFollowersLoading}
-              onSelectPilot={onSelectPilot}
-              onViewAll={onGoToSocial}
-            />
-          </section>
-
-          {/* Quick News Peek */}
-          <section className="bg-slate-800/30 border border-slate-700/50 rounded-2xl p-4 md:p-5">
-            <div className="flex items-center justify-between mb-3 md:mb-4">
-              <h2 className="text-base md:text-lg font-semibold text-white flex items-center gap-2">
-                <svg className="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                </svg>
-                Latest News
-              </h2>
-              <button
-                onClick={onViewAllNews}
-                className="text-xs text-primary-400 hover:text-primary-300 transition-colors"
-              >
-                View All →
-              </button>
-            </div>
-            <div className="space-y-2">
-              {isNewsLoading ? (
-                <>
-                  <SkeletonCard />
-                  <SkeletonCard />
-                  <SkeletonCard />
-                </>
-              ) : recentNews.length === 0 ? (
-                <div className="text-center py-4 text-slate-500 text-sm">
-                  No news available
+            {isAircraftLoading ? (
+              <div className="space-y-4">
+                <div className="grid gap-4 xl:grid-cols-2">
+                  <AircraftSkeletonCard />
+                  <AircraftSkeletonCard />
                 </div>
-              ) : (
-                recentNews.slice(0, 4).map(item => (
-                  <DashboardNewsCard
-                    key={item.id}
-                    item={item}
-                    source={sourceMap.get(item.source)}
-                    onClick={() => onSelectNewsItem(item)}
-                  />
-                ))
-              )}
-            </div>
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  <AircraftSkeletonCard compact />
+                  <AircraftSkeletonCard compact />
+                  <AircraftSkeletonCard compact />
+                </div>
+              </div>
+            ) : recentAircraft.length === 0 ? (
+              <EmptyHangarState onAddAircraft={onAddAircraft} />
+            ) : (
+              <div className="space-y-4 md:space-y-5">
+                <div className="grid gap-4 xl:grid-cols-2">
+                  {featuredAircraft.map((aircraft) => (
+                    <LargeAircraftCard
+                      key={aircraft.id}
+                      aircraft={aircraft}
+                      onClick={() => onSelectAircraft(aircraft)}
+                    />
+                  ))}
+                </div>
+                {supportAircraft.length > 0 && (
+                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {supportAircraft.map((aircraft) => (
+                      <CompactAircraftCard
+                        key={aircraft.id}
+                        aircraft={aircraft}
+                        onClick={() => onSelectAircraft(aircraft)}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </section>
+
+          <div className="space-y-6">
+            <BatteryTrackerPanel
+              batteries={batteries}
+              isLoading={isBatteryLoading}
+              onViewAllBatteries={onViewAllBatteries}
+            />
+            <RecentHighlightsPanel
+              items={recentNews}
+              sources={sources}
+              isLoading={isNewsLoading}
+              onViewAllNews={onViewAllNews}
+              onSelectNewsItem={onSelectNewsItem}
+            />
+          </div>
         </div>
       </div>
     </div>

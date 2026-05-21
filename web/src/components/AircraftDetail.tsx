@@ -243,19 +243,20 @@ export function AircraftDetail({
   return (
     <div
       data-testid="aircraft-detail-overlay"
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
       onClick={(event) => {
         if (event.target === event.currentTarget) {
           onClose();
         }
       }}
     >
-      <div className="bg-slate-800 rounded-xl w-full max-w-4xl h-[90vh] overflow-hidden flex flex-col">
+      <div className="ff-modal-backdrop absolute inset-0" />
+      <div className="ff-auth-shell ff-auth-modal-panel relative flex h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-[30px]">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-700">
+        <div className="flex items-center justify-between border-b border-white/10 p-4">
           <div className="flex items-center gap-4">
             {/* Aircraft image/icon */}
-            <div className="w-16 h-16 rounded-lg overflow-hidden bg-slate-700 flex-shrink-0">
+            <div className="ff-modal-surface h-16 w-16 flex-shrink-0 overflow-hidden rounded-[20px]">
               {aircraft.hasImage ? (
                 <img
                   src={getAircraftImageUrl(aircraft.id)}
@@ -269,18 +270,18 @@ export function AircraftDetail({
               )}
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-white">{aircraft.name}</h2>
+              <h2 className="font-public text-lg font-semibold text-white">{aircraft.name}</h2>
               {aircraft.nickname && (
                 <p className="text-primary-400 text-sm">"{aircraft.nickname}"</p>
               )}
-              <span className="inline-block mt-1 px-2 py-0.5 bg-slate-700 text-slate-300 rounded text-xs">
+              <span className="ff-modal-surface-soft mt-1 inline-block rounded-full px-2 py-0.5 text-xs text-slate-200">
                 {aircraftType?.label || aircraft.type}
               </span>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white transition-colors"
+            className="ff-modal-close rounded-xl p-2 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -337,11 +338,11 @@ export function AircraftDetail({
                 return (
                   <div
                     key={cat.value}
-                    className="bg-slate-700/50 border border-slate-700 rounded-lg p-3"
+                    className="ff-modal-surface rounded-xl p-3"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-slate-600 rounded-lg flex items-center justify-center text-xl">
+                        <div className="ff-modal-surface-soft flex h-10 w-10 items-center justify-center rounded-lg text-xl">
                           {cat.value === 'fc' && '🧠'}
                           {cat.value === 'esc' && '⚡'}
                           {cat.value === 'aio' && '🔌'}

@@ -59,4 +59,17 @@ describe('AddInventoryModal validation', () => {
     expect(await screen.findByText('Enter a valid purchase price')).toBeInTheDocument();
     expect(onSubmit).not.toHaveBeenCalled();
   });
+
+  it('uses the shared glass modal shell', () => {
+    render(
+      <AddInventoryModal
+        isOpen
+        onClose={vi.fn()}
+        onSubmit={vi.fn().mockResolvedValue(undefined)}
+        equipmentItem={equipmentItem}
+      />,
+    );
+
+    expect(screen.getByText('Add to My Inventory').closest('.ff-auth-modal-panel')).toBeInTheDocument();
+  });
 });

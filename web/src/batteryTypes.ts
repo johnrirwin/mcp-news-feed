@@ -34,6 +34,8 @@ export interface Battery {
   model?: string;
   purchase_date?: string;
   notes?: string;
+  total_cycles?: number;
+  last_logged_date?: string;
   created_at: string;
   updated_at: string;
 }
@@ -87,7 +89,7 @@ export interface BatteryListParams {
   min_capacity?: number;
   max_capacity?: number;
   query?: string;
-  sort_by?: 'name' | 'created_at' | 'capacity_mah' | 'cells';
+  sort_by?: 'name' | 'created_at' | 'updated_at' | 'capacity_mah' | 'cells' | 'logged' | 'cycles';
   sort_order?: 'asc' | 'desc';
   limit?: number;
   offset?: number;

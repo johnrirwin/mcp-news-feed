@@ -292,16 +292,17 @@ export function AircraftForm({ isOpen, aircraft, onClose, onSubmit }: AircraftFo
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-slate-800 rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="ff-modal-backdrop absolute inset-0" onClick={onClose} />
+      <div className="ff-auth-shell ff-auth-modal-panel relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-[28px]">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-700">
-          <h2 className="text-lg font-semibold text-white">
+        <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+          <h2 className="font-public text-lg font-semibold text-white">
             {isEditing ? 'Edit Aircraft' : 'Add New Aircraft'}
           </h2>
           <button
             onClick={onClose}
-            className="p-1 text-slate-400 hover:text-white transition-colors"
+            className="ff-modal-close rounded-xl p-2 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -348,7 +349,7 @@ export function AircraftForm({ isOpen, aircraft, onClose, onSubmit }: AircraftFo
 
           {/* Type */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">
+            <label className="mb-1 block text-sm font-medium text-slate-200">
               Type
             </label>
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
@@ -357,10 +358,10 @@ export function AircraftForm({ isOpen, aircraft, onClose, onSubmit }: AircraftFo
                   key={t.value}
                   type="button"
                   onClick={() => setType(t.value)}
-                  className={`flex flex-col items-center p-2 rounded-lg border transition-colors ${
+                  className={`flex flex-col items-center rounded-2xl border p-2.5 transition-colors ${
                     type === t.value
-                      ? 'bg-primary-600/20 border-primary-500 text-primary-400'
-                      : 'bg-slate-700 border-slate-600 text-slate-400 hover:border-slate-500'
+                      ? 'border-primary-400/60 bg-primary-500/18 text-primary-200 shadow-[0_0_28px_rgba(96,165,250,0.18)]'
+                      : 'ff-modal-surface-soft text-slate-300 hover:border-white/20 hover:text-white'
                   }`}
                 >
                   <span className="text-xl mb-1">{t.icon}</span>
@@ -379,14 +380,14 @@ export function AircraftForm({ isOpen, aircraft, onClose, onSubmit }: AircraftFo
               <button
                 type="button"
                 onClick={handleOpenImageModal}
-                className="px-4 py-2 bg-slate-700 hover:bg-slate-600 border border-slate-600 rounded-lg text-slate-300 text-sm transition-colors"
+                className="ff-auth-cta-secondary px-4 py-2 text-sm"
               >
                 {displayImagePreview ? 'Change Image' : 'Add Image'}
               </button>
 
               {displayImagePreview && (
                 <div className="relative">
-                  <div className="w-20 h-20 rounded-lg overflow-hidden bg-slate-700">
+                  <div className="ff-modal-surface h-20 w-20 overflow-hidden rounded-2xl">
                     <img
                       src={displayImagePreview}
                       alt="Preview"
@@ -397,7 +398,7 @@ export function AircraftForm({ isOpen, aircraft, onClose, onSubmit }: AircraftFo
                     <button
                       type="button"
                       onClick={handleRemovePendingImage}
-                      className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white text-xs"
+                      className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500/90 text-xs text-white shadow-lg transition-colors hover:bg-red-500"
                     >
                       ×
                     </button>
@@ -420,7 +421,7 @@ export function AircraftForm({ isOpen, aircraft, onClose, onSubmit }: AircraftFo
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Notes about this build..."
               rows={3}
-              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-primary-500 resize-none"
+              className="w-full resize-none rounded-xl px-3 py-2"
             />
           </div>
 
@@ -429,7 +430,7 @@ export function AircraftForm({ isOpen, aircraft, onClose, onSubmit }: AircraftFo
             <button
               type="submit"
               disabled={isSubmitting || isImageUploading || isImageSaving}
-              className="w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:bg-primary-600/50 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="ff-auth-cta-primary flex w-full items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmitting ? (
                 <>
@@ -448,15 +449,16 @@ export function AircraftForm({ isOpen, aircraft, onClose, onSubmit }: AircraftFo
 
       {/* Image Moderation Modal */}
       {showImageModal && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[60] p-4">
-          <div className="bg-slate-800 rounded-xl p-6 max-w-md w-full shadow-2xl border border-slate-700">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          <div className="ff-modal-backdrop absolute inset-0" onClick={handleCloseImageModal} />
+          <div className="ff-auth-shell ff-auth-modal-panel relative w-full max-w-md rounded-[28px] p-6 shadow-2xl">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-white">Edit Aircraft Image</h3>
+              <h3 className="font-public text-lg font-semibold text-white">Edit Aircraft Image</h3>
               <button
                 type="button"
                 onClick={handleCloseImageModal}
                 disabled={isImageSaving}
-                className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+                className="ff-modal-close rounded-xl p-2 transition-colors disabled:opacity-50"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -465,7 +467,7 @@ export function AircraftForm({ isOpen, aircraft, onClose, onSubmit }: AircraftFo
             </div>
 
             <div className="flex flex-col items-center gap-4 mb-4">
-              <div className="w-36 h-36 rounded-lg overflow-hidden border-2 border-slate-600 bg-slate-700">
+              <div className="ff-modal-surface flex h-36 w-36 items-center justify-center overflow-hidden rounded-[24px] border-2">
                 {modalImage?.previewUrl ? (
                   <img src={modalImage.previewUrl} alt="Aircraft preview" className="w-full h-full object-cover" />
                 ) : displayImagePreview ? (
@@ -486,7 +488,7 @@ export function AircraftForm({ isOpen, aircraft, onClose, onSubmit }: AircraftFo
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isImageUploading || isImageSaving}
-                className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm transition-colors disabled:opacity-50"
+                className="ff-auth-cta-secondary px-4 py-2 text-sm disabled:opacity-50"
               >
                 {modalImage?.previewUrl ? 'Choose Different' : 'Select Image'}
               </button>
@@ -500,7 +502,7 @@ export function AircraftForm({ isOpen, aircraft, onClose, onSubmit }: AircraftFo
                     ? 'bg-green-500/10 border-green-500/30 text-green-400'
                     : imageStatusTone === 'error'
                       ? 'bg-red-500/10 border-red-500/30 text-red-400'
-                      : 'bg-slate-700/50 border-slate-600 text-slate-300'
+                  : 'ff-modal-surface text-slate-200'
                 }`}
               >
                 <p>{imageStatusText}</p>
@@ -515,7 +517,7 @@ export function AircraftForm({ isOpen, aircraft, onClose, onSubmit }: AircraftFo
                 type="button"
                 onClick={handleCloseImageModal}
                 disabled={isImageSaving}
-                className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm transition-colors disabled:opacity-50"
+                className="ff-auth-cta-secondary flex-1 text-sm disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -528,7 +530,7 @@ export function AircraftForm({ isOpen, aircraft, onClose, onSubmit }: AircraftFo
                   !modalImage?.uploadId ||
                   modalImage.moderationStatus !== 'APPROVED'
                 }
-                className="flex-1 px-4 py-2 bg-primary-600 hover:bg-primary-500 text-white rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="ff-auth-cta-primary flex-1 text-sm disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Save
               </button>

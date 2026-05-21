@@ -189,17 +189,17 @@ export function CatalogSearchModal({
     <div className="fixed inset-0 z-50">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="ff-modal-backdrop absolute inset-0"
         onClick={onClose}
       />
 
       {/* Modal */}
       <div className="relative flex h-full w-full items-center justify-center p-4">
-        <div className="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-2xl h-[calc(100vh-2rem)] sm:h-[85vh] sm:max-h-[760px] overflow-hidden flex flex-col">
+        <div className="ff-auth-shell ff-auth-modal-panel h-[calc(100vh-2rem)] w-full max-w-2xl overflow-hidden rounded-[30px] sm:h-[85vh] sm:max-h-[760px] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700">
+        <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="font-public text-lg font-semibold text-white">
               {mode === 'create'
                 ? 'Add New Gear to Catalog'
                 : mode === 'import-json'
@@ -216,7 +216,7 @@ export function CatalogSearchModal({
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+            className="ff-modal-close rounded-xl p-2 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -225,8 +225,8 @@ export function CatalogSearchModal({
         </div>
 
         {(mode === 'create' || mode === 'import-json') && enableJsonImport && isAuthenticated && (
-          <div className="px-6 py-3 border-b border-slate-700 bg-slate-800/40">
-            <div className="inline-flex rounded-lg border border-slate-700 bg-slate-900/60 p-1">
+          <div className="ff-modal-footer px-6 py-3">
+            <div className="ff-modal-surface inline-flex rounded-xl p-1">
               <button
                 type="button"
                 onClick={() => setMode('create')}
@@ -270,7 +270,7 @@ export function CatalogSearchModal({
         ) : (
           <>
             {/* Search Controls */}
-            <div className="px-6 py-4 border-b border-slate-700 space-y-3">
+            <div className="border-b border-white/10 px-6 py-4 space-y-3">
               {/* Search input */}
               <div className="relative">
                 <svg 
@@ -410,10 +410,10 @@ export function CatalogSearchModal({
 
             {/* Footer */}
             {isAuthenticated && (
-              <div className="flex items-center justify-start px-6 py-4 border-t border-slate-700 bg-slate-800/50">
+              <div className="ff-modal-footer flex items-center justify-start px-6 py-4">
                 <button
                   onClick={() => setMode('create')}
-                  className="text-primary-400 hover:text-primary-300 text-sm font-medium transition-colors flex items-center gap-1"
+                  className="flex items-center gap-1 text-sm font-medium text-primary-300 transition-colors hover:text-primary-200"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -442,7 +442,7 @@ function CatalogItemRow({ item, onSelect }: CatalogItemRowProps) {
   return (
     <button
       onClick={() => onSelect(item)}
-      className="w-full text-left p-3 bg-slate-700/50 hover:bg-slate-700 border border-slate-600 hover:border-primary-500/50 rounded-lg transition-all group"
+      className="ff-modal-surface w-full rounded-xl p-3 text-left transition-all group hover:border-primary-500/50 hover:bg-white/10"
     >
       <div className="flex items-start gap-3">
         {/* Image or placeholder */}
@@ -503,7 +503,7 @@ function InventoryItemRow({ item, isSelecting, onSelect }: InventoryItemRowProps
     <button
       onClick={() => onSelect(item)}
       disabled={isSelecting}
-      className="w-full text-left p-3 bg-slate-700/50 hover:bg-slate-700 border border-slate-600 hover:border-primary-500/50 rounded-lg transition-all disabled:cursor-wait disabled:opacity-70"
+      className="ff-modal-surface w-full rounded-xl p-3 text-left transition-all hover:border-primary-500/50 hover:bg-white/10 disabled:cursor-wait disabled:opacity-70"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
@@ -831,7 +831,7 @@ function CreateCatalogItemForm({
                   key={item.id}
                   type="button"
                   onClick={() => onSuccess(item)}
-                  className="w-full text-left px-2 py-1.5 bg-slate-700/50 hover:bg-slate-700 rounded text-sm text-slate-300 hover:text-white transition-colors"
+                  className="ff-modal-surface-soft w-full rounded-lg px-2 py-1.5 text-left text-sm text-slate-300 transition-colors hover:text-white"
                 >
                   {getCatalogItemDisplayName(item)}
                 </button>
@@ -984,7 +984,7 @@ function CreateCatalogItemForm({
               <button
                 type="button"
                 onClick={handleOpenImageModal}
-                className="px-3 py-2 bg-slate-700 hover:bg-slate-600 border border-slate-600 rounded-lg text-sm text-white transition-colors"
+                className="ff-auth-cta-secondary px-3 py-2 text-sm"
               >
                 {selectedImage ? 'Choose Different' : 'Add Image'}
               </button>
@@ -1026,7 +1026,7 @@ function CreateCatalogItemForm({
       </div>
 
       {/* Footer */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 px-6 py-4 border-t border-slate-700 bg-slate-800/50 flex-shrink-0">
+      <div className="ff-modal-footer flex flex-shrink-0 flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center sm:justify-end">
         <button
           type="submit"
           disabled={isSubmitting || !brand.trim() || !model.trim() || checkingDuplicates}
@@ -1461,7 +1461,7 @@ function ImportCatalogItemsForm({ onSuccess, onCancel }: ImportCatalogItemsFormP
           </div>
         )}
 
-        <div className="rounded-xl border border-slate-700 bg-slate-900/40 p-4">
+        <div className="ff-modal-surface rounded-[24px] p-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="min-w-0">
               <p className="text-sm font-medium text-white">Upload JSON file</p>
@@ -1486,7 +1486,7 @@ function ImportCatalogItemsForm({ onSuccess, onCancel }: ImportCatalogItemsFormP
                 type="button"
                 onClick={handleUploadClick}
                 disabled={isSubmitting}
-                className="px-3 py-2 bg-slate-700 hover:bg-slate-600 border border-slate-600 rounded-lg text-sm text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="ff-auth-cta-secondary px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Choose File
               </button>
@@ -1495,7 +1495,7 @@ function ImportCatalogItemsForm({ onSuccess, onCancel }: ImportCatalogItemsFormP
                   type="button"
                   onClick={() => void checkDuplicates(rows)}
                   disabled={isSubmitting || isCheckingDuplicates}
-                  className="px-3 py-2 bg-slate-700 hover:bg-slate-600 border border-slate-600 rounded-lg text-sm text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="ff-auth-cta-secondary px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isCheckingDuplicates ? 'Checking…' : 'Re-check duplicates'}
                 </button>
@@ -1568,7 +1568,7 @@ function ImportCatalogItemsForm({ onSuccess, onCancel }: ImportCatalogItemsFormP
           </div>
 
           {rows.length === 0 ? (
-            <div className="p-6 text-center text-slate-400 border border-slate-700 bg-slate-900/40 rounded-xl">
+            <div className="ff-modal-surface rounded-[24px] p-6 text-center text-slate-300">
               Upload a JSON file to preview items here.
             </div>
           ) : (
@@ -1677,7 +1677,7 @@ function ImportCatalogItemsForm({ onSuccess, onCancel }: ImportCatalogItemsFormP
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-6 py-4 border-t border-slate-700 bg-slate-800/50 flex-shrink-0">
+      <div className="ff-modal-footer flex flex-shrink-0 flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
         <button
           type="button"
           onClick={onCancel}
@@ -1720,7 +1720,7 @@ function ImportCatalogItemsForm({ onSuccess, onCancel }: ImportCatalogItemsFormP
               type="button"
               onClick={handleDone}
               disabled={isSubmitting || isCheckingDuplicates || isBulkDeleting}
-              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+              className="ff-auth-cta-secondary px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
             >
               Done
             </button>
@@ -1730,13 +1730,13 @@ function ImportCatalogItemsForm({ onSuccess, onCancel }: ImportCatalogItemsFormP
 
       {showBulkDeleteConfirm && (
         <div className="absolute inset-0 z-10 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/70" onClick={handleCancelBulkDelete} />
+          <div className="ff-modal-backdrop absolute inset-0" onClick={handleCancelBulkDelete} />
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="import-bulk-delete-title"
             aria-describedby="import-bulk-delete-description"
-            className="relative bg-slate-800 rounded-xl p-6 max-w-md w-full shadow-2xl border border-red-500/50"
+            className="ff-auth-shell relative w-full max-w-md rounded-[28px] border border-red-500/50 bg-[linear-gradient(180deg,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0.04)_100%),linear-gradient(180deg,rgba(127,29,29,0.18)_0%,rgba(127,29,29,0.08)_100%),rgb(var(--ff-panel-strong-rgb)/0.42)] p-6 shadow-2xl backdrop-blur-[26px]"
           >
             <div className="flex items-start justify-between gap-3 mb-4">
               <div className="flex items-center gap-3">
@@ -1745,7 +1745,7 @@ function ImportCatalogItemsForm({ onSuccess, onCancel }: ImportCatalogItemsFormP
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                 </div>
-                <h3 id="import-bulk-delete-title" className="text-lg font-semibold text-white">
+                <h3 id="import-bulk-delete-title" className="font-public text-lg font-semibold text-white">
                   Bulk Delete Created Items?
                 </h3>
               </div>
@@ -1754,7 +1754,7 @@ function ImportCatalogItemsForm({ onSuccess, onCancel }: ImportCatalogItemsFormP
                 onClick={handleCancelBulkDelete}
                 disabled={isBulkDeleting}
                 aria-label="Close bulk delete modal"
-                className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+                className="ff-modal-close rounded-xl p-2 transition-colors disabled:opacity-50"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1785,7 +1785,7 @@ function ImportCatalogItemsForm({ onSuccess, onCancel }: ImportCatalogItemsFormP
                 type="button"
                 onClick={handleCancelBulkDelete}
                 disabled={isBulkDeleting}
-                className="w-full px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+                className="ff-auth-cta-secondary w-full px-4 py-2 text-sm disabled:opacity-50"
               >
                 Cancel
               </button>

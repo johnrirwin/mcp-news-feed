@@ -52,23 +52,23 @@ export function LoginPage() {
     ?? null;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-md rounded-2xl border border-slate-700 bg-slate-900/90 p-8 shadow-2xl">
+    <div data-testid="login-shell" className="ff-public-shell ff-public-app-shell min-h-screen text-white flex items-center justify-center px-4 py-10">
+      <div data-testid="login-card" className="ff-public-page-panel-strong w-full max-w-md rounded-[28px] p-8 shadow-2xl">
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-white mb-2">Welcome back</h1>
+          <h1 className="font-public text-3xl font-bold tracking-[-0.05em] text-white mb-2">Welcome back</h1>
           <p className="text-slate-300 text-sm">
             Sign in with your Google account to access your dashboard, inventory, and builds.
           </p>
         </div>
 
         {reason === 'expired' && (
-          <div className="mb-4 rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
+          <div className="mb-4 rounded-2xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100 backdrop-blur-xl">
             Your session expired. Please sign in again to continue.
           </div>
         )}
 
         {bannerMessage && (
-          <div className="mb-4 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+          <div className="mb-4 rounded-2xl border border-red-500/35 bg-red-500/10 px-4 py-3 text-sm text-red-100 backdrop-blur-xl">
             {bannerMessage}
           </div>
         )}

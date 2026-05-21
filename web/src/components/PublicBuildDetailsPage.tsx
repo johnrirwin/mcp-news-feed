@@ -267,7 +267,7 @@ export function PublicBuildDetailsPage({ onAddToInventory }: PublicBuildDetailsP
   if (isLoading) {
     return (
       <div className="flex-1 overflow-y-auto p-6">
-        <div className="mx-auto w-full max-w-4xl rounded-xl border border-slate-700 bg-slate-800/60 p-8 text-center text-slate-400">
+        <div className="ff-auth-empty-state mx-auto w-full max-w-4xl p-8 text-center text-slate-300/78">
           Loading build...
         </div>
       </div>
@@ -277,7 +277,7 @@ export function PublicBuildDetailsPage({ onAddToInventory }: PublicBuildDetailsP
   if (error || !build) {
     return (
       <div className="flex-1 overflow-y-auto p-6">
-        <div className="mx-auto w-full max-w-4xl rounded-xl border border-red-500/30 bg-red-500/10 p-6 text-sm text-red-300">
+        <div className="mx-auto w-full max-w-4xl rounded-2xl border border-red-500/30 bg-red-500/10 p-6 text-sm text-red-300 backdrop-blur-xl">
           {error || 'Build not found'}
         </div>
       </div>
@@ -295,7 +295,7 @@ export function PublicBuildDetailsPage({ onAddToInventory }: PublicBuildDetailsP
   return (
     <div className="flex-1 overflow-y-auto p-6">
       <div className="mx-auto w-full max-w-4xl space-y-6">
-        <header className="rounded-2xl border border-slate-700 bg-slate-800/70 p-5">
+        <header data-testid="public-build-details-header" className="ff-public-page-panel-strong rounded-[28px] p-5">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="space-y-2">
               <Link to="/builds" className="text-xs uppercase tracking-wide text-primary-400 hover:text-primary-300">
@@ -328,7 +328,7 @@ export function PublicBuildDetailsPage({ onAddToInventory }: PublicBuildDetailsP
                 type="button"
                 disabled={isCreatingTemp || isCopyingURL}
                 onClick={handleBuildYourOwn}
-                className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-primary-500 disabled:cursor-not-allowed disabled:opacity-60"
+                className="ff-auth-cta-primary px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isCreatingTemp ? 'Creating...' : 'Build Your Own'}
               </button>
@@ -336,7 +336,7 @@ export function PublicBuildDetailsPage({ onAddToInventory }: PublicBuildDetailsP
                 type="button"
                 disabled={isCopyingURL || isCreatingTemp}
                 onClick={handleCopyBuildURL}
-                className="rounded-lg border border-primary-500/60 px-4 py-2 text-sm font-medium text-primary-200 transition hover:border-primary-400 hover:text-primary-100 disabled:cursor-not-allowed disabled:opacity-60"
+                className="ff-auth-cta-secondary px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isCopyingURL ? 'Copying...' : 'Copy Build URL'}
               </button>
@@ -345,7 +345,7 @@ export function PublicBuildDetailsPage({ onAddToInventory }: PublicBuildDetailsP
           {copyStatusMessage && (
             <p className="mt-3 text-xs text-emerald-300">{copyStatusMessage}</p>
           )}
-          <div className="mt-4 rounded-lg border border-slate-700 bg-slate-900/60 p-3 text-xs">
+          <div className="ff-modal-surface-soft mt-4 rounded-2xl p-3 text-xs">
             <p className="text-slate-400">Build URL</p>
             <p className="mt-1 break-all text-slate-200">{buildURL}</p>
           </div>
@@ -353,19 +353,19 @@ export function PublicBuildDetailsPage({ onAddToInventory }: PublicBuildDetailsP
         </header>
 
         {build.mainImageUrl && (
-          <div className="overflow-hidden rounded-xl border border-slate-700 bg-slate-800/70">
+          <div className="ff-public-page-panel overflow-hidden rounded-[24px]">
             <img src={build.mainImageUrl} alt={build.title} className="max-h-[420px] w-full object-cover" />
           </div>
         )}
 
         {(buildVideoEmbedURL || flightVideoEmbedURL) && (
-          <section className="rounded-xl border border-slate-700 bg-slate-800/60 p-5">
+          <section className="ff-public-page-panel rounded-[24px] p-5">
             <h2 className="text-lg font-semibold text-white">Videos</h2>
             <div className="mt-3 space-y-4">
               {buildVideoEmbedURL && (
                 <div>
                   <p className="mb-2 text-sm font-medium text-slate-300">Build Video</p>
-                  <div className="aspect-video overflow-hidden rounded-xl border border-slate-700 bg-slate-900/60">
+                  <div className="ff-modal-surface-soft aspect-video overflow-hidden rounded-xl">
                     <iframe
                       src={buildVideoEmbedURL}
                       title={`${build.title} - Build Video`}
@@ -381,7 +381,7 @@ export function PublicBuildDetailsPage({ onAddToInventory }: PublicBuildDetailsP
               {flightVideoEmbedURL && (
                 <div>
                   <p className="mb-2 text-sm font-medium text-slate-300">Flight Video</p>
-                  <div className="aspect-video overflow-hidden rounded-xl border border-slate-700 bg-slate-900/60">
+                  <div className="ff-modal-surface-soft aspect-video overflow-hidden rounded-xl">
                     <iframe
                       src={flightVideoEmbedURL}
                       title={`${build.title} - Flight Video`}
@@ -398,7 +398,7 @@ export function PublicBuildDetailsPage({ onAddToInventory }: PublicBuildDetailsP
           </section>
         )}
 
-        <section className="rounded-xl border border-slate-700 bg-slate-800/60 p-5">
+        <section className="ff-public-page-panel rounded-[24px] p-5">
           <div className="flex items-start justify-between gap-4">
             <div>
               <h2 className="text-lg font-semibold text-white">Estimated MSRP</h2>
@@ -417,12 +417,12 @@ export function PublicBuildDetailsPage({ onAddToInventory }: PublicBuildDetailsP
         </section>
 
         {partDetailError && (
-          <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-300">
+          <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-300 backdrop-blur-xl">
             {partDetailError}
           </div>
         )}
 
-        <section className="rounded-xl border border-slate-700 bg-slate-800/60 p-5">
+        <section className="ff-public-page-panel rounded-[24px] p-5">
           <h2 className="text-lg font-semibold text-white">Core Components</h2>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
             {coreParts.map((entry) => (
@@ -437,7 +437,7 @@ export function PublicBuildDetailsPage({ onAddToInventory }: PublicBuildDetailsP
           </div>
         </section>
 
-        <section className="rounded-xl border border-slate-700 bg-slate-800/60 p-5">
+        <section className="ff-public-page-panel rounded-[24px] p-5">
           <h2 className="text-lg font-semibold text-white">Optional Components</h2>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
             {optionalParts.map((entry) => (
@@ -481,7 +481,7 @@ function PartRow({
 
   if (!isInteractive) {
     return (
-      <div className="rounded-lg border border-slate-700 bg-slate-800/80 p-3">
+      <div className="ff-modal-surface rounded-lg p-3">
         <p className="text-xs uppercase tracking-wide text-slate-500">{label}</p>
         <p className="mt-1 text-sm text-slate-200">{description}</p>
       </div>
@@ -493,7 +493,7 @@ function PartRow({
       type="button"
       onClick={() => onOpenPartDetails(part)}
       disabled={isLoading}
-      className="w-full rounded-lg border border-slate-700 bg-slate-800/80 p-3 text-left transition hover:border-primary-500/50 hover:bg-slate-700/40 disabled:cursor-wait disabled:opacity-70"
+      className="ff-modal-surface w-full rounded-lg p-3 text-left transition hover:border-primary-500/50 hover:bg-white/10 disabled:cursor-wait disabled:opacity-70"
       aria-label={`View details for ${description}`}
     >
       <p className="text-xs uppercase tracking-wide text-slate-500">{label}</p>

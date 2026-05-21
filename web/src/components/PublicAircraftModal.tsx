@@ -132,10 +132,11 @@ export function PublicAircraftModal({ aircraft, onClose, onAddToInventory }: Pub
 
   return (
     <div 
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="bg-slate-800 rounded-xl w-full max-w-2xl h-[90vh] overflow-hidden flex flex-col">
+      <div className="ff-modal-backdrop absolute inset-0" />
+      <div className="ff-auth-shell ff-auth-modal-panel relative flex h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-[30px]">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-slate-700">
           <div className="flex items-center gap-4">
@@ -151,14 +152,14 @@ export function PublicAircraftModal({ aircraft, onClose, onAddToInventory }: Pub
               {aircraft.nickname && (
                 <p className="text-primary-400 text-sm">"{aircraft.nickname}"</p>
               )}
-              <span className="inline-block mt-1 px-2 py-0.5 bg-slate-700 text-slate-300 rounded text-xs">
+              <span className="ff-modal-surface-soft mt-1 inline-block rounded-full px-2 py-0.5 text-xs text-slate-200">
                 {formatType(aircraft.type)}
               </span>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white transition-colors"
+            className="ff-modal-close rounded-xl p-2 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -227,7 +228,7 @@ export function PublicAircraftModal({ aircraft, onClose, onAddToInventory }: Pub
                 const isLoading = Boolean(loadingCatalogItemId && loadingCatalogItemId === catalogID);
                 const content = (
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-slate-600 rounded-lg flex items-center justify-center text-xl">
+                    <div className="ff-modal-surface-soft flex h-10 w-10 items-center justify-center rounded-lg text-xl">
                       {info.icon}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -271,7 +272,7 @@ export function PublicAircraftModal({ aircraft, onClose, onAddToInventory }: Pub
                       type="button"
                       onClick={() => handleOpenComponentDetails(catalogID)}
                       disabled={isLoading}
-                      className="w-full bg-slate-700/50 border border-slate-700 rounded-lg p-3 text-left transition hover:border-primary-500/50 hover:bg-slate-700/70 disabled:cursor-wait disabled:opacity-70"
+                      className="ff-modal-surface w-full rounded-xl p-3 text-left transition hover:border-primary-500/50 hover:bg-white/10 disabled:cursor-wait disabled:opacity-70"
                       aria-label={`View details for ${component?.name || info.label}`}
                     >
                       {content}
@@ -282,7 +283,7 @@ export function PublicAircraftModal({ aircraft, onClose, onAddToInventory }: Pub
                 return (
                   <div
                     key={category}
-                    className="bg-slate-700/50 border border-slate-700 rounded-lg p-3"
+                    className="ff-modal-surface rounded-xl p-3"
                   >
                     {content}
                   </div>
@@ -302,7 +303,7 @@ export function PublicAircraftModal({ aircraft, onClose, onAddToInventory }: Pub
               {hasTuning ? (
                 <>
                   {/* Firmware Info */}
-                  <div className="bg-slate-700/50 border border-slate-700 rounded-lg p-4">
+                  <div className="ff-modal-surface rounded-xl p-4">
                     <div className="flex items-center justify-between mb-3">
                       <h4 className="text-white font-medium">Firmware</h4>
                       {aircraft.tuning?.snapshotDate && (
@@ -329,7 +330,7 @@ export function PublicAircraftModal({ aircraft, onClose, onAddToInventory }: Pub
 
                   {/* PID Display */}
                   {aircraft.tuning?.parsedTuning?.pids && (
-                    <div className="bg-slate-700/50 border border-slate-700 rounded-lg p-4">
+                    <div className="ff-modal-surface rounded-xl p-4">
                       <h4 className="text-white font-medium mb-3">PIDs</h4>
                       <div className="overflow-x-auto">
                         <table className="w-full text-sm">
@@ -372,11 +373,11 @@ export function PublicAircraftModal({ aircraft, onClose, onAddToInventory }: Pub
 
                   {/* Rates Display - matches AircraftDetail layout */}
                   {aircraft.tuning?.parsedTuning?.rates && (
-                    <div className="bg-slate-700/50 border border-slate-700 rounded-lg p-4">
+                    <div className="ff-modal-surface rounded-xl p-4">
                       <div className="flex items-center justify-between mb-3">
                         <h4 className="text-white font-medium">Rates</h4>
                         {aircraft.tuning.parsedTuning.rates.rateType && (
-                          <span className="text-xs bg-slate-600 text-slate-300 px-2 py-0.5 rounded">
+                          <span className="ff-modal-surface-soft rounded-full px-2 py-0.5 text-xs text-slate-200">
                             {aircraft.tuning.parsedTuning.rates.rateType}
                           </span>
                         )}
@@ -418,7 +419,7 @@ export function PublicAircraftModal({ aircraft, onClose, onAddToInventory }: Pub
 
                   {/* Filters Display */}
                   {aircraft.tuning?.parsedTuning?.filters && (
-                    <div className="bg-slate-700/50 border border-slate-700 rounded-lg p-4">
+                    <div className="ff-modal-surface rounded-xl p-4">
                       <h4 className="text-white font-medium mb-3">Filters</h4>
                       <div className="grid grid-cols-2 gap-3 text-sm">
                         {aircraft.tuning.parsedTuning.filters.gyroLowpassHz !== undefined && (
@@ -479,7 +480,7 @@ export function PublicAircraftModal({ aircraft, onClose, onAddToInventory }: Pub
                   </div>
 
                   {/* Receiver Settings Display */}
-                  <div className="bg-slate-700/50 border border-slate-700 rounded-lg p-4 space-y-3">
+                  <div className="ff-modal-surface space-y-3 rounded-xl p-4">
                     <h4 className="text-white font-medium mb-4">Receiver Configuration</h4>
                     
                     <div className="grid grid-cols-2 gap-4">
@@ -544,7 +545,7 @@ function ReceiverField({ label, value }: { label: string; value?: string }) {
       <label className="block text-xs font-medium text-slate-400 mb-1">
         {label}
       </label>
-      <div className="px-3 py-2 bg-slate-600 border border-slate-500 rounded-lg text-white text-sm">
+      <div className="ff-modal-surface-soft rounded-xl px-3 py-2 text-sm text-white">
         {value || <span className="text-slate-500 italic">Not set</span>}
       </div>
     </div>

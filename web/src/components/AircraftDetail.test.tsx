@@ -86,7 +86,7 @@ const details: AircraftDetailsResponse = {
 
 function openCameraAddFlow() {
   const cameraHeading = screen.getByRole('heading', { name: 'Camera' });
-  const cameraCard = cameraHeading.closest('div[class*="bg-slate-700"]');
+  const cameraCard = cameraHeading.closest('.ff-modal-surface');
   if (!(cameraCard instanceof HTMLElement)) {
     throw new Error('Camera card not found');
   }
@@ -201,12 +201,13 @@ describe('AircraftDetail modal gear assignment flow', () => {
     await waitFor(() => expect(mockedGetInventory).toHaveBeenCalledTimes(1));
 
     const overlay = screen.getByTestId('aircraft-detail-overlay');
-    const modal = overlay.firstElementChild;
+    const modal = overlay.querySelector('.ff-auth-modal-panel');
     if (!(modal instanceof HTMLElement)) {
       throw new Error('Modal container not found');
     }
 
     expect(modal).toHaveClass('h-[90vh]');
+    expect(modal).toHaveClass('ff-auth-modal-panel');
 
     await user.click(screen.getByRole('button', { name: 'Receiver Settings' }));
     expect(modal).toHaveClass('h-[90vh]');

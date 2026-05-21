@@ -62,8 +62,9 @@ export function CallSignPromptModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-      <div className="bg-slate-800 rounded-xl p-6 w-full max-w-md shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="ff-modal-backdrop absolute inset-0" onClick={onClose} />
+      <div className="ff-auth-modal-panel relative w-full max-w-md rounded-[28px] p-6 shadow-2xl">
         <div className="flex items-start justify-between gap-3 mb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-emerald-600/20 flex items-center justify-center">
@@ -72,7 +73,7 @@ export function CallSignPromptModal({
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white">{title}</h2>
+              <h2 className="font-public text-lg font-bold text-white">{title}</h2>
               <p className="text-sm text-slate-400">{subtitle}</p>
             </div>
           </div>
@@ -81,7 +82,7 @@ export function CallSignPromptModal({
             onClick={onClose}
             disabled={isSaving}
             aria-label="Close call sign modal"
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+            className="ff-modal-close rounded-xl p-2 transition-colors disabled:opacity-50"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -106,7 +107,7 @@ export function CallSignPromptModal({
                 setCallSign(e.target.value);
                 setError(null);
               }}
-              className={`w-full px-4 py-3 bg-slate-700 border rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+              className={`w-full rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                 error ? 'border-red-500' : 'border-slate-600'
               }`}
               placeholder="Enter your call sign"
@@ -126,14 +127,14 @@ export function CallSignPromptModal({
               type="button"
               onClick={onClose}
               disabled={isSaving}
-              className="flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 disabled:bg-slate-700 text-slate-300 rounded-lg font-medium transition-colors"
+              className="ff-auth-cta-secondary flex-1 justify-center text-sm"
             >
               Skip for now
             </button>
             <button
               type="submit"
               disabled={isSaving || !callSign.trim()}
-              className="flex-1 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:bg-emerald-600/50 text-white rounded-lg font-medium transition-colors"
+              className="ff-auth-cta-primary flex-1 justify-center text-sm disabled:opacity-50"
             >
               {isSaving ? 'Saving...' : 'Save Call Sign'}
             </button>
@@ -155,7 +156,7 @@ function DiscoveryPilotCard({ pilot, onClick, followerCount }: DiscoveryPilotCar
   return (
     <div
       onClick={onClick}
-      className="bg-slate-800 rounded-lg p-4 hover:bg-slate-700/80 transition-colors cursor-pointer border border-slate-700"
+      className="ff-auth-card ff-auth-card-hover cursor-pointer rounded-[24px] p-4"
     >
       <div className="flex items-center gap-3">
         {pilot.effectiveAvatarUrl ? (
@@ -474,7 +475,7 @@ export function SocialPage({ onSelectPilot }: SocialPageProps) {
     <div className="w-full max-w-xl p-4 md:p-6">
       {/* My Profile Header */}
       {isAuthenticated && (
-        <div className="bg-slate-800 rounded-lg p-6 mb-6">
+        <div className="ff-auth-card mb-6 rounded-[28px] p-6">
           {isLoadingProfile ? (
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-full bg-slate-700 animate-pulse" />
@@ -510,7 +511,7 @@ export function SocialPage({ onSelectPilot }: SocialPageProps) {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => user?.id && onSelectPilot(user.id)}
-                    className="text-xl font-bold text-white hover:text-primary-400 transition-colors"
+                    className="font-public text-2xl font-semibold tracking-[-0.04em] text-white transition-colors hover:text-primary-200"
                   >
                     {getMyDisplayName()}
                   </button>
@@ -537,7 +538,7 @@ export function SocialPage({ onSelectPilot }: SocialPageProps) {
               {/* View Profile Button */}
               <button
                 onClick={() => user?.id && onSelectPilot(user.id)}
-                className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
+                className="ff-auth-cta-secondary px-4 py-2"
               >
                 View Profile
               </button>
@@ -547,16 +548,16 @@ export function SocialPage({ onSelectPilot }: SocialPageProps) {
       )}
 
       <div className="mb-6">
-        <h2 className="text-lg font-semibold text-white">Find Pilots</h2>
+        <h2 className="ff-auth-section-title text-xl">Find Pilots</h2>
       </div>
 
-      <div className="flex gap-1 mb-6 bg-slate-800 p-1 rounded-lg w-full overflow-hidden">
+      <div className="ff-auth-glass-panel mb-6 flex w-full gap-1 overflow-hidden rounded-2xl p-1">
         <button
           onClick={() => setActiveTab('search')}
           className={`flex-1 min-w-0 px-2 sm:px-4 py-2 rounded-md font-medium transition-colors text-sm sm:text-base ${
             activeTab === 'search'
-              ? 'bg-primary-500 text-white'
-              : 'text-slate-400 hover:text-white hover:bg-slate-700'
+              ? 'ff-auth-chip-active'
+              : 'text-slate-300/72 hover:bg-white/10 hover:text-white'
           }`}
         >
           <span className="flex items-center justify-center gap-1 sm:gap-2">
@@ -572,8 +573,8 @@ export function SocialPage({ onSelectPilot }: SocialPageProps) {
               onClick={() => setActiveTab('following')}
               className={`flex-1 min-w-0 px-2 sm:px-4 py-2 rounded-md font-medium transition-colors text-sm sm:text-base ${
                 activeTab === 'following'
-                  ? 'bg-primary-500 text-white'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-700'
+                  ? 'ff-auth-chip-active'
+                  : 'text-slate-300/72 hover:bg-white/10 hover:text-white'
               }`}
             >
               <span className="flex items-center justify-center gap-1 sm:gap-2">
@@ -592,8 +593,8 @@ export function SocialPage({ onSelectPilot }: SocialPageProps) {
               onClick={() => setActiveTab('followers')}
               className={`flex-1 min-w-0 px-2 sm:px-4 py-2 rounded-md font-medium transition-colors text-sm sm:text-base ${
                 activeTab === 'followers'
-                  ? 'bg-primary-500 text-white'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-700'
+                  ? 'ff-auth-chip-active'
+                  : 'text-slate-300/72 hover:bg-white/10 hover:text-white'
               }`}
             >
               <span className="flex items-center justify-center gap-1 sm:gap-2">
@@ -626,7 +627,7 @@ export function SocialPage({ onSelectPilot }: SocialPageProps) {
                   ? "Filter following..."
                   : "Filter followers..."
             }
-            className="w-full px-4 py-3 pl-12 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-primary-500"
+            className="ff-auth-input w-full rounded-xl px-4 py-3 pl-12"
           />
           <svg
             className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"
@@ -666,7 +667,7 @@ export function SocialPage({ onSelectPilot }: SocialPageProps) {
         />
       )}
 
-      <div className="hidden md:flex justify-center flex-shrink-0 border-b border-slate-800/60">
+      <div className="hidden md:flex justify-center flex-shrink-0 border-b border-white/10">
         {socialControls}
       </div>
 

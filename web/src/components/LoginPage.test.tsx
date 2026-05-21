@@ -71,4 +71,23 @@ describe('LoginPage', () => {
 
     expect(screen.getByText('Your session expired. Please sign in again to continue.')).toBeInTheDocument();
   });
+
+  it('renders the login experience inside the scenic public shell', () => {
+    mockUseAuth.mockReturnValue({
+      isLoading: false,
+      isAuthenticated: false,
+      error: null,
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/login']}>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByTestId('login-shell')).toHaveClass('ff-public-shell', 'ff-public-app-shell');
+    expect(screen.getByTestId('login-card')).toHaveClass('ff-public-page-panel-strong');
+  });
 });

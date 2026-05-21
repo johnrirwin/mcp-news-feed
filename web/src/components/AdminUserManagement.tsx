@@ -363,26 +363,35 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
   // Show loading while auth state is being determined
   if (authLoading) {
     return (
-      <div className="p-8 text-center">
-        <div className="w-8 h-8 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin mx-auto" />
-        <p className="text-slate-400 mt-4">Loading...</p>
+      <div className="ff-admin-page">
+        <div className="ff-admin-page-body">
+          <div className="ff-admin-empty-state p-8 text-center">
+            <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-primary-500/30 border-t-primary-500" />
+            <p className="mt-4 text-slate-400">Loading...</p>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!isAdmin) {
     return (
-      <div className="p-8 text-center">
-        <h1 className="text-2xl font-bold text-red-400 mb-4">Access Denied</h1>
-        <p className="text-slate-400">You must be an admin to access this page.</p>
+      <div className="ff-admin-page">
+        <div className="ff-admin-page-body">
+          <div className="ff-admin-danger-dialog rounded-[28px] p-8 text-center">
+            <h1 className="mb-4 font-public text-3xl font-bold tracking-[-0.045em] text-red-300">Access Denied</h1>
+            <p className="text-slate-200/78">You must be an admin to access this page.</p>
+          </div>
+        </div>
       </div>
     );
   }
 
   const controls = (
-    <div className="bg-slate-800 border-b border-slate-700 px-4 md:px-6 py-4">
-      <h1 className="text-lg md:text-2xl font-bold text-white">User Admin</h1>
-      <p className="text-slate-400 mt-1 text-sm">Search users, review profile details, manage roles, and delete accounts.</p>
+    <div className="ff-admin-toolbar">
+      <p className="ff-auth-kicker">Administrative controls</p>
+      <h1 className="ff-auth-page-title mt-2 text-lg md:text-[2.15rem]">User Admin</h1>
+      <p className="mt-2 text-sm text-slate-300/72">Search users, review profile details, manage roles, and delete accounts.</p>
 
       <div className="mt-4 flex flex-col md:flex-row gap-3">
         <input
@@ -395,14 +404,14 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
             }
           }}
           placeholder="Search by email, display name, or callsign..."
-          className="w-full md:flex-1 h-11 px-3 bg-slate-900 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+          className="ff-auth-input h-11 w-full rounded-xl px-3 md:flex-1 placeholder-slate-500"
         />
         <select
           value={statusFilter}
           onChange={(e) => {
             setStatusFilter(e.target.value as AdminUserStatus | '');
           }}
-          className="h-11 px-3 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+          className="ff-auth-select h-11 rounded-xl px-3"
         >
           <option value="">All statuses</option>
           <option value="active">Active</option>
@@ -411,13 +420,13 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
         </select>
         <button
           onClick={handleSearch}
-          className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors"
+          className="ff-auth-cta-primary px-4 py-2 text-sm"
         >
           Search
         </button>
       </div>
 
-      <div className="mt-3 text-sm text-slate-400">
+      <div className="mt-3 text-sm text-slate-300/72">
         {isLoading ? 'Loading users...' : `${totalCount} user${totalCount === 1 ? '' : 's'} found`}
       </div>
     </div>
@@ -425,11 +434,11 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
 
   return (
     <>
-      <div className="relative flex-1 flex flex-col min-h-0 overflow-hidden">
+      <div className="ff-admin-page">
         <div className="hidden md:block flex-shrink-0">{controls}</div>
 
         <div
-          className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain px-4 md:px-6 pb-6 pt-24 md:pt-6"
+          className="ff-admin-page-body"
           onScroll={(event) => {
             setIsMobileControlsOpen((prev) => (prev ? false : prev));
 
@@ -457,10 +466,10 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
           )}
 
           {/* Desktop table */}
-          <div className="hidden md:block border border-slate-800 rounded-xl overflow-hidden bg-slate-900/40">
+          <div className="ff-admin-table-shell hidden md:block">
             <table className="w-full table-fixed text-sm">
-              <thead className="sticky top-0 z-10 bg-slate-900 text-slate-400">
-                <tr className="border-b border-slate-800">
+              <thead className="ff-admin-table-header sticky top-0 z-10 text-slate-300/74">
+                <tr className="border-b border-white/10">
                   <th className="w-1/4 text-left px-4 py-3 font-medium">User</th>
                   <th className="w-1/4 text-center px-4 py-3 font-medium">Status</th>
                   <th className="w-1/4 text-center px-4 py-3 font-medium">Roles</th>
@@ -484,8 +493,8 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
                       role="button"
                       tabIndex={0}
                       aria-label={`Open profile for ${getUserCallSign(user)}`}
-                      className={`border-t border-slate-800 transition-colors cursor-pointer ${
-                        isSelected ? 'bg-primary-600/10' : 'bg-slate-900/40 hover:bg-slate-800/50'
+                      className={`cursor-pointer border-t border-white/8 transition-colors ${
+                        isSelected ? 'ff-admin-row-active' : 'ff-admin-row ff-admin-row-hover'
                       }`}
                     >
                       <td className="w-1/4 px-4 py-3 align-middle">
@@ -525,10 +534,10 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
                 <button
                   key={user.id}
                   onClick={() => handleOpenProfile(user)}
-                  className={`w-full text-left border rounded-xl p-4 transition-colors ${
+                  className={`w-full text-left rounded-[24px] border p-4 transition-colors ${
                     isSelected
-                      ? 'border-primary-500/50 bg-primary-600/10'
-                      : 'border-slate-800 bg-slate-900/40 hover:bg-slate-800/50'
+                      ? 'border-primary-400/50 bg-primary-600/12'
+                      : 'ff-admin-surface hover:border-primary-500/40'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -558,7 +567,7 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
             })}
 
             {!isLoading && users.length === 0 && (
-              <div className="border border-slate-800 rounded-xl p-6 text-center text-slate-400 bg-slate-900/40">
+              <div className="ff-admin-empty-state p-6 text-center text-slate-400">
                 No users found.
               </div>
             )}
@@ -577,7 +586,7 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
             </div>
           )}
 
-          <div className="pt-1 text-center text-sm text-slate-400 md:hidden">
+          <div className="pt-1 text-center text-sm text-slate-300/72 md:hidden">
             {isLoading ? 'Loading users...' : `${totalCount} user${totalCount === 1 ? '' : 's'} found`}
           </div>
 
@@ -598,20 +607,20 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
       {/* User Profile Modal */}
       {selectedUserID && (
         <div
-          className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 ff-modal-backdrop flex items-center justify-center z-50 p-4"
           onClick={(e) => {
             if (e.currentTarget === e.target) {
               handleCloseProfile();
             }
           }}
         >
-          <div className="bg-slate-800 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-slate-700 shadow-2xl">
-            <div className="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">User Profile</h3>
+          <div className="ff-admin-dialog w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[30px]">
+            <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+              <h3 className="font-public text-2xl font-semibold tracking-[-0.04em] text-white">User Profile</h3>
               <button
                 onClick={handleCloseProfile}
                 disabled={isSavingProfile || isRemovingAvatar}
-                className="text-slate-400 hover:text-white transition-colors"
+                className="rounded-xl p-2 text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
                 aria-label="Close profile modal"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -692,11 +701,11 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
                     <p>Last login: {formatDate(profileUser.lastLoginAt)}</p>
                   </div>
 
-                  <div className="border-t border-slate-700 pt-4 mb-5">
+                  <div className="mb-5 border-t border-white/10 pt-4">
                     <button
                       onClick={handleOpenRemoveAvatarModal}
                       disabled={isRemovingAvatar || !profileAvatarURL}
-                      className="px-4 py-2 bg-red-600/80 hover:bg-red-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="rounded-xl bg-red-600/80 px-4 py-2 text-white transition-colors hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {profileAvatarURL ? 'Remove Profile Picture' : 'No Profile Picture'}
                     </button>
@@ -712,14 +721,14 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
                     <button
                       onClick={() => handleDeleteClick(profileUser)}
                       disabled={isSavingProfile || isRemovingAvatar || isDeletingUser || isProfileSelf}
-                      className="flex-1 px-4 py-2 bg-red-600/80 hover:bg-red-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 rounded-xl bg-red-600/80 px-4 py-2 font-medium text-white transition-colors hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       Delete User
                     </button>
                     <button
                       onClick={() => void handleSaveProfile()}
                       disabled={isSavingProfile || isRemovingAvatar}
-                      className="flex-1 px-4 py-2 bg-primary-600 hover:bg-primary-500 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+                      className="ff-auth-cta-primary flex-1 rounded-xl px-4 py-2 disabled:opacity-50"
                     >
                       {isSavingProfile ? 'Saving...' : 'Save Changes'}
                     </button>
@@ -735,8 +744,8 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
 
       {/* Remove Profile Picture Confirmation Modal */}
       {showRemoveAvatarModal && profileUser && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[60] p-4">
-          <div className="bg-slate-800 rounded-xl p-6 max-w-md w-full shadow-2xl border border-red-500/50">
+        <div className="fixed inset-0 ff-modal-backdrop flex items-center justify-center z-[60] p-4">
+          <div className="ff-admin-danger-dialog w-full max-w-md rounded-[28px] p-6">
             <div className="flex items-start justify-between gap-3 mb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center">
@@ -750,7 +759,7 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
                 onClick={handleCancelRemoveAvatar}
                 disabled={isRemovingAvatar}
                 aria-label="Close remove profile picture modal"
-                className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+                className="rounded-xl p-2 text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -783,7 +792,7 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
               <button
                 onClick={() => void handleConfirmRemoveAvatar()}
                 disabled={isRemovingAvatar || removeAvatarConfirmText.trim().toLowerCase() !== 'delete'}
-                className="w-full px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full rounded-xl bg-red-600 px-4 py-2 font-medium text-white transition-colors hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isRemovingAvatar ? 'Removing...' : 'Remove Picture'}
               </button>
@@ -794,8 +803,8 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
 
       {/* Delete User Confirmation Modal */}
       {deleteTargetUser && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[60] p-4">
-          <div className="bg-slate-800 rounded-xl p-6 max-w-md w-full shadow-2xl border border-red-500/50">
+        <div className="fixed inset-0 ff-modal-backdrop flex items-center justify-center z-[60] p-4">
+          <div className="ff-admin-danger-dialog w-full max-w-md rounded-[28px] p-6">
             <div className="flex items-start justify-between gap-3 mb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center">
@@ -809,7 +818,7 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
                 onClick={handleCancelDelete}
                 disabled={isDeletingUser}
                 aria-label="Close delete user modal"
-                className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+                className="rounded-xl p-2 text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -843,7 +852,7 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
               <button
                 onClick={() => void handleConfirmDelete()}
                 disabled={isDeletingUser || deleteConfirmText.trim().toLowerCase() !== 'delete'}
-                className="w-full px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full rounded-xl bg-red-600 px-4 py-2 font-medium text-white transition-colors hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isDeletingUser ? 'Deleting...' : 'Delete User'}
               </button>
@@ -855,7 +864,7 @@ export function AdminUserManagement({ isAdmin, currentUserId, authLoading }: Adm
       {/* Success Toast */}
       {toastMessage && (
         <div className="fixed top-4 right-4 z-[70]">
-          <div className="px-4 py-3 rounded-lg bg-emerald-600 text-white shadow-2xl border border-emerald-400/50">
+          <div className="ff-admin-toast rounded-2xl px-4 py-3 text-white">
             {toastMessage}
           </div>
         </div>

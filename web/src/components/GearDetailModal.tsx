@@ -79,7 +79,7 @@ export function GearDetailModal({
     >
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="ff-modal-backdrop absolute inset-0"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -91,20 +91,20 @@ export function GearDetailModal({
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className="relative bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col focus:outline-none"
+        className="ff-auth-shell ff-auth-modal-panel relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-[30px] focus:outline-none"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700">
+        <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
           <div className="flex items-center gap-3">
-            <h2 id={titleId} className="text-lg font-semibold text-white">{displayName}</h2>
-            <span className="px-2 py-0.5 bg-slate-700 text-slate-300 text-xs rounded-full">
+            <h2 id={titleId} className="font-public text-lg font-semibold text-white">{displayName}</h2>
+            <span className="ff-modal-surface-soft rounded-full px-2 py-0.5 text-xs text-slate-200">
               {typeLabel}
             </span>
           </div>
           <button
             onClick={onClose}
             aria-label="Close"
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+            className="ff-modal-close rounded-xl p-2 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -129,7 +129,7 @@ export function GearDetailModal({
                   )}
                 </div>
               ) : (
-                <div className="w-full md:w-48 h-48 bg-slate-700 rounded-xl flex items-center justify-center">
+                <div className="ff-modal-surface flex h-48 w-full items-center justify-center rounded-[24px] md:w-48">
                   <svg className="w-16 h-16 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                   </svg>
@@ -196,7 +196,7 @@ export function GearDetailModal({
           {item.specs && Object.keys(item.specs).length > 0 && (
             <div className="mt-6">
               <h3 className="text-sm font-medium text-slate-400 mb-3">Specifications</h3>
-              <div className="bg-slate-900/50 rounded-lg p-4">
+              <div className="ff-modal-surface rounded-[22px] p-4">
                 <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                   {Object.entries(item.specs).map(([key, value]) => (
                     <div key={key} className="contents">
@@ -236,12 +236,12 @@ export function GearDetailModal({
 
         {/* Footer */}
         {onAddToInventory && (
-          <div className="flex items-center justify-end px-6 py-4 border-t border-slate-700 bg-slate-800/50">
+          <div className="ff-modal-footer flex items-center justify-end px-6 py-4">
             <button
               onClick={handleAddClick}
               disabled={!isAuthenticated}
               title={isAuthenticated ? 'Add to your inventory' : 'Sign in to add to inventory'}
-              className="px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center gap-2"
+              className="ff-auth-cta-primary flex items-center gap-2 px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

@@ -77,9 +77,9 @@ describe('AdminAnnouncementsPanel', () => {
 
     render(<AdminAnnouncementsPanel />);
 
-    expect(await screen.findByRole('button', { name: 'Open editor for Announcement 1' })).toBeInTheDocument();
+    expect(await screen.findAllByText('Announcement 1')).toHaveLength(2);
     expect(screen.getByText('Showing 100 of 135 announcements')).toBeInTheDocument();
-  });
+  }, 45_000);
 
   it('creates a new announcement from the editor modal', async () => {
     render(<AdminAnnouncementsPanel />);

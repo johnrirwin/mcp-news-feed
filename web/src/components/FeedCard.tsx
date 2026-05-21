@@ -21,12 +21,12 @@ export function FeedCard({ item, source, onClick }: FeedCardProps) {
   return (
     <article
       onClick={onClick}
-      className="bg-slate-800 border border-slate-700 rounded-xl p-4 hover:border-slate-600 hover:bg-slate-750 transition-all cursor-pointer group"
+      className="ff-auth-card ff-auth-card-hover cursor-pointer rounded-[24px] p-4 group"
     >
       <div className="flex gap-4">
         {/* Image */}
         {item.media?.imageUrl && (
-          <div className="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-slate-700">
+          <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-[18px] border border-white/10 bg-black/12">
             <img
               src={item.media.imageUrl}
               alt=""
@@ -45,12 +45,12 @@ export function FeedCard({ item, source, onClick }: FeedCardProps) {
           <div className="flex items-start justify-between gap-2 mb-2">
             <div className="flex items-center gap-2 flex-wrap">
               <span
-                className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                   item.sourceType === 'youtube'
-                    ? 'bg-red-500/20 text-red-400'
+                    ? 'bg-red-500/16 text-red-300'
                     : item.sourceType === 'rss'
-                    ? 'bg-blue-500/20 text-blue-400'
-                    : 'bg-green-500/20 text-green-400'
+                    ? 'bg-blue-500/16 text-blue-300'
+                    : 'bg-emerald-500/16 text-emerald-300'
                 }`}
               >
                 {source?.name || item.source}
@@ -70,13 +70,13 @@ export function FeedCard({ item, source, onClick }: FeedCardProps) {
           </div>
 
           {/* Title */}
-          <h3 className="text-white font-medium mb-2 line-clamp-2 group-hover:text-primary-400 transition-colors">
+          <h3 className="mb-2 line-clamp-2 font-public text-[1.1rem] font-semibold tracking-[-0.03em] text-white transition-colors group-hover:text-primary-200">
             {item.title}
           </h3>
 
           {/* Summary */}
           {summaryText && (
-            <p className="text-slate-400 text-sm line-clamp-2 mb-3">
+            <p className="mb-3 line-clamp-2 text-sm text-slate-300/74">
               {summaryText}
             </p>
           )}
@@ -89,7 +89,7 @@ export function FeedCard({ item, source, onClick }: FeedCardProps) {
                 {item.tags.slice(0, 4).map(tag => (
                   <span
                     key={tag}
-                    className="px-2 py-0.5 bg-slate-700 text-slate-300 rounded text-xs"
+                    className="ff-auth-chip text-[11px]"
                   >
                     {tag}
                   </span>

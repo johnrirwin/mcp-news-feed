@@ -124,18 +124,18 @@ export function AddInventoryModal({ isOpen, onClose, onSubmit, equipmentItem, ed
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="ff-modal-backdrop absolute inset-0"
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="relative bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col">
+      <div className="ff-auth-shell ff-auth-modal-panel relative flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-[28px]">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-          <h2 className="text-lg font-semibold text-white">{title}</h2>
+        <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+          <h2 className="font-public text-lg font-semibold text-white">{title}</h2>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+            className="ff-modal-close rounded-xl p-2 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -282,11 +282,11 @@ export function AddInventoryModal({ isOpen, onClose, onSubmit, equipmentItem, ed
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-700 bg-slate-800/50">
+          <div className="ff-modal-footer flex items-center justify-end gap-3 px-6 py-4">
             <button
               type="submit"
               disabled={isSubmitting || !name.trim() || quantityInput.trim().length === 0}
-              className="px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center gap-2"
+              className="ff-auth-cta-primary flex items-center gap-2 px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isSubmitting && (
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

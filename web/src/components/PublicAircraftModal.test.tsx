@@ -146,6 +146,7 @@ describe('PublicAircraftModal', () => {
     }
 
     expect(modal).toHaveClass('h-[90vh]');
+    expect(modal).toHaveClass('ff-auth-modal-panel');
 
     await userEvent.click(screen.getByRole('button', { name: /^Tuning/i }));
     expect(modal).toHaveClass('h-[90vh]');

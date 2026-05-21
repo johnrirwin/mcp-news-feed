@@ -62,8 +62,9 @@ describe('TempBuildPage', () => {
       expect(mockedGetTempBuild).toHaveBeenCalledWith('abc123');
     });
 
-    expect(screen.getByText('Temporary Build')).toBeInTheDocument();
-    expect(screen.getByText(/expires on/i)).toBeInTheDocument();
+    expect(await screen.findByText('Temporary Build')).toBeInTheDocument();
+    expect(await screen.findByText(/expires on/i)).toBeInTheDocument();
+    expect(screen.getByTestId('temp-build-header')).toHaveClass('ff-public-page-panel-strong');
   });
 
   it('copies a permanent shared URL with one button', async () => {

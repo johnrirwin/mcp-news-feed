@@ -49,14 +49,15 @@ export function FollowListModal({ userId, userName, type, onClose, onSelectPilot
 
   return (
     <div 
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="bg-slate-800 rounded-xl w-full max-w-md max-h-[80vh] overflow-hidden flex flex-col">
+      <div className="ff-modal-backdrop absolute inset-0" />
+      <div className="ff-auth-shell ff-auth-modal-panel relative flex max-h-[80vh] w-full max-w-md flex-col overflow-hidden rounded-[28px]">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-700">
+        <div className="flex items-center justify-between border-b border-white/10 p-4">
           <div>
-            <h2 className="text-lg font-semibold text-white">
+            <h2 className="font-public text-lg font-semibold text-white">
               {type === 'followers' ? 'Followers' : 'Following'}
             </h2>
             <p className="text-sm text-slate-400">
@@ -67,7 +68,7 @@ export function FollowListModal({ userId, userName, type, onClose, onSelectPilot
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white transition-colors"
+            className="ff-modal-close rounded-xl p-2 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -107,7 +108,7 @@ export function FollowListModal({ userId, userName, type, onClose, onSelectPilot
                 <button
                   key={pilot.id}
                   onClick={() => handlePilotClick(pilot.id)}
-                  className="w-full flex items-center gap-3 p-3 bg-slate-700/50 hover:bg-slate-700 rounded-lg transition-colors text-left"
+                  className="ff-modal-surface w-full rounded-xl p-3 text-left transition-colors hover:bg-white/10 flex items-center gap-3"
                 >
                   {/* Avatar */}
                   {pilot.effectiveAvatarUrl ? (
@@ -117,7 +118,7 @@ export function FollowListModal({ userId, userName, type, onClose, onSelectPilot
                       className="w-10 h-10 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center">
+                    <div className="ff-modal-surface-soft flex h-10 w-10 items-center justify-center rounded-full">
                       <svg
                         className="w-5 h-5 text-slate-400"
                         fill="none"

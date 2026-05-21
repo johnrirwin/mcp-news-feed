@@ -1,0 +1,136 @@
+import { render, screen, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
+import App from './App';
+
+const mockUseAuth = vi.fn();
+const mockUseFilters = vi.fn();
+const mockedGetItems = vi.fn();
+const mockedGetSources = vi.fn();
+
+vi.mock('./components', () => ({
+  Sidebar: () => <div data-testid="sidebar" />,
+  Dashboard: () => <div data-testid="dashboard" />,
+  ItemDetail: () => null,
+  AddGearModal: () => null,
+  AircraftForm: () => null,
+  AircraftDetail: () => null,
+  PilotProfile: () => null,
+}));
+
+vi.mock('./AppRoutes', () => ({
+  AppRoutes: () => <div data-testid="app-routes" />,
+}));
+
+vi.mock('./hooks', () => ({
+  useFilters: () => mockUseFilters(),
+}));
+
+vi.mock('./hooks/useAuth', () => ({
+  useAuth: () => mockUseAuth(),
+}));
+
+vi.mock('./hooks/useGoogleAnalytics', () => ({
+  useGoogleAnalytics: vi.fn(),
+  trackEvent: vi.fn(),
+}));
+
+vi.mock('./api', () => ({
+  getItems: (...args: unknown[]) => mockedGetItems(...args),
+  getSources: (...args: unknown[]) => mockedGetSources(...args),
+}));
+
+describe('App shell styling', () => {
+  beforeEach(() => {
+    mockUseFilters.mockReturnValue({
+      filters: {
+        query: '',
+        sources: [],
+        sourceType: 'all',
+        sort: 'newest',
+        fromDate: '',
+        toDate: '',
+      },
+      updateFilter: vi.fn(),
+    });
+
+    mockedGetItems.mockResolvedValue({ items: [], totalCount: 0 });
+    mockedGetSources.mockResolvedValue({ sources: [] });
+  });
+
+  it('uses the scenic public shell for logged-out non-home routes', async () => {
+    mockUseAuth.mockReturnValue({
+      isAuthenticated: false,
+      user: null,
+      logout: vi.fn(),
+      isLoading: false,
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/news']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(mockedGetSources).toHaveBeenCalled();
+      expect(mockedGetItems).toHaveBeenCalled();
+    });
+
+    expect(screen.getByTestId('app-shell')).toHaveClass('ff-public-shell');
+    expect(screen.getByTestId('app-shell')).toHaveClass('ff-public-app-shell');
+    expect(screen.getByTestId('app-shell')).not.toHaveClass('ff-public-home-shell');
+    expect(screen.getByTestId('mobile-shell-header')).toHaveClass('ff-public-mobile-header');
+  });
+
+  it('keeps the homepage-specific hero shell on the logged-out home route', async () => {
+    mockUseAuth.mockReturnValue({
+      isAuthenticated: false,
+      user: null,
+      logout: vi.fn(),
+      isLoading: false,
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(mockedGetSources).toHaveBeenCalled();
+      expect(mockedGetItems).toHaveBeenCalled();
+    });
+
+    expect(screen.getByTestId('app-shell')).toHaveClass('ff-public-home-shell');
+    expect(screen.getByTestId('mobile-shell-header')).toHaveClass('ff-public-mobile-header');
+  });
+
+  it('uses the authenticated shell for signed-in routes', async () => {
+    mockUseAuth.mockReturnValue({
+      isAuthenticated: true,
+      user: {
+        id: 'user-1',
+        email: 'pilot@example.com',
+        displayName: 'Pilot',
+      },
+      logout: vi.fn(),
+      isLoading: false,
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/dashboard']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(mockedGetSources).toHaveBeenCalled();
+      expect(mockedGetItems).toHaveBeenCalled();
+    });
+
+    expect(screen.getByTestId('app-shell')).toHaveClass('ff-auth-shell');
+    expect(screen.getByTestId('app-shell')).toHaveClass('ff-auth-app-shell');
+    expect(screen.getByTestId('mobile-shell-header')).toHaveClass('ff-auth-mobile-header');
+  });
+});

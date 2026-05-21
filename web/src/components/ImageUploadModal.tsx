@@ -54,15 +54,16 @@ export function ImageUploadModal({
   if (!isOpen) return null;
 
   return (
-    <div className={`fixed inset-0 bg-black/60 flex items-center justify-center p-4 ${zIndexClassName}`}>
-      <div className="bg-slate-800 rounded-xl p-6 max-w-md w-full shadow-2xl border border-slate-700">
+    <div className={`fixed inset-0 flex items-center justify-center p-4 ${zIndexClassName}`}>
+      <div className="ff-modal-backdrop absolute inset-0" onClick={onClose} />
+      <div className="ff-auth-shell ff-auth-modal-panel relative w-full max-w-md rounded-[28px] p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">{title}</h3>
+          <h3 className="font-public text-lg font-semibold text-white">{title}</h3>
           <button
             type="button"
             onClick={onClose}
             disabled={disableClose}
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+            className="ff-modal-close rounded-xl p-2 transition-colors disabled:opacity-50"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -71,7 +72,7 @@ export function ImageUploadModal({
         </div>
 
         <div className="flex flex-col items-center gap-4 mb-4">
-          <div className="w-36 h-36 rounded-lg overflow-hidden border-2 border-slate-600 bg-slate-700">
+          <div className="ff-modal-surface flex h-36 w-36 items-center justify-center overflow-hidden rounded-[24px] border-2">
             {previewUrl ? (
               <img src={previewUrl} alt={previewAlt} className="w-full h-full object-cover" />
             ) : (
@@ -97,7 +98,7 @@ export function ImageUploadModal({
             type="button"
             onClick={() => fileInputRef.current?.click()}
             disabled={disableSelect}
-            className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm transition-colors disabled:opacity-50"
+            className="ff-auth-cta-secondary px-4 py-2 text-sm disabled:opacity-50"
           >
             {selectButtonLabel}
           </button>
@@ -117,8 +118,8 @@ export function ImageUploadModal({
                 ? 'bg-green-500/10 border-green-500/30 text-green-400'
                 : statusTone === 'error'
                   ? 'bg-red-500/10 border-red-500/30 text-red-400'
-                  : 'bg-slate-700/50 border-slate-600 text-slate-300'
-            }`}
+                  : 'ff-modal-surface text-slate-200'
+                }`}
           >
             <p>{statusText}</p>
             {statusReason && statusTone !== 'success' && (
@@ -132,7 +133,7 @@ export function ImageUploadModal({
             type="button"
             onClick={onClose}
             disabled={disableClose}
-            className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm transition-colors disabled:opacity-50"
+            className="ff-auth-cta-secondary flex-1 text-sm disabled:opacity-50"
           >
             {cancelLabel}
           </button>
@@ -140,7 +141,7 @@ export function ImageUploadModal({
             type="button"
             onClick={onSave}
             disabled={disableSave}
-            className="flex-1 px-4 py-2 bg-primary-600 hover:bg-primary-500 text-white rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="ff-auth-cta-primary flex-1 text-sm disabled:cursor-not-allowed disabled:opacity-50"
           >
             {saveLabel}
           </button>

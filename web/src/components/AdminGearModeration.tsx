@@ -564,18 +564,26 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
   // Show loading while auth state is being determined
   if (authLoading) {
     return (
-      <div className="p-8 text-center">
-        <div className="w-8 h-8 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin mx-auto" />
-        <p className="text-slate-400 mt-4">Loading...</p>
+      <div className="ff-admin-page">
+        <div className="ff-admin-page-body">
+          <div className="ff-admin-empty-state p-8 text-center">
+            <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-primary-500/30 border-t-primary-500" />
+            <p className="mt-4 text-slate-400">Loading...</p>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!hasContentAdminAccess) {
     return (
-      <div className="p-8 text-center">
-        <h1 className="text-2xl font-bold text-red-400 mb-4">Access Denied</h1>
-        <p className="text-slate-400">You must be an admin or content admin to access this page.</p>
+      <div className="ff-admin-page">
+        <div className="ff-admin-page-body">
+          <div className="ff-admin-danger-dialog rounded-[28px] p-8 text-center">
+            <h1 className="mb-4 font-public text-3xl font-bold tracking-[-0.045em] text-red-300">Access Denied</h1>
+            <p className="text-slate-200/78">You must be an admin or content admin to access this page.</p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -604,19 +612,19 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleGearKeyDown}
               placeholder="Search brand or model..."
-              className="w-full h-11 pl-10 pr-4 bg-slate-900 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="ff-auth-input h-11 w-full rounded-xl pl-10 pr-4 placeholder-slate-500"
             />
           </div>
           <button
             onClick={handleGearSearch}
-            className="w-full sm:w-auto shrink-0 px-3 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg transition-colors"
+            className="ff-auth-cta-primary w-full shrink-0 px-3 py-2 text-sm sm:w-auto"
           >
             Search
           </button>
           {appliedQuery && (
             <button
               onClick={handleGearClearSearch}
-              className="w-full sm:w-auto shrink-0 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+              className="ff-auth-cta-secondary w-full shrink-0 px-3 py-2 text-sm sm:w-auto"
             >
               Clear
             </button>
@@ -627,7 +635,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
           <select
             value={gearType}
             onChange={(e) => setGearType(e.target.value as GearType | '')}
-            className="w-full min-w-0 h-11 px-3 bg-slate-900 border border-slate-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="ff-auth-select h-11 w-full min-w-0 rounded-xl px-3 text-sm"
           >
             <option value="">All Types</option>
             {GEAR_TYPES.map((type) => (
@@ -640,7 +648,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
           <select
             value={catalogStatus}
             onChange={(e) => setCatalogStatus(e.target.value as CatalogItemStatus | '')}
-            className="w-full min-w-0 h-11 px-3 bg-slate-900 border border-slate-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="ff-auth-select h-11 w-full min-w-0 rounded-xl px-3 text-sm"
           >
             <option value="">All Statuses</option>
             <option value="pending">Pending</option>
@@ -651,7 +659,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
           <select
             value={imageStatus}
             onChange={(e) => setImageStatus(e.target.value as ImageStatusFilter | '')}
-            className="w-full min-w-0 h-11 px-3 bg-slate-900 border border-slate-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="ff-auth-select h-11 w-full min-w-0 rounded-xl px-3 text-sm"
           >
             <option value="">Needs Work</option>
             <option value="all">All Records</option>
@@ -663,7 +671,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <p className="text-slate-400 text-sm">
+          <p className="text-sm text-slate-300/72">
             {totalCount} item{totalCount !== 1 ? 's' : ''} found
             {isBulkEditMode && (
               <span className="ml-2 text-slate-500">• {selectedCount} selected</span>
@@ -676,14 +684,14 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
                   type="button"
                   onClick={handleEnterBulkEditMode}
                   disabled={isLoading || items.length === 0}
-                  className="w-full sm:w-auto px-3 py-2 bg-slate-700 hover:bg-slate-600 border border-slate-600 rounded-lg text-sm text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="ff-auth-cta-secondary w-full px-3 py-2 text-sm sm:w-auto disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Bulk Edit
                 </button>
                 <button
                   type="button"
                   onClick={handleAddGearClick}
-                  className="w-full sm:w-auto px-3 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                  className="ff-auth-cta-primary flex w-full items-center justify-center gap-2 px-3 py-2 text-sm sm:w-auto"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -697,7 +705,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
                   type="button"
                   onClick={selectAllLoaded}
                   disabled={isBulkDeleting || items.length === 0 || isAllSelected}
-                  className="w-full sm:w-auto px-3 py-2 bg-slate-700 hover:bg-slate-600 border border-slate-600 rounded-lg text-sm text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="ff-auth-cta-secondary w-full px-3 py-2 text-sm sm:w-auto disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Select All
                 </button>
@@ -705,7 +713,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
                   type="button"
                   onClick={clearSelection}
                   disabled={isBulkDeleting || selectedCount === 0}
-                  className="w-full sm:w-auto px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="ff-auth-cta-secondary w-full px-3 py-2 text-sm sm:w-auto disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Clear Selection
                 </button>
@@ -713,7 +721,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
                   type="button"
                   onClick={handleOpenBulkDeleteConfirm}
                   disabled={isBulkDeleting || selectedCount === 0}
-                  className="w-full sm:w-auto px-3 py-2 bg-red-600/80 hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
+                  className="w-full rounded-xl bg-red-600/80 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
                 >
                   Delete Selected ({selectedCount})
                 </button>
@@ -721,7 +729,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
                   type="button"
                   onClick={handleExitBulkEditMode}
                   disabled={isBulkDeleting}
-                  className="w-full sm:w-auto px-3 py-2 bg-slate-700 hover:bg-slate-600 border border-slate-600 rounded-lg text-sm text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="ff-auth-cta-secondary w-full px-3 py-2 text-sm sm:w-auto disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Done
                 </button>
@@ -775,19 +783,19 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
               onChange={(e) => setBuildQuery(e.target.value)}
               onKeyDown={handleBuildKeyDown}
               placeholder="Search build title, description, or pilot..."
-              className="w-full h-11 pl-10 pr-4 bg-slate-900 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="ff-auth-input h-11 w-full rounded-xl pl-10 pr-4 placeholder-slate-500"
             />
           </div>
           <button
             onClick={handleBuildSearch}
-            className="w-full sm:w-auto shrink-0 px-3 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg transition-colors"
+            className="ff-auth-cta-primary w-full shrink-0 px-3 py-2 text-sm sm:w-auto"
           >
             Search
           </button>
           {appliedBuildQuery && (
             <button
               onClick={handleBuildClearSearch}
-              className="w-full sm:w-auto shrink-0 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+              className="ff-auth-cta-secondary w-full shrink-0 px-3 py-2 text-sm sm:w-auto"
             >
               Clear
             </button>
@@ -798,7 +806,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
           <select
             value={buildStatus}
             onChange={(e) => setBuildStatus(e.target.value as BuildModerationStatus)}
-            className="w-full min-w-0 h-11 px-3 bg-slate-900 border border-slate-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="ff-auth-select h-11 w-full min-w-0 rounded-xl px-3 text-sm"
           >
             <option value="PENDING_REVIEW">Pending Review</option>
             <option value="DECLINED">Declined</option>
@@ -808,7 +816,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
           </select>
         </div>
 
-        <p className="text-slate-400 text-sm">
+        <p className="text-sm text-slate-300/72">
           {buildTotalCount} build{buildTotalCount !== 1 ? 's' : ''} found
         </p>
       </div>
@@ -822,16 +830,17 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
   );
 
   const controls = (
-    <div className="bg-slate-800 border-b border-slate-700 px-4 md:px-6 py-3 md:py-4">
-      <h1 className="text-lg md:text-2xl font-bold text-white mb-3">Content Moderation</h1>
-      <div className="mb-3 inline-flex rounded-lg border border-slate-700 bg-slate-900/60 p-1">
+    <div className="ff-admin-toolbar">
+      <p className="ff-auth-kicker">Editorial moderation</p>
+      <h1 className="ff-auth-page-title mt-2 mb-3 text-lg md:text-[2.15rem]">Content Moderation</h1>
+      <div className="mb-3 inline-flex rounded-[18px] border border-white/10 bg-white/8 p-1 backdrop-blur-xl">
         <button
           type="button"
           onClick={() => setActiveTab('gear')}
           className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
             activeTab === 'gear'
-              ? 'bg-primary-600 text-white'
-              : 'text-slate-300 hover:bg-slate-700 hover:text-white'
+              ? 'ff-auth-chip-active text-white'
+              : 'text-slate-300 hover:bg-white/10 hover:text-white'
           }`}
         >
           Gear
@@ -841,8 +850,8 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
           onClick={() => setActiveTab('builds')}
           className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
             activeTab === 'builds'
-              ? 'bg-primary-600 text-white'
-              : 'text-slate-300 hover:bg-slate-700 hover:text-white'
+              ? 'ff-auth-chip-active text-white'
+              : 'text-slate-300 hover:bg-white/10 hover:text-white'
           }`}
         >
           Builds
@@ -855,14 +864,14 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
   return (
     <>
       {/* Main flex container - matches news section pattern */}
-      <div className="relative flex-1 flex flex-col min-h-0 overflow-hidden">
-        <div className="hidden md:block flex-shrink-0 z-10 bg-slate-900">
+      <div className="ff-admin-page">
+        <div className="hidden md:block flex-shrink-0 z-10">
           {controls}
         </div>
 
       {/* Scrollable list */}
       <div
-        className="flex-1 overflow-y-auto min-h-0 px-4 md:px-6 pt-24 md:pt-6 pb-20"
+        className="ff-admin-page-body"
         onScroll={() => {
           setIsMobileControlsOpen((prev) => (prev ? false : prev));
 
@@ -875,7 +884,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
         {activeTab === 'gear' ? (
           <>
             {/* Gear table - desktop */}
-            <div className="hidden md:block border border-slate-800 rounded-xl overflow-hidden bg-slate-900/40">
+            <div className="ff-admin-table-shell hidden md:block">
               {isLoading ? (
                 <div className="p-8 text-center">
                   <div className="w-8 h-8 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin mx-auto" />
@@ -887,8 +896,8 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
                 </div>
               ) : (
                 <table className="w-full text-sm">
-                  <thead className="sticky top-0 z-10 bg-slate-900 text-slate-400">
-                    <tr className="border-b border-slate-800">
+                  <thead className="ff-admin-table-header sticky top-0 z-10 text-slate-300/74">
+                    <tr className="border-b border-white/10">
                       <th className="px-4 py-3 text-left font-medium">Upload Date</th>
                       <th className="px-4 py-3 text-left font-medium">Last Edit</th>
                       <th className="px-4 py-3 text-left font-medium">Type</th>
@@ -933,12 +942,12 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
                           tabIndex={0}
                           aria-label={ariaLabel}
                           aria-pressed={isBulkEditMode ? isSelectedForBulkDelete : undefined}
-                          className={`border-t border-slate-800 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset focus-visible:bg-primary-600/20 ${
+                          className={`cursor-pointer border-t border-white/8 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset focus-visible:bg-primary-600/20 ${
                             isEditing
-                              ? 'bg-primary-600/10'
+                              ? 'ff-admin-row-active'
                               : isSelectedForBulkDelete
-                                ? 'bg-red-500/10 hover:bg-red-500/20'
-                                : 'bg-slate-900/40 hover:bg-slate-800/50'
+                                ? 'ff-admin-row-danger hover:bg-red-500/20'
+                                : 'ff-admin-row ff-admin-row-hover'
                           }`}
                         >
                           <td className="px-4 py-3 text-sm text-slate-400">{formatDate(item.createdAt)}</td>
@@ -972,12 +981,12 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
             {/* Gear cards - mobile */}
             <div className="md:hidden space-y-3">
               {isLoading ? (
-                <div className="p-8 text-center border border-slate-800 bg-slate-900/40 rounded-xl">
+                <div className="ff-admin-empty-state p-8 text-center">
                   <div className="w-8 h-8 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin mx-auto" />
                   <p className="text-slate-400 mt-4">Loading...</p>
                 </div>
               ) : items.length === 0 ? (
-                <div className="p-8 text-center border border-slate-800 bg-slate-900/40 rounded-xl">
+                <div className="ff-admin-empty-state p-8 text-center">
                   <p className="text-slate-400">No items found</p>
                 </div>
               ) : (
@@ -1007,12 +1016,12 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
                         }
                       }}
                       aria-pressed={isBulkEditMode ? selectedItemIds.has(item.id) : undefined}
-                      className={`w-full text-left rounded-xl p-4 transition-colors border ${
+                      className={`w-full text-left rounded-[24px] p-4 transition-colors border ${
                         editingItemId === item.id
                           ? 'border-primary-500/50 bg-primary-600/10'
                           : isBulkEditMode && selectedItemIds.has(item.id)
                             ? 'border-red-500/50 bg-red-500/10'
-                            : 'border-slate-800 bg-slate-900/40 hover:bg-slate-800/50'
+                            : 'ff-admin-surface hover:border-primary-500/30'
                       }`}
                     >
                       <div className="flex items-start justify-between gap-3">
@@ -1076,7 +1085,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
         ) : (
           <>
             {/* Build table - desktop */}
-            <div className="hidden md:block border border-slate-800 rounded-xl overflow-hidden bg-slate-900/40">
+            <div className="ff-admin-table-shell hidden md:block">
               {isLoadingBuilds ? (
                 <div className="p-8 text-center">
                   <div className="w-8 h-8 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin mx-auto" />
@@ -1088,8 +1097,8 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
                 </div>
               ) : (
                 <table className="w-full text-sm">
-                  <thead className="sticky top-0 z-10 bg-slate-900 text-slate-400">
-                    <tr className="border-b border-slate-800">
+                  <thead className="ff-admin-table-header sticky top-0 z-10 text-slate-300/74">
+                    <tr className="border-b border-white/10">
                       <th className="px-4 py-3 text-left font-medium">Last Edit</th>
                       <th className="px-4 py-3 text-left font-medium">Status</th>
                       <th className="px-4 py-3 text-left font-medium">Title</th>
@@ -1115,8 +1124,8 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
                           role="button"
                           tabIndex={0}
                           aria-label={`Open editor for ${displayName}`}
-                          className={`border-t border-slate-800 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset focus-visible:bg-primary-600/20 ${
-                            isSelected ? 'bg-primary-600/10' : 'bg-slate-900/40 hover:bg-slate-800/50'
+                          className={`cursor-pointer border-t border-white/8 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset focus-visible:bg-primary-600/20 ${
+                            isSelected ? 'ff-admin-row-active' : 'ff-admin-row ff-admin-row-hover'
                           }`}
                         >
                           <td className="px-4 py-3 text-sm text-slate-400">{formatDateTime(build.updatedAt)}</td>
@@ -1143,12 +1152,12 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
             {/* Build cards - mobile */}
             <div className="md:hidden space-y-3">
               {isLoadingBuilds ? (
-                <div className="p-8 text-center border border-slate-800 bg-slate-900/40 rounded-xl">
+                <div className="ff-admin-empty-state p-8 text-center">
                   <div className="w-8 h-8 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin mx-auto" />
                   <p className="text-slate-400 mt-4">Loading builds...</p>
                 </div>
               ) : builds.length === 0 ? (
-                <div className="p-8 text-center border border-slate-800 bg-slate-900/40 rounded-xl">
+                <div className="ff-admin-empty-state p-8 text-center">
                   <p className="text-slate-400">No builds found</p>
                 </div>
               ) : (
@@ -1159,10 +1168,10 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
                       key={build.id}
                       type="button"
                       onClick={() => handleBuildEditClick(build)}
-                      className={`group w-full rounded-xl border p-4 text-left transition ${
+                      className={`group w-full rounded-[24px] border p-4 text-left transition ${
                         editingBuildId === build.id
                           ? 'border-primary-500/50 bg-primary-600/10'
-                          : 'border-slate-700 bg-slate-800/50 hover:border-primary-500/50 hover:bg-slate-800'
+                          : 'ff-admin-surface hover:border-primary-500/50'
                       }`}
                     >
                       <div className="mb-2 flex items-start justify-between gap-3">
@@ -1233,13 +1242,13 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
 
       {showBulkDeleteConfirm && (
         <div className="fixed inset-0 z-30 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/70" onClick={handleCancelBulkDelete} />
+          <div className="absolute inset-0 ff-modal-backdrop" onClick={handleCancelBulkDelete} />
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="gear-bulk-delete-title"
             aria-describedby="gear-bulk-delete-description"
-            className="relative bg-slate-800 rounded-xl p-6 max-w-md w-full shadow-2xl border border-red-500/50"
+            className="ff-admin-danger-dialog relative w-full max-w-md rounded-[28px] p-6"
           >
             <div className="flex items-start justify-between gap-3 mb-4">
               <div className="flex items-center gap-3">
@@ -1257,7 +1266,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
                 onClick={handleCancelBulkDelete}
                 disabled={isBulkDeleting}
                 aria-label="Close bulk delete modal"
-                className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+                className="rounded-xl p-2 text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1288,7 +1297,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
               value={bulkDeleteConfirmText}
               onChange={(e) => setBulkDeleteConfirmText(e.target.value)}
               disabled={isBulkDeleting}
-              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-red-400 disabled:opacity-50"
+              className="w-full rounded-xl border border-red-400/50 bg-black/20 px-3 py-2 text-white placeholder-slate-400 focus:outline-none disabled:opacity-50"
               placeholder="DELETE"
               autoFocus
             />
@@ -1298,7 +1307,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
                 type="button"
                 onClick={handleCancelBulkDelete}
                 disabled={isBulkDeleting}
-                className="w-full px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+                className="ff-auth-cta-secondary w-full px-4 py-2 text-sm disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -1306,7 +1315,7 @@ export function AdminGearModeration({ hasContentAdminAccess, authLoading }: Admi
                 type="button"
                 onClick={() => void handleConfirmBulkDelete()}
                 disabled={isBulkDeleting || bulkDeleteConfirmText.trim().toUpperCase() !== 'DELETE'}
-                className="w-full px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+                className="w-full rounded-xl bg-red-600 px-4 py-2 font-medium text-white transition-colors hover:bg-red-500 disabled:opacity-50"
               >
                 {isBulkDeleting ? 'Deleting…' : `Delete ${selectedCount}`}
               </button>
@@ -1511,8 +1520,8 @@ function AdminBuildEditModal({ buildId, onClose, onSave, onPublished }: AdminBui
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70 p-4">
-        <div className="rounded-xl border border-slate-700 bg-slate-800 p-6 text-slate-300">
+      <div className="fixed inset-0 z-[70] flex items-center justify-center ff-modal-backdrop p-4">
+        <div className="ff-admin-dialog rounded-[28px] p-6 text-slate-300">
           Loading build...
         </div>
       </div>
@@ -1521,13 +1530,13 @@ function AdminBuildEditModal({ buildId, onClose, onSave, onPublished }: AdminBui
 
   if (!build) {
     return (
-      <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70 p-4">
-        <div className="w-full max-w-md rounded-xl border border-slate-700 bg-slate-800 p-6">
+      <div className="fixed inset-0 z-[70] flex items-center justify-center ff-modal-backdrop p-4">
+        <div className="ff-admin-dialog w-full max-w-md rounded-[28px] p-6">
           <p className="text-slate-300">Build not found.</p>
           <button
             type="button"
             onClick={onClose}
-            className="mt-4 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-500"
+            className="ff-auth-cta-primary mt-4 rounded-xl px-4 py-2 text-sm"
           >
             Close
           </button>
@@ -1538,15 +1547,15 @@ function AdminBuildEditModal({ buildId, onClose, onSave, onPublished }: AdminBui
 
   return (
     <>
-      <div className="fixed inset-0 z-[65] bg-black/70" onClick={onClose} />
+      <div className="fixed inset-0 z-[65] ff-modal-backdrop" onClick={onClose} />
       <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
-        <div className="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-xl border border-slate-700 bg-slate-800 p-5 shadow-2xl">
+        <div className="ff-admin-dialog max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-[30px] p-5">
           <div className="mb-4 flex items-center justify-between gap-3">
-            <h3 className="text-lg font-semibold text-white">Review Build</h3>
+            <h3 className="font-public text-2xl font-semibold tracking-[-0.04em] text-white">Review Build</h3>
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg p-2 text-slate-400 hover:bg-slate-700 hover:text-white"
+              className="rounded-xl p-2 text-slate-300 hover:bg-white/10 hover:text-white"
               aria-label="Close build moderation modal"
             >
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1651,7 +1660,7 @@ function AdminBuildEditModal({ buildId, onClose, onSave, onPublished }: AdminBui
               </label>
             </div>
 
-            <div className="space-y-3 rounded-lg border border-slate-700 bg-slate-900/40 p-3">
+            <div className="ff-admin-surface space-y-3 rounded-[24px] p-3">
               <p className="text-xs font-medium uppercase tracking-wide text-slate-400">Build Image</p>
               <div className="aspect-square overflow-hidden rounded-lg border border-slate-600 bg-slate-800">
                 {currentPreview ? (
@@ -1661,7 +1670,7 @@ function AdminBuildEditModal({ buildId, onClose, onSave, onPublished }: AdminBui
                 )}
               </div>
               <div className="grid gap-2">
-                <p className="rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-2 text-center text-xs text-slate-400">
+                <p className="ff-admin-surface rounded-xl px-3 py-2 text-center text-xs text-slate-400">
                   Moderators can view build details and optionally remove the image.
                 </p>
                 {hasExistingImage && (
@@ -1687,7 +1696,7 @@ function AdminBuildEditModal({ buildId, onClose, onSave, onPublished }: AdminBui
             </div>
           </div>
 
-          <div className="mt-4 rounded-lg border border-slate-600 bg-slate-900/60 px-3 py-2 text-xs text-slate-300">
+          <div className="ff-admin-surface mt-4 rounded-xl px-3 py-2 text-xs text-slate-300">
             Build fields are read-only for moderation. You can publish, decline, unpublish, and remove the image.
           </div>
 
@@ -1696,7 +1705,7 @@ function AdminBuildEditModal({ buildId, onClose, onSave, onPublished }: AdminBui
               type="button"
               onClick={onClose}
               disabled={isPublishing || isUnpublishing || isDeclining}
-              className="rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-slate-200 hover:border-slate-500 hover:text-white"
+              className="ff-auth-cta-secondary rounded-xl px-4 py-2 text-sm"
             >
               Cancel
             </button>
@@ -1705,7 +1714,7 @@ function AdminBuildEditModal({ buildId, onClose, onSave, onPublished }: AdminBui
                 type="button"
                 disabled={isPublishing || isUnpublishing || isDeclining}
                 onClick={() => void saveChanges('unpublish')}
-                className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-500 disabled:opacity-60"
+                className="rounded-xl bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-500 disabled:opacity-60"
               >
                 {isUnpublishing ? 'Unpublishing...' : 'Unpublish Build'}
               </button>
@@ -1715,7 +1724,7 @@ function AdminBuildEditModal({ buildId, onClose, onSave, onPublished }: AdminBui
                 type="button"
                 disabled={isPublishing || isUnpublishing || isDeclining}
                 onClick={handleOpenDeclineModal}
-                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500 disabled:opacity-60"
+                className="rounded-xl bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500 disabled:opacity-60"
               >
                 {isDeclining ? 'Declining...' : 'Decline Build'}
               </button>
@@ -1725,7 +1734,7 @@ function AdminBuildEditModal({ buildId, onClose, onSave, onPublished }: AdminBui
                 type="button"
                 disabled={isPublishing || isUnpublishing || isDeclining}
                 onClick={() => void saveChanges('publish')}
-                className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 disabled:opacity-60"
+                className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 disabled:opacity-60"
               >
                 {isPublishing ? 'Publishing...' : 'Publish Build'}
               </button>
@@ -1741,9 +1750,9 @@ function AdminBuildEditModal({ buildId, onClose, onSave, onPublished }: AdminBui
             role="dialog"
             aria-modal="true"
             aria-labelledby="decline-build-title"
-            className="relative w-full max-w-xl rounded-xl border border-slate-700 bg-slate-800 p-5 shadow-2xl"
+            className="ff-admin-dialog relative w-full max-w-xl rounded-[28px] p-5"
           >
-            <h4 id="decline-build-title" className="text-lg font-semibold text-white">Decline build submission</h4>
+            <h4 id="decline-build-title" className="font-public text-2xl font-semibold tracking-[-0.04em] text-white">Decline build submission</h4>
             <p className="mt-2 text-sm text-slate-300">
               Add a message for the pilot explaining why this build was declined.
             </p>
@@ -2384,8 +2393,8 @@ function AdminGearEditModal({ itemId, onClose, onSave, onDelete }: AdminGearEdit
   if (isLoading) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-        <div className="relative bg-slate-800 rounded-xl shadow-2xl max-w-2xl w-full p-8">
+        <div className="absolute inset-0 ff-modal-backdrop" onClick={onClose} />
+        <div className="ff-admin-dialog relative w-full max-w-2xl rounded-[30px] p-8">
           <div className="flex items-center justify-center">
             <div className="w-8 h-8 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin" />
             <span className="ml-3 text-slate-400">Loading...</span>
@@ -2398,12 +2407,12 @@ function AdminGearEditModal({ itemId, onClose, onSave, onDelete }: AdminGearEdit
   if (!item) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-        <div className="relative bg-slate-800 rounded-xl shadow-2xl max-w-2xl w-full p-8">
+        <div className="absolute inset-0 ff-modal-backdrop" onClick={onClose} />
+        <div className="ff-admin-dialog relative w-full max-w-2xl rounded-[30px] p-8">
           <button
             onClick={onClose}
             aria-label="Close edit gear modal"
-            className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+            className="absolute right-4 top-4 rounded-xl p-2 text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -2431,23 +2440,23 @@ function AdminGearEditModal({ itemId, onClose, onSave, onDelete }: AdminGearEdit
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 ff-modal-backdrop"
         onClick={onClose}
       />
 
       {/* Modal */}
       <div
-        className="relative bg-slate-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden"
+        className="ff-admin-dialog relative w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-[30px]"
         aria-hidden={showDeleteConfirm}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-          <h2 className="text-lg font-semibold text-white">
+        <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+          <h2 className="font-public text-2xl font-semibold tracking-[-0.04em] text-white">
             Edit Gear Item
           </h2>
           <button
             onClick={onClose}
-            className="p-1 text-slate-400 hover:text-white transition-colors"
+            className="rounded-xl p-1 text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -2464,7 +2473,7 @@ function AdminGearEditModal({ itemId, onClose, onSave, onDelete }: AdminGearEdit
           )}
 
           {/* Read-only info */}
-          <div className="p-3 bg-slate-700/50 rounded-lg">
+          <div className="ff-admin-surface rounded-[22px] p-3">
             <p className="text-sm text-slate-400">
               <strong>Gear Type:</strong> {getGearTypeLabel(item.gearType)}
             </p>
@@ -2900,12 +2909,12 @@ function AdminGearEditModal({ itemId, onClose, onSave, onDelete }: AdminGearEdit
         </form>
 
         {/* Footer */}
-        <div className="flex items-center justify-between gap-3 px-6 py-4 border-t border-slate-700 bg-slate-800/50">
+        <div className="flex items-center justify-between gap-3 border-t border-white/10 bg-white/6 px-6 py-4">
           <button
             type="button"
             onClick={() => setShowDeleteConfirm(true)}
             disabled={isSaving || isDeleting || showDeleteConfirm}
-            className="px-4 py-2 bg-red-600 hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+            className="rounded-xl bg-red-600 px-4 py-2 font-medium text-white transition-colors hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Delete Item
           </button>
@@ -2913,7 +2922,7 @@ function AdminGearEditModal({ itemId, onClose, onSave, onDelete }: AdminGearEdit
             type="submit"
             form="gear-edit-form"
             disabled={isSaving || isDeleting || showDeleteConfirm}
-            className="px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center gap-2"
+            className="ff-auth-cta-primary flex items-center gap-2 rounded-xl px-4 py-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSaving ? (
               <>
@@ -2954,7 +2963,7 @@ function AdminGearEditModal({ itemId, onClose, onSave, onDelete }: AdminGearEdit
 
       {showDeleteConfirm && (
         <div className="absolute inset-0 z-10 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/70" onClick={closeDeleteConfirm} />
+          <div className="absolute inset-0 ff-modal-backdrop" onClick={closeDeleteConfirm} />
           <div
             ref={deleteDialogRef}
             role="dialog"
@@ -2962,7 +2971,7 @@ function AdminGearEditModal({ itemId, onClose, onSave, onDelete }: AdminGearEdit
             aria-labelledby="delete-gear-dialog-title"
             aria-describedby="delete-gear-dialog-description"
             tabIndex={-1}
-            className="relative bg-slate-800 rounded-xl p-6 max-w-md w-full shadow-2xl border border-red-500/50"
+            className="ff-admin-danger-dialog relative w-full max-w-md rounded-[28px] p-6"
           >
             <div className="flex items-start justify-between gap-3 mb-4">
               <div className="flex items-center gap-3">
@@ -2977,7 +2986,7 @@ function AdminGearEditModal({ itemId, onClose, onSave, onDelete }: AdminGearEdit
                 onClick={closeDeleteConfirm}
                 disabled={isDeleting}
                 aria-label="Close delete gear modal"
-                className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+                className="rounded-xl p-2 text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -3024,7 +3033,7 @@ function AdminGearEditModal({ itemId, onClose, onSave, onDelete }: AdminGearEdit
                 value={deleteConfirmText}
                 onChange={(e) => setDeleteConfirmText(e.target.value)}
                 placeholder="Type 'delete' to confirm"
-                className="w-full px-4 py-2 bg-slate-700 border border-red-500/50 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent mb-4"
+                className="mb-4 w-full rounded-xl border border-red-400/50 bg-black/20 px-4 py-2 text-white placeholder-slate-500 focus:outline-none"
                 data-delete-initial-focus="true"
                 disabled={isDeleting}
               />
@@ -3036,7 +3045,7 @@ function AdminGearEditModal({ itemId, onClose, onSave, onDelete }: AdminGearEdit
                 onClick={closeDeleteConfirm}
                 disabled={isDeleting}
                 data-delete-initial-focus={item.usageCount === 0 ? 'true' : undefined}
-                className="px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+                className="ff-auth-cta-secondary px-3 py-2 text-sm disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -3047,7 +3056,7 @@ function AdminGearEditModal({ itemId, onClose, onSave, onDelete }: AdminGearEdit
                   isDeleting ||
                   (item.usageCount > 0 && deleteConfirmText.trim().toLowerCase() !== 'delete')
                 }
-                className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="rounded-xl bg-red-600 px-4 py-2 font-medium text-white transition-colors hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isDeleting ? 'Deleting...' : 'Delete Item'}
               </button>

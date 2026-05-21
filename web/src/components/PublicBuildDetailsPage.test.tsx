@@ -217,6 +217,7 @@ describe('PublicBuildDetailsPage', () => {
 
     expect(await screen.findByText('Estimated MSRP')).toBeInTheDocument();
     expect(screen.getByText('$114.99')).toBeInTheDocument();
+    expect(screen.getByTestId('public-build-details-header')).toHaveClass('ff-public-page-panel-strong');
   });
 
   it('opens gear details from a part row and allows adding to inventory', async () => {

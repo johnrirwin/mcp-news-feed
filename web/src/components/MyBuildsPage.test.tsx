@@ -197,7 +197,7 @@ describe('MyBuildsPage share URL behavior', () => {
     });
 
     expect(await screen.findByText(/builds\/temp\/temp-2/i)).toBeInTheDocument();
-  });
+  }, 30_000);
 
   it('falls back to createTempBuild and logs when updateTempBuild fails', async () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});

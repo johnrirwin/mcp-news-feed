@@ -37,9 +37,9 @@ export function AircraftList({
   if (error) {
     return (
       <div className="flex-1 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-red-400 mb-2">⚠️ {error}</div>
-          <p className="text-slate-500">Please try again later</p>
+        <div className="ff-auth-empty-state max-w-md text-center">
+          <div className="mb-2 text-red-300">⚠️ {error}</div>
+          <p className="text-slate-300/72">Please try again later</p>
         </div>
       </div>
     );
@@ -48,10 +48,10 @@ export function AircraftList({
   if (aircraft.length === 0) {
     return (
       <div className="flex-1 flex items-center justify-center">
-        <div className="text-center">
+        <div className="ff-auth-empty-state max-w-md text-center">
           <div className="text-6xl mb-4">🚁</div>
-          <h3 className="text-xl font-medium text-white mb-2">No aircraft yet</h3>
-          <p className="text-slate-400">
+          <h3 className="font-public text-2xl font-semibold tracking-[-0.03em] text-white">No aircraft yet</h3>
+          <p className="mt-2 text-slate-300/74">
             Add your first drone to track its components and settings
           </p>
         </div>
@@ -107,8 +107,8 @@ export function AircraftList({
           <section key={type.value}>
             <div className="flex items-center gap-3 mb-3 md:mb-4">
               <span className="text-xl">{type.icon}</span>
-              <h2 className="text-base md:text-lg font-semibold text-white">{type.label}</h2>
-              <span className="px-2 py-0.5 bg-slate-700 rounded-full text-xs text-slate-400">
+              <h2 className="font-public text-lg font-semibold tracking-[-0.03em] text-white">{type.label}</h2>
+              <span className="ff-auth-chip text-xs">
                 {type.items.length}
               </span>
             </div>

@@ -23,10 +23,10 @@ function GearTypeTab({
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors whitespace-nowrap ${
+      className={`px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
         isActive
-          ? 'bg-primary-600 text-white'
-          : 'text-slate-400 hover:text-white hover:bg-slate-700'
+          ? 'ff-auth-chip ff-auth-chip-active'
+          : 'ff-auth-chip'
       }`}
     >
       {label}
@@ -68,7 +68,7 @@ function GearCard({
     <div 
       role="button"
       tabIndex={0}
-      className="bg-slate-800 border border-slate-700 rounded-xl p-4 hover:border-slate-600 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 overflow-hidden"
+      className="ff-auth-card ff-auth-card-hover cursor-pointer overflow-hidden rounded-[24px] p-4 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
       onClick={handleCardClick}
       onKeyDown={handleCardKeyDown}
       aria-label={`View details for ${getCatalogItemDisplayName(item)}`}
@@ -79,10 +79,10 @@ function GearCard({
           <img
             src={item.imageUrl}
             alt={getCatalogItemDisplayName(item)}
-            className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
+            className="h-20 w-20 flex-shrink-0 rounded-[18px] object-cover"
           />
         ) : (
-          <div className="w-20 h-20 bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+          <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-[18px] border border-white/10 bg-black/12">
             <svg className="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
@@ -93,19 +93,19 @@ function GearCard({
         <div className="flex-1 min-w-0 overflow-hidden">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0 flex-1">
-              <h3 className="text-white font-medium truncate">
+              <h3 className="truncate font-public text-lg font-semibold tracking-[-0.03em] text-white">
                 {getCatalogItemDisplayName(item)}
               </h3>
-              <p className="text-sm text-slate-400 truncate">{item.brand}</p>
+              <p className="truncate text-sm text-slate-300/72">{item.brand}</p>
             </div>
-            <span className="px-2 py-0.5 bg-slate-700 text-slate-300 text-xs rounded-full flex-shrink-0">
+            <span className="ff-auth-chip flex-shrink-0 text-xs">
               {typeLabel}
             </span>
           </div>
 
           {/* Description */}
           {item.description && (
-            <p className="text-sm text-slate-500 mt-2 line-clamp-2">
+            <p className="mt-2 line-clamp-2 text-sm text-slate-300/64">
               {item.description}
             </p>
           )}
@@ -118,7 +118,7 @@ function GearCard({
                 return (
                   <span 
                     key={droneType}
-                    className="px-2 py-0.5 bg-primary-600/20 text-primary-400 text-xs rounded-full"
+                    className="ff-auth-chip text-xs"
                   >
                     {label}
                   </span>
@@ -143,7 +143,7 @@ function GearCard({
                 onClick={handleAddClick}
                 disabled={!isAuthenticated}
                 title={isAuthenticated ? 'Add to your inventory' : 'Sign in to add to inventory'}
-                className="px-3 py-1.5 bg-primary-600 hover:bg-primary-700 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-1"
+                className="ff-auth-cta-primary flex items-center gap-1 px-3 py-1.5 text-sm disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -295,12 +295,12 @@ export function GearCatalogPage({ onAddToInventory }: GearCatalogPageProps) {
   const displayItems = hasSearched ? items : popularItems;
   const showingPopular = !hasSearched;
   const controls = (
-    <div className="bg-slate-900 border-b border-slate-800">
-      <div className="px-4 md:px-6 py-4">
+    <div className="ff-auth-toolbar">
+      <div>
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-xl font-semibold text-white">Gear Catalog</h1>
-            <p className="text-sm text-slate-400">
+            <h1 className="ff-auth-section-title">Gear Catalog</h1>
+            <p className="ff-auth-page-subtitle mt-2 text-sm">
               Browse community-contributed FPV gear
             </p>
           </div>
@@ -317,7 +317,7 @@ export function GearCatalogPage({ onAddToInventory }: GearCatalogPageProps) {
         <div className="flex gap-3">
           <div className="flex-1 relative">
             <svg
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300/72"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -335,19 +335,19 @@ export function GearCatalogPage({ onAddToInventory }: GearCatalogPageProps) {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-primary-500"
+              className="ff-auth-input w-full rounded-xl py-2.5 pl-10 pr-4"
             />
           </div>
           <button
             onClick={handleSearch}
-            className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors"
+            className="ff-auth-cta-primary px-4 py-2"
           >
             Search
           </button>
           {hasSearched && (
             <button
               onClick={handleClearSearch}
-              className="px-4 py-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+              className="ff-auth-cta-secondary px-4 py-2"
             >
               Clear
             </button>
@@ -403,18 +403,18 @@ export function GearCatalogPage({ onAddToInventory }: GearCatalogPageProps) {
       <div className="p-6">
         {/* Section header */}
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-medium text-white">
+          <h2 className="font-public text-xl font-semibold tracking-[-0.03em] text-white">
             {showingPopular ? (
               <>
-                <span className="text-primary-400">Popular Gear</span>
-                <span className="text-slate-400 font-normal ml-2 text-sm">
+                <span className="text-primary-300">Popular Gear</span>
+                <span className="ml-2 text-sm font-normal text-slate-300/68">
                   Browse what other pilots are using
                 </span>
               </>
             ) : (
               <>
                 Search Results
-                <span className="text-slate-400 font-normal ml-2 text-sm">
+                <span className="ml-2 text-sm font-normal text-slate-300/68">
                   {totalCount} {totalCount === 1 ? 'item' : 'items'} found
                 </span>
               </>
@@ -424,7 +424,7 @@ export function GearCatalogPage({ onAddToInventory }: GearCatalogPageProps) {
 
         {/* Error state */}
         {error && (
-          <div className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400">
+          <div className="mb-4 rounded-2xl border border-red-500/30 bg-red-500/12 p-4 text-red-200">
             {error}
           </div>
         )}
@@ -433,7 +433,7 @@ export function GearCatalogPage({ onAddToInventory }: GearCatalogPageProps) {
         {(isLoading || isLoadingPopular) && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[1, 2, 3, 4, 5, 6].map(i => (
-              <div key={i} className="bg-slate-800 border border-slate-700 rounded-xl p-4 animate-pulse">
+              <div key={i} className="ff-auth-card animate-pulse rounded-[24px] p-4">
                 <div className="flex gap-4">
                   <div className="w-20 h-20 bg-slate-700 rounded-lg" />
                   <div className="flex-1 space-y-3">
@@ -449,16 +449,16 @@ export function GearCatalogPage({ onAddToInventory }: GearCatalogPageProps) {
 
         {/* Empty state */}
         {!isLoading && !isLoadingPopular && displayItems.length === 0 && (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center">
+          <div className="ff-auth-empty-state py-12 text-center">
+            <div className="ff-auth-glass-panel mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
               <svg className="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-white mb-2">
+            <h3 className="font-public text-xl font-semibold tracking-[-0.03em] text-white">
               {hasSearched ? 'No gear found' : 'No popular gear yet'}
             </h3>
-            <p className="text-slate-400 max-w-md mx-auto">
+            <p className="mx-auto mt-2 max-w-md text-slate-300/74">
               {hasSearched
                 ? 'Try adjusting your search terms or filters'
                 : 'Be the first to contribute to the gear catalog!'}
@@ -482,16 +482,16 @@ export function GearCatalogPage({ onAddToInventory }: GearCatalogPageProps) {
         )}
 
         {/* Community contribution note */}
-        <div className="mt-8 p-4 bg-slate-800/50 border border-slate-700 rounded-xl">
+        <div className="ff-auth-card mt-8 rounded-[24px] p-4">
           <div className="flex gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary-600/20 flex items-center justify-center flex-shrink-0">
+            <div className="ff-auth-glass-panel flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full">
               <svg className="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
             </div>
             <div>
-              <h3 className="text-white font-medium">Contribute to the Catalog</h3>
-              <p className="text-sm text-slate-400 mt-1">
+              <h3 className="font-public text-lg font-semibold tracking-[-0.03em] text-white">Contribute to the Catalog</h3>
+              <p className="mt-1 text-sm text-slate-300/74">
                 Don't see your gear? When you add items to your inventory, they're automatically 
                 added to the community catalog for others to find. Help grow the database!
               </p>

@@ -18,16 +18,17 @@ export function ItemDetail({ item, source, onClose }: ItemDetailProps) {
     item.tags.some(tag => tag.toLowerCase() === 'video');
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="ff-modal-backdrop absolute inset-0" />
       <div
         className="absolute inset-0"
         onClick={onClose}
         aria-hidden
       />
       
-      <div className="relative w-full max-w-2xl max-h-[90vh] bg-slate-800 border border-slate-700 rounded-2xl shadow-xl overflow-hidden flex flex-col">
+      <div className="ff-auth-shell ff-auth-modal-panel relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-[30px] shadow-xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-700">
+        <div className="flex items-center justify-between border-b border-white/10 p-4">
           <div className="flex items-center gap-2">
             <span
               className={`px-2 py-0.5 rounded-full text-xs font-medium ${
@@ -46,7 +47,7 @@ export function ItemDetail({ item, source, onClose }: ItemDetailProps) {
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+            className="ff-modal-close rounded-xl p-2 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -58,7 +59,7 @@ export function ItemDetail({ item, source, onClose }: ItemDetailProps) {
         <div className="flex-1 overflow-y-auto p-6">
           {/* Image */}
           {item.media?.imageUrl && (
-            <div className="mb-6 rounded-lg overflow-hidden bg-slate-700">
+            <div className="ff-modal-surface mb-6 overflow-hidden rounded-[24px]">
               <img
                 src={item.media.imageUrl}
                 alt=""
@@ -104,7 +105,7 @@ export function ItemDetail({ item, source, onClose }: ItemDetailProps) {
               {item.tags.map(tag => (
                 <span
                   key={tag}
-                  className="px-3 py-1 bg-slate-700 text-slate-300 rounded-full text-sm"
+                  className="ff-modal-surface-soft rounded-full px-3 py-1 text-sm text-slate-200"
                 >
                   {tag}
                 </span>
@@ -132,7 +133,7 @@ export function ItemDetail({ item, source, onClose }: ItemDetailProps) {
 
           {/* Source Info */}
           {source && (
-            <div className="p-4 bg-slate-900 rounded-lg">
+            <div className="ff-modal-surface rounded-[22px] p-4">
               <h3 className="text-sm font-medium text-slate-300 mb-2">About {source.name}</h3>
               <p className="text-sm text-slate-400">{source.description}</p>
             </div>
@@ -140,7 +141,7 @@ export function ItemDetail({ item, source, onClose }: ItemDetailProps) {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center gap-3 p-4 border-t border-slate-700 bg-slate-900">
+        <div className="ff-modal-footer flex items-center gap-3 p-4">
           <a
             href={item.url}
             target="_blank"
@@ -157,7 +158,7 @@ export function ItemDetail({ item, source, onClose }: ItemDetailProps) {
               href={item.commentsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+              className="ff-auth-cta-secondary flex items-center justify-center gap-2 px-4 py-2 text-sm"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />

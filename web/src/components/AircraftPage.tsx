@@ -25,11 +25,11 @@ export function AircraftPage({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const controls = (
-    <div className="px-4 md:px-6 py-4 border-b border-slate-800 bg-slate-900">
+    <div className="ff-auth-toolbar">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-white">My Aircraft</h1>
-          <p className="text-sm text-slate-400">
+          <h1 className="ff-auth-section-title">My Aircraft</h1>
+          <p className="ff-auth-page-subtitle mt-2 text-sm">
             Manage your drones, components, and receiver settings
           </p>
         </div>
@@ -38,7 +38,7 @@ export function AircraftPage({
             onAddAircraft();
             setIsMobileMenuOpen(false);
           }}
-          className="w-full sm:w-auto px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+          className="ff-auth-cta-primary w-full gap-2 sm:w-auto"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

@@ -67,3 +67,33 @@ Review this file at the start of each session and apply any relevant rules befor
 - Context: the ChatGPT approval flow still failed after redirect-path fixes.
 - Correction from user: the browser console showed a precise CSP `form-action` violation for the ChatGPT callback URL.
 - Rule to follow next time: when a browser surfaces a CSP violation during OAuth approval, patch the exact blocked directive first—especially `form-action` on consent pages that POST and then redirect to a third-party callback.
+
+### 2026-05-21 — Verify hero-photo visibility, not just style intent
+- Context: I shipped a homepage redesign with a background asset, but the overlays and composition made the landscape effectively invisible in the real browser.
+- Correction from user: the user pointed out that the homepage did not visibly show the landscape/background image as intended.
+- Rule to follow next time: for visual redesigns with hero photography, verify the actual browser result shows the image content clearly before calling the work done; do not treat the presence of an asset reference alone as success.
+
+### 2026-05-21 — Match glassmorphism with actual transparency
+- Context: after improving the homepage landscape, the public left rail still felt too opaque and did not let the scenery read through like liquid glass.
+- Correction from user: make the side menu transparent and let the landscape show behind it with a liquid-glass style.
+- Rule to follow next time: when implementing glassmorphic sidebars over photography, verify the panel translucency is high enough that the background is visibly present, not just blurred behind a dark slab.
+
+### 2026-05-21 — For full-bleed mockups, place the photo at the shell level
+- Context: I had made the homepage image more visible, but it was still rendered only inside the content section, so the sidebar could not show the same landscape behind it.
+- Correction from user: the landscape hero image should sit behind the side menu like the original reference, not just behind the page content.
+- Rule to follow next time: when a reference shows navigation floating over a full-bleed hero, place the background image on the shared shell layer so every transparent surface can reveal the same scene.
+
+### 2026-05-21 — Check brand-wordmark fit in narrow glass rails
+- Context: after matching the public-shell mockup more closely, the FlyingForge brand in the sidebar header was clipped because the desktop rail width and wordmark size were too aggressive together.
+- Correction from user: the FlyingForge label at the top of the toolbar was being cut off.
+- Rule to follow next time: whenever a branded wordmark sits inside a constrained rail or toolbar, verify the rendered text width against the container instead of assuming the chosen font size will fit.
+
+### 2026-05-21 — Shell-level redesigns still need per-component transparency checks
+- Context: after moving the app onto the landscape/glass shell, the Public Builds page still had opaque filter and card surfaces that broke the intended effect.
+- Correction from user: the filter area and the build card with the drone image should be transparent like the rest of the app, not dark slabs.
+- Rule to follow next time: when applying a glassmorphic shell, audit nested page-level toolbars, filters, and feature cards individually to ensure they also use transparent glass surfaces over the shared background.
+
+### 2026-05-21 — Choose hero imagery for text legibility, not just atmosphere
+- Context: I replaced the shared scenic shell image with a brighter mountain/lake photo that looked good aesthetically but reduced readability for lighter gray secondary text across public pages.
+- Correction from user: revert to the original hero image because the gray supporting copy became hard to see.
+- Rule to follow next time: when swapping shell-level photography, verify secondary/body text contrast across representative pages before keeping the new image; do not judge the image on mood alone.

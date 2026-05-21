@@ -145,11 +145,11 @@ export function MobileFloatingControls({
           onClick={handleToggleClick}
           aria-expanded={isOpen}
           aria-controls={panelId}
-          className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-slate-700 bg-slate-800/95 backdrop-blur text-white font-medium shadow-lg shadow-slate-950/30"
+          className="ff-auth-glass-panel w-full flex items-center justify-between gap-3 rounded-2xl px-4 py-3 text-white shadow-lg shadow-slate-950/20"
         >
           <span className="truncate">{label}</span>
           <svg
-            className={`w-5 h-5 text-slate-300 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            className={`w-5 h-5 text-slate-200 transition-transform ${isOpen ? 'rotate-180' : ''}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -165,7 +165,7 @@ export function MobileFloatingControls({
             ref={panelRef}
             role="region"
             aria-label={label}
-            className={`mt-2 rounded-xl border border-slate-700 overflow-hidden shadow-2xl shadow-slate-950/40 bg-slate-900/95 backdrop-blur max-h-[70vh] overflow-x-hidden overflow-y-auto ${panelClassName ?? ''}`}
+            className={`ff-auth-modal-panel mt-2 max-h-[70vh] overflow-x-hidden overflow-y-auto rounded-[24px] shadow-2xl shadow-slate-950/30 ${panelClassName ?? ''}`}
           >
             {children}
           </div>

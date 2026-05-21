@@ -122,7 +122,7 @@ describe('TopBar', () => {
   it('highlights active sort button', () => {
     render(<TopBar {...defaultProps} sort="newest" />)
     const newestButton = screen.getByText('Newest')
-    expect(newestButton).toHaveClass('bg-primary-600')
+    expect(newestButton).toHaveClass('ff-auth-chip-active')
   })
 
   it('calls onSortChange when sort button clicked', () => {
