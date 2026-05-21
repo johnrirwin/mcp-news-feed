@@ -65,10 +65,19 @@ type App struct {
 
 // New creates and initializes a new App instance
 func New(cfg *config.Config) (*App, error) {
+	if cfg == nil {
+		return nil, fmt.Errorf("config is required")
+	}
+
 	app := &App{Config: cfg}
 
 	// Initialize logger
 	app.Logger = app.initLogger()
+
+	if err := cfg.Validate(); err != nil {
+		app.Logger.Error("Application configuration is invalid", logging.WithField("error", err.Error()))
+		return nil, err
+	}
 
 	// Initialize cache
 	app.Cache = app.initCache()
