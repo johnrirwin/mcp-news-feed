@@ -51,6 +51,60 @@ body {
     @apply font-public text-white antialiased;
   }
 
+  .ff-public-shell .text-slate-600,
+  .ff-auth-shell .text-slate-600 {
+    color: rgba(226, 232, 240, 0.76);
+  }
+
+  .ff-public-shell .text-slate-500,
+  .ff-auth-shell .text-slate-500 {
+    color: rgba(226, 232, 240, 0.84);
+  }
+
+  .ff-public-shell .text-slate-400,
+  .ff-auth-shell .text-slate-400 {
+    color: rgba(241, 245, 249, 0.88);
+  }
+
+  .ff-public-shell .text-slate-300,
+  .ff-auth-shell .text-slate-300 {
+    color: rgba(248, 250, 252, 0.92);
+  }
+
+  .ff-public-shell .text-slate-300\/58,
+  .ff-auth-shell .text-slate-300\/58,
+  .ff-public-shell .text-slate-300\/64,
+  .ff-auth-shell .text-slate-300\/64 {
+    color: rgba(241, 245, 249, 0.82);
+  }
+
+  .ff-public-shell .text-slate-300\/68,
+  .ff-auth-shell .text-slate-300\/68,
+  .ff-public-shell .text-slate-300\/70,
+  .ff-auth-shell .text-slate-300\/70,
+  .ff-public-shell .text-slate-300\/72,
+  .ff-auth-shell .text-slate-300\/72,
+  .ff-public-shell .text-slate-300\/74,
+  .ff-auth-shell .text-slate-300\/74,
+  .ff-public-shell .text-slate-300\/75,
+  .ff-auth-shell .text-slate-300\/75 {
+    color: rgba(241, 245, 249, 0.86);
+  }
+
+  .ff-public-shell .text-slate-300\/78,
+  .ff-auth-shell .text-slate-300\/78,
+  .ff-public-shell .text-slate-300\/80,
+  .ff-auth-shell .text-slate-300\/80 {
+    color: rgba(248, 250, 252, 0.90);
+  }
+
+  .ff-public-shell .text-slate-200\/78,
+  .ff-auth-shell .text-slate-200\/78,
+  .ff-public-shell .text-slate-200\/80,
+  .ff-auth-shell .text-slate-200\/80 {
+    color: rgba(248, 250, 252, 0.96);
+  }
+
   .ff-public-app-shell {
     position: relative;
     isolation: isolate;
@@ -372,7 +426,7 @@ body {
   }
 
   .ff-auth-page-subtitle {
-    color: rgba(226, 232, 240, 0.78);
+    color: rgba(241, 245, 249, 0.88);
   }
 
   .ff-auth-kicker {
@@ -386,7 +440,7 @@ body {
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(199, 196, 215, 0.72);
+    color: rgba(226, 232, 240, 0.82);
   }
 
   .ff-auth-card {

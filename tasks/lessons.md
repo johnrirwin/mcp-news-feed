@@ -97,3 +97,8 @@ Review this file at the start of each session and apply any relevant rules befor
 - Context: I replaced the shared scenic shell image with a brighter mountain/lake photo that looked good aesthetically but reduced readability for lighter gray secondary text across public pages.
 - Correction from user: revert to the original hero image because the gray supporting copy became hard to see.
 - Rule to follow next time: when swapping shell-level photography, verify secondary/body text contrast across representative pages before keeping the new image; do not judge the image on mood alone.
+
+### 2026-05-21 — Raise muted text contrast after shell-wide visual changes
+- Context: after rolling out the scenic glass shell across public and authenticated pages, some gray support text remained too dim even with the preferred hero image restored.
+- Correction from user: brighten the gray text globally because supporting copy was still hard to read regardless of which hero photo was active.
+- Rule to follow next time: after any shell-level background or glassmorphism redesign, audit muted/supporting text contrast across representative pages and raise theme-level text tokens before shipping if readability is borderline.
