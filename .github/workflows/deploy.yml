@@ -92,13 +92,11 @@ jobs:
       - name: Run tests
         run: npm test -- --passWithNoTests
 
-  # Build and push Docker images
-  build-and-push:
-    needs: [test-server, test-web]
+  preflight-deploy:
     runs-on: ubuntu-latest
-    outputs:
-      server_image: ${{ steps.build-server.outputs.image }}
-
+    defaults:
+      run:
+        working-directory: server
     steps:
       - uses: actions/checkout@v4
 
@@ -112,7 +110,17 @@ jobs:
         env:
           AUTH_JWT_SECRET: ${{ secrets.AUTH_JWT_SECRET }}
           MCP_AUTH_PRIVATE_KEY_PEM: ${{ secrets.MCP_AUTH_PRIVATE_KEY_PEM }}
-        run: cd server && go run ./cmd/deploy-preflight
+        run: go run ./cmd/deploy-preflight
+
+  # Build and push Docker images
+  build-and-push:
+    needs: [test-server, test-web, preflight-deploy]
+    runs-on: ubuntu-latest
+    outputs:
+      server_image: ${{ steps.build-server.outputs.image }}
+
+    steps:
+      - uses: actions/checkout@v4
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
