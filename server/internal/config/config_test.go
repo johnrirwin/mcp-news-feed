@@ -326,6 +326,53 @@ func TestConfigValidate_JWTSecret(t *testing.T) {
 	}
 }
 
+func TestValidateDeployAuthSecrets(t *testing.T) {
+	tests := []struct {
+		name          string
+		jwtSecret     string
+		privateKeyPEM string
+		wantErr       bool
+	}{
+		{
+			name:          "accepts valid deploy secrets",
+			jwtSecret:     "this-is-a-strong-production-secret-1234",
+			privateKeyPEM: "-----BEGIN PRIVATE KEY-----\npretend-key\n-----END PRIVATE KEY-----",
+			wantErr:       false,
+		},
+		{
+			name:          "rejects missing jwt secret",
+			privateKeyPEM: "-----BEGIN PRIVATE KEY-----\npretend-key\n-----END PRIVATE KEY-----",
+			wantErr:       true,
+		},
+		{
+			name:          "rejects placeholder jwt secret",
+			jwtSecret:     DefaultJWTSecret,
+			privateKeyPEM: "-----BEGIN PRIVATE KEY-----\npretend-key\n-----END PRIVATE KEY-----",
+			wantErr:       true,
+		},
+		{
+			name:          "rejects short jwt secret",
+			jwtSecret:     "too-short-secret",
+			privateKeyPEM: "-----BEGIN PRIVATE KEY-----\npretend-key\n-----END PRIVATE KEY-----",
+			wantErr:       true,
+		},
+		{
+			name:      "rejects missing private key pem",
+			jwtSecret: "this-is-a-strong-production-secret-1234",
+			wantErr:   true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := ValidateDeployAuthSecrets(tt.jwtSecret, tt.privateKeyPEM)
+			if (err != nil) != tt.wantErr {
+				t.Fatalf("ValidateDeployAuthSecrets() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
 func generateTestECDSAPrivateKeyPEM(t *testing.T) string {
 	t.Helper()
 

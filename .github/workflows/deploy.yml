@@ -102,32 +102,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: server/go.mod
+          cache-dependency-path: server/go.sum
+
       - name: Preflight deploy auth secrets
         env:
           AUTH_JWT_SECRET: ${{ secrets.AUTH_JWT_SECRET }}
           MCP_AUTH_PRIVATE_KEY_PEM: ${{ secrets.MCP_AUTH_PRIVATE_KEY_PEM }}
-        run: |
-          python3 - <<'PY'
-          import os
-          import sys
-
-          secret = os.environ.get("AUTH_JWT_SECRET", "").strip()
-          if not secret:
-              sys.exit("AUTH_JWT_SECRET is required")
-          if len(secret) < 32:
-              sys.exit("AUTH_JWT_SECRET must be at least 32 characters")
-          if secret.lower() in {
-              "change-me-in-production",
-              "replace-with-a-long-random-secret",
-              "dev-secret-change-in-production",
-          }:
-              sys.exit("AUTH_JWT_SECRET must not use a known placeholder or development default")
-
-          if not os.environ.get("MCP_AUTH_PRIVATE_KEY_PEM", "").strip():
-              sys.exit("MCP_AUTH_PRIVATE_KEY_PEM is required")
-
-          print("Deploy auth secret preflight passed.")
-          PY
+        run: cd server && go run ./cmd/deploy-preflight
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4

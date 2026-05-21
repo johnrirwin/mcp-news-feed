@@ -220,6 +220,18 @@ func (c *Config) Validate() error {
 	return nil
 }
 
+// ValidateDeployAuthSecrets enforces the deploy-time auth secret contract used
+// by production rollouts before infrastructure changes are applied.
+func ValidateDeployAuthSecrets(jwtSecret, privateKeyPEM string) error {
+	if err := ValidateJWTSecret(jwtSecret); err != nil {
+		return err
+	}
+	if strings.TrimSpace(privateKeyPEM) == "" {
+		return errors.New("MCP_AUTH_PRIVATE_KEY_PEM is required")
+	}
+	return nil
+}
+
 func loadMCPConfig() MCPConfig {
 	publicBaseURL := strings.TrimSpace(os.Getenv("MCP_PUBLIC_BASE_URL"))
 	defaultResource := ""
