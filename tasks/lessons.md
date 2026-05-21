@@ -102,3 +102,8 @@ Review this file at the start of each session and apply any relevant rules befor
 - Context: after rolling out the scenic glass shell across public and authenticated pages, some gray support text remained too dim even with the preferred hero image restored.
 - Correction from user: brighten the gray text globally because supporting copy was still hard to read regardless of which hero photo was active.
 - Rule to follow next time: after any shell-level background or glassmorphism redesign, audit muted/supporting text contrast across representative pages and raise theme-level text tokens before shipping if readability is borderline.
+
+### 2026-05-21 — Read-only fields must also use glass primitives
+- Context: the authenticated profile page looked mostly redesigned, but the read-only email field still rendered as an opaque dark slab because it was a `<div>` with hard-coded slate backgrounds instead of a shared shell style.
+- Correction from user: make the profile page field transparent like the rest of the app.
+- Rule to follow next time: when restyling forms for the scenic glass shell, audit read-only and non-input field surfaces too; they need their own shared glass primitive instead of relying only on `input` selectors.

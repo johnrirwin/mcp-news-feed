@@ -430,7 +430,7 @@ export function MyProfile() {
             <label className="block text-sm font-medium text-slate-400 mb-1">
               Email
             </label>
-            <div className="px-4 py-2 bg-slate-900 border border-slate-700 rounded-lg text-slate-400">
+            <div className="ff-auth-readonly ff-auth-on-shell rounded-xl px-4 py-3 text-slate-300">
               {profile?.email}
             </div>
             <p className="mt-1 text-xs text-slate-500">
