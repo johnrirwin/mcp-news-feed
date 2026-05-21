@@ -107,3 +107,8 @@ Review this file at the start of each session and apply any relevant rules befor
 - Context: the authenticated profile page looked mostly redesigned, but the read-only email field still rendered as an opaque dark slab because it was a `<div>` with hard-coded slate backgrounds instead of a shared shell style.
 - Correction from user: make the profile page field transparent like the rest of the app.
 - Rule to follow next time: when restyling forms for the scenic glass shell, audit read-only and non-input field surfaces too; they need their own shared glass primitive instead of relying only on `input` selectors.
+
+### 2026-05-21 — Audit standalone auth transition routes after shell redesigns
+- Context: the main login page had been moved onto the scenic glass shell, but the separate `/auth/callback` transition screen still used legacy solid gray backgrounds.
+- Correction from user: the post-Google-return screen should be transparent like the rest of the app.
+- Rule to follow next time: when redesigning app shells, audit standalone auth callback/loading/error routes too; they are easy to miss because they sit outside the main app router.
