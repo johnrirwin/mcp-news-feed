@@ -1007,7 +1007,7 @@ HTML scraping fetcher for web forums. Currently configured but no active sources
 | `MCP_AUTH_CODE_TTL` | `10m` | Self-hosted OAuth authorization-code lifetime |
 | `MCP_AUTH_REFRESH_TOKEN_TTL` | `720h` | Self-hosted OAuth refresh-token lifetime |
 | `MCP_AUTH_SESSION_TTL` | `24h` | Browser login-session lifetime for self-hosted OAuth |
-| `APP_ENV` | `production` | Runtime environment. Set to `development` or `local` only for explicit local/dev escape hatches that permit insecure defaults. |
+| `APP_ENV` | `production` | Runtime environment. Set to `development`, `dev`, or `local` only for explicit local/dev escape hatches that permit insecure defaults. |
 | `LOG_LEVEL` | `info` | Log level (debug/info/warn/error) |
 | `RATE_LIMIT` | `1s` | Rate limit interval between requests |
 | `CORS_ORIGIN` | `*` | Allowed CORS origins |

@@ -415,13 +415,13 @@ func getEnvOrDefault(key, defaultValue string) string {
 func ValidateJWTSecret(secret string) error {
 	secret = strings.TrimSpace(secret)
 	if secret == "" {
-		return errors.New("AUTH_JWT_SECRET is required unless APP_ENV explicitly opts into local/development mode")
+		return errors.New("AUTH_JWT_SECRET is required unless APP_ENV explicitly opts into development, dev, or local mode")
 	}
 	if isKnownJWTSecretPlaceholder(secret) {
-		return errors.New("AUTH_JWT_SECRET must not use a known placeholder or development default outside APP_ENV=development/local")
+		return errors.New("AUTH_JWT_SECRET must not use a known placeholder or development default outside APP_ENV=development/dev/local")
 	}
 	if len(secret) < 32 {
-		return errors.New("AUTH_JWT_SECRET must be at least 32 characters outside APP_ENV=development/local")
+		return errors.New("AUTH_JWT_SECRET must be at least 32 characters outside APP_ENV=development/dev/local")
 	}
 	return nil
 }

@@ -83,7 +83,8 @@ go mod tidy
 cp .env.example .env
 
 # Run the server (HTTP mode). The example env sets APP_ENV=development so local
-# startup can use local-only defaults; production should use a unique 32+
+# startup can use local-only defaults; `development`, `dev`, and `local` are
+# the explicit escape-hatch values. Production should use a unique 32+
 # character AUTH_JWT_SECRET and leave APP_ENV unset or set to production.
 go run ./cmd/server
 
@@ -118,7 +119,7 @@ The web app will be available at `http://localhost:5173`.
 |----------|---------|-------------|
 | `HTTP_ADDR` | `:8080` | HTTP server address |
 | `MCP_MODE` | `false` | Run in MCP stdio mode |
-| `APP_ENV` | `production` | Runtime environment. Set to `development` or `local` only for explicit local/dev escape hatches that permit insecure defaults. |
+| `APP_ENV` | `production` | Runtime environment. Set to `development`, `dev`, or `local` only for explicit local/dev escape hatches that permit insecure defaults. |
 | `MCP_PUBLIC_BASE_URL` | (empty) | Public HTTPS base URL used for MCP protected-resource metadata |
 | `MCP_ALLOWED_ORIGINS` | `https://chatgpt.com,https://chat.openai.com` | Allowed browser origins for the HTTP MCP endpoint |
 | `MCP_AUTH_SELF_HOSTED` | `false` | Enable FlyingForge as the OAuth authorization server for MCP |

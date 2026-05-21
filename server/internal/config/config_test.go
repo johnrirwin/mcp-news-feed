@@ -255,6 +255,8 @@ func TestLoadMCPConfig_SelfHostedRequiresUsableSigningKeyUnlessEphemeralOptIn(t 
 }
 
 func TestLoad_DefaultsToProductionEnvironment(t *testing.T) {
+	t.Setenv("APP_ENV", "")
+
 	cfg := loadWithArgs(t, "test")
 	if cfg.Environment != EnvironmentProduction {
 		t.Fatalf("expected default environment %q, got %q", EnvironmentProduction, cfg.Environment)
@@ -295,6 +297,11 @@ func TestConfigValidate_JWTSecret(t *testing.T) {
 		{
 			name:    "development allows local fallback",
 			appEnv:  "development",
+			wantErr: false,
+		},
+		{
+			name:    "dev alias allows local fallback",
+			appEnv:  "dev",
 			wantErr: false,
 		},
 		{
