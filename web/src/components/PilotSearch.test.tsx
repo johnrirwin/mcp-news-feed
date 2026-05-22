@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '../test/test-utils';
+import { searchPilots } from '../pilotApi';
 import { PilotSearch } from './PilotSearch';
 
 vi.mock('../pilotApi', () => ({
@@ -10,8 +11,6 @@ vi.mock('../pilotApi', () => ({
 vi.mock('../hooks', () => ({
   useDebounce: (value: string) => value,
 }));
-
-import { searchPilots } from '../pilotApi';
 
 const mockedSearchPilots = vi.mocked(searchPilots);
 
