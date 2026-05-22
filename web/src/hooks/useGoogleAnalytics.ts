@@ -54,6 +54,7 @@ let isGAReady = false;
 
 // Process queued events once GA is ready
 function flushEventQueue() {
+  if (typeof window === 'undefined') return;
   if (!window.gtag) return;
   
   while (eventQueue.length > 0) {
@@ -78,6 +79,7 @@ function initGA() {
   
   // Mark as ready and flush queue when script loads
   script.onload = () => {
+    if (typeof window === 'undefined') return;
     isGAReady = true;
     flushEventQueue();
   };
@@ -99,7 +101,7 @@ function initGA() {
 
 // Track page view
 export function trackPageView(path: string, title?: string) {
-  if (!GA_MEASUREMENT_ID) return;
+  if (!GA_MEASUREMENT_ID || typeof window === 'undefined' || typeof document === 'undefined') return;
 
   // gtag function is created during initGA and pushes to dataLayer,
   // which GA will process once the script loads
@@ -122,7 +124,7 @@ export function trackEvent(
   eventName: string,
   params?: Record<string, string | number | boolean>
 ) {
-  if (!GA_MEASUREMENT_ID) return;
+  if (!GA_MEASUREMENT_ID || typeof window === 'undefined') return;
 
   if (window.gtag) {
     window.gtag('event', eventName, params);

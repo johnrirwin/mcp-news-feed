@@ -90,6 +90,7 @@ describe('Dashboard', () => {
     render(<Dashboard {...createProps()} />);
 
     expect(screen.getByRole('heading', { name: 'My Hangar' })).toBeInTheDocument();
+    expect(screen.queryByText(/Authenticated hangar/i)).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Aircraft Cards' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Battery Tracker' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Recent Highlights' })).toBeInTheDocument();
