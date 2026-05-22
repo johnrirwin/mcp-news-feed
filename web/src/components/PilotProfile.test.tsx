@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { render, screen, waitFor } from '../test/test-utils';
+import { fireEvent, render, screen, waitFor } from '../test/test-utils';
 import { PilotProfile } from './PilotProfile';
 import type { PilotProfile as PilotProfileType } from '../socialTypes';
 
@@ -188,6 +188,39 @@ describe('PilotProfile', () => {
 
     const flightIframe = await screen.findByTitle(/kayou mini build.*flight video/i);
     expect(flightIframe).toHaveAttribute('src', 'https://www.youtube.com/embed/flightxyz?rel=0');
+  });
+
+  it('closes build details when clicking the backdrop', async () => {
+    mockedGetPilotProfile.mockResolvedValue(profileFixture());
+
+    const { container } = render(
+      <MemoryRouter>
+        <PilotProfile pilotId="pilot-1" onBack={vi.fn()} />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(mockedGetPilotProfile).toHaveBeenCalledWith('pilot-1');
+    });
+
+    await userEvent.click(await screen.findByRole('button', { name: /Kayou Mini Build/i }));
+
+    await waitFor(() => {
+      expect(mockedGetPublicBuild).toHaveBeenCalledWith('build-1');
+    });
+
+    expect(await screen.findByRole('heading', { name: 'Build Details' })).toBeInTheDocument();
+
+    const backdrop = container.querySelector('.ff-modal-backdrop');
+    if (!(backdrop instanceof HTMLElement)) {
+      throw new Error('Backdrop not found');
+    }
+
+    fireEvent.click(backdrop);
+
+    await waitFor(() => {
+      expect(screen.queryByRole('heading', { name: 'Build Details' })).not.toBeInTheDocument();
+    });
   });
 
   it('shows an empty published builds state when none exist', async () => {

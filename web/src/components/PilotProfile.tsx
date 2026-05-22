@@ -612,11 +612,8 @@ function PublishedBuildPreviewModal({
   const flightVideoEmbedURL = getYouTubeEmbedURL(build?.flightYoutubeUrl);
 
   return (
-    <div
-      className="fixed inset-0 z-[80] flex items-center justify-center p-4"
-      onClick={(event) => event.target === event.currentTarget && onClose()}
-    >
-      <div className="ff-modal-backdrop absolute inset-0" />
+    <div className="fixed inset-0 z-[80] flex items-center justify-center p-4">
+      <div className="ff-modal-backdrop absolute inset-0" onClick={onClose} aria-hidden="true" />
       <div className="ff-auth-shell ff-auth-modal-panel relative flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-[30px]">
         <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
           <h3 className="font-public text-lg font-semibold text-white">Build Details</h3>

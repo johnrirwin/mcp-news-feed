@@ -93,6 +93,12 @@ function App() {
   const isPublicShell = !isAuthenticated;
   const isPublicHome = isPublicShell && activeSection === 'home';
   const isAuthenticatedShell = isAuthenticated;
+  const appShellClassName = isPublicShell
+    ? `ff-public-shell ff-public-app-shell${isPublicHome ? ' ff-public-home-shell' : ''}`
+    : 'ff-auth-shell ff-auth-app-shell';
+  const mobileHeaderClassName = isPublicShell ? 'ff-public-mobile-header' : 'ff-auth-mobile-header';
+  const mobileChromeClassName = 'text-slate-200 hover:bg-white/10 hover:text-white';
+  const mobileBrandClassName = 'font-public tracking-[-0.04em] text-white';
 
   // News feed state
   const [items, setItems] = useState<FeedItem[]>([]);
@@ -600,39 +606,21 @@ function App() {
   return (
     <div
       data-testid="app-shell"
-      className={`flex h-screen supports-[height:100dvh]:h-[100dvh] overflow-hidden text-white ${
-        isPublicShell
-          ? `ff-public-shell ff-public-app-shell${isPublicHome ? ' ff-public-home-shell' : ''}`
-          : 'ff-auth-shell ff-auth-app-shell'
-      }`}
+      className={`flex h-screen supports-[height:100dvh]:h-[100dvh] overflow-hidden text-white ${appShellClassName}`}
     >
       <div ref={appShellRef} className="flex flex-1 min-h-0 min-w-0">
       {/* Mobile Header */}
-      <div data-testid="mobile-shell-header" className={`fixed left-0 right-0 top-0 z-30 flex items-center justify-between px-4 py-3 md:hidden ${
-        isPublicShell
-          ? 'ff-public-mobile-header'
-          : isAuthenticatedShell
-            ? 'ff-auth-mobile-header'
-            : 'border-b border-slate-800 bg-slate-900'
-      }`}
+      <div data-testid="mobile-shell-header" className={`fixed left-0 right-0 top-0 z-30 flex items-center justify-between px-4 py-3 md:hidden ${mobileHeaderClassName}`}
       >
         <button
           onClick={() => setIsMobileMenuOpen(true)}
-          className={`rounded-lg p-2 ${
-            isPublicShell || isAuthenticatedShell
-              ? 'text-slate-200 hover:bg-white/10 hover:text-white'
-              : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-          }`}
+          className={`rounded-lg p-2 ${mobileChromeClassName}`}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        <span className={`text-lg font-semibold ${isPublicShell || isAuthenticatedShell ? 'font-public tracking-[-0.04em]' : ''} ${
-          isPublicShell || isAuthenticatedShell
-            ? 'text-white'
-            : 'text-primary-400'
-        }`}>FlyingForge</span>
+        <span className={`text-lg font-semibold ${mobileBrandClassName}`}>FlyingForge</span>
         <div className="w-10" /> {/* Spacer for balance */}
       </div>
 

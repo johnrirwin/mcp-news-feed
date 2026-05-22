@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import { render, screen, waitFor } from '../test/test-utils';
+import { fireEvent, render, screen, waitFor } from '../test/test-utils';
 import { PublicAircraftModal } from './PublicAircraftModal';
 import type { AircraftPublic } from '../socialTypes';
 import type { GearCatalogItem } from '../gearCatalogTypes';
@@ -153,5 +153,24 @@ describe('PublicAircraftModal', () => {
 
     await userEvent.click(screen.getByRole('button', { name: /^Receiver/i }));
     expect(modal).toHaveClass('h-[90vh]');
+  });
+
+  it('closes when clicking the backdrop', async () => {
+    const onClose = vi.fn();
+    const { container } = render(
+      <PublicAircraftModal
+        aircraft={aircraftFixture()}
+        onClose={onClose}
+      />,
+    );
+
+    const backdrop = container.querySelector('.ff-modal-backdrop');
+    if (!(backdrop instanceof HTMLElement)) {
+      throw new Error('Backdrop not found');
+    }
+
+    fireEvent.click(backdrop);
+
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

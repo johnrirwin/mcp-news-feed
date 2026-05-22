@@ -244,13 +244,8 @@ export function AircraftDetail({
     <div
       data-testid="aircraft-detail-overlay"
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      onClick={(event) => {
-        if (event.target === event.currentTarget) {
-          onClose();
-        }
-      }}
     >
-      <div className="ff-modal-backdrop absolute inset-0" />
+      <div className="ff-modal-backdrop absolute inset-0" onClick={onClose} aria-hidden="true" />
       <div className="ff-auth-shell ff-auth-modal-panel relative flex h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-[30px]">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-white/10 p-4">

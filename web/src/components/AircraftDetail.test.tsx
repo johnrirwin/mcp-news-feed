@@ -168,7 +168,7 @@ describe('AircraftDetail modal gear assignment flow', () => {
   it('closes when clicking outside the modal content', async () => {
     const onClose = vi.fn();
 
-    render(
+    const { container } = render(
       <AircraftDetail
         details={details}
         onClose={onClose}
@@ -180,7 +180,12 @@ describe('AircraftDetail modal gear assignment flow', () => {
 
     await waitFor(() => expect(mockedGetInventory).toHaveBeenCalledTimes(1));
 
-    fireEvent.click(screen.getByTestId('aircraft-detail-overlay'));
+    const backdrop = container.querySelector('.ff-modal-backdrop');
+    if (!(backdrop instanceof HTMLElement)) {
+      throw new Error('Backdrop not found');
+    }
+
+    fireEvent.click(backdrop);
 
     expect(onClose).toHaveBeenCalledTimes(1);
   });

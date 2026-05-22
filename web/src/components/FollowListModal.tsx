@@ -48,11 +48,8 @@ export function FollowListModal({ userId, userName, type, onClose, onSelectPilot
   };
 
   return (
-    <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-    >
-      <div className="ff-modal-backdrop absolute inset-0" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="ff-modal-backdrop absolute inset-0" onClick={onClose} aria-hidden="true" />
       <div className="ff-auth-shell ff-auth-modal-panel relative flex max-h-[80vh] w-full max-w-md flex-col overflow-hidden rounded-[28px]">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-white/10 p-4">

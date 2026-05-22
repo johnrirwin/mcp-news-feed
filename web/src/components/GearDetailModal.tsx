@@ -61,22 +61,13 @@ export function GearDetailModal({
   const shoppingLinks = (item.shoppingLinks || []).map((link) => link.trim()).filter(Boolean);
   const titleId = `gear-detail-title-${item.id}`;
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
   const handleAddClick = () => {
     onAddToInventory?.(item);
     onClose();
   };
 
   return (
-    <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      onClick={handleBackdropClick}
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div 
         className="ff-modal-backdrop absolute inset-0"
