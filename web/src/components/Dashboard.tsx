@@ -404,8 +404,7 @@ export function Dashboard({
     <div className="flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-[1320px] px-4 pb-24 pt-6 md:px-6 md:pb-8 md:pt-8">
         <header className="mb-6 md:mb-8">
-          <p className="ff-auth-kicker">Authenticated hangar</p>
-          <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <h1 className="ff-auth-page-title">My Hangar</h1>
               <p className="ff-auth-page-subtitle mt-3 max-w-2xl text-sm md:text-base">

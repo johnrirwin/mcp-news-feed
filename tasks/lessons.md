@@ -137,3 +137,13 @@ Review this file at the start of each session and apply any relevant rules befor
 - Context: the core pages were restyled, but the social pilot profile flow still surfaced an old solid modal wrapper and legacy section cards because the drill-down/modal variant had not been audited with the same rigor.
 - Correction from user: clicking pilot profiles in social still showed the old solid styling, so the redesign had not fully propagated.
 - Rule to follow next time: after a shell/theme redesign, audit every drill-down path and modal variant in that feature flow—not just the top-level route—to catch legacy wrappers and nested cards.
+
+### 2026-05-21 — Audit nested editor panels after shell redesigns
+- Context: the main My Builds routes had been moved onto the glass shell, but the nested BuildBuilder image panel still used legacy slate surfaces and buttons.
+- Correction from user: the Build image panel on the My Builds page should be transparent and styled like the rest of the app.
+- Rule to follow next time: when migrating a page to a new shell/theme, audit embedded editor side panels and asset upload blocks in addition to the page wrapper so legacy solid surfaces do not survive inside reused builders.
+
+### 2026-05-21 — Remove internal-only page kickers when users call them out as noise
+- Context: the redesigned dashboard header still showed an uppercase "Authenticated hangar" kicker above the real page title.
+- Correction from user: they did not want that extra label in the My Hangar header.
+- Rule to follow next time: when redesigning customer-facing headers, avoid keeping internal/contextual kicker copy unless it adds clear user value; if the user flags it as noise, remove it instead of defending the label.

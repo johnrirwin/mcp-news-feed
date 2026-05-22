@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 import type { GearCatalogItem, GearType } from '../gearCatalogTypes';
 import { getCatalogItemDisplayName } from '../gearCatalogTypes';
 import type { BuildPart, BuildValidationError } from '../buildTypes';
@@ -72,7 +72,12 @@ export function BuildBuilder({
   imageHelperText,
 }: BuildBuilderProps) {
   const { isAuthenticated } = useAuth();
+  const fieldIdBase = useId();
   const [pickerGearType, setPickerGearType] = useState<GearType | null>(null);
+  const titleFieldId = `${fieldIdBase}-title`;
+  const descriptionFieldId = `${fieldIdBase}-description`;
+  const buildVideoFieldId = `${fieldIdBase}-build-video`;
+  const flightVideoFieldId = `${fieldIdBase}-flight-video`;
 
   const partsByType = useMemo(() => {
     const map = new Map<GearType, BuildPart>();
@@ -176,50 +181,54 @@ export function BuildBuilder({
   return (
     <>
       <div className="space-y-4">
-        <div className="space-y-3 rounded-xl border border-slate-700 bg-slate-800/60 p-4">
+        <div data-testid="build-builder-editor" className="ff-auth-card space-y-3 rounded-[30px] p-4 md:p-5">
           <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr),260px]">
             <div className="min-w-0 space-y-3">
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-300">Build title</label>
+                <label htmlFor={titleFieldId} className="mb-1 block text-sm font-medium text-slate-200/92">Build title</label>
                 <input
+                  id={titleFieldId}
                   value={title}
                   onChange={(event) => onTitleChange(event.target.value)}
                   disabled={readOnly}
-                  className="w-full rounded-lg border border-slate-600 bg-slate-700 px-3 py-2 text-white focus:border-primary-500 focus:outline-none disabled:opacity-70"
+                  className="ff-auth-input w-full rounded-xl px-3 py-2 text-white disabled:opacity-70"
                   placeholder={'My Freestyle 5"'}
                 />
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-300">Description</label>
+                <label htmlFor={descriptionFieldId} className="mb-1 block text-sm font-medium text-slate-200/92">Description</label>
                 <textarea
+                  id={descriptionFieldId}
                   value={description}
                   onChange={(event) => onDescriptionChange(event.target.value)}
                   disabled={readOnly}
                   rows={3}
-                  className="w-full rounded-lg border border-slate-600 bg-slate-700 px-3 py-2 text-white focus:border-primary-500 focus:outline-none disabled:opacity-70"
+                  className="ff-auth-textarea w-full rounded-xl px-3 py-2 text-white disabled:opacity-70"
                   placeholder="Describe the goals, tune style, and intended use."
                 />
               </div>
               {(onYouTubeUrlChange || youtubeUrl !== undefined) && (
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-300">Build video (optional)</label>
+                  <label htmlFor={buildVideoFieldId} className="mb-1 block text-sm font-medium text-slate-200/92">Build video (optional)</label>
                   <input
+                    id={buildVideoFieldId}
                     value={youtubeUrl || ''}
                     onChange={(event) => onYouTubeUrlChange?.(event.target.value)}
                     disabled={readOnly}
-                    className="w-full rounded-lg border border-slate-600 bg-slate-700 px-3 py-2 text-white focus:border-primary-500 focus:outline-none disabled:opacity-70"
+                    className="ff-auth-input w-full rounded-xl px-3 py-2 text-white disabled:opacity-70"
                     placeholder="https://www.youtube.com/watch?v=..."
                   />
                 </div>
               )}
               {(onFlightYouTubeUrlChange || flightYoutubeUrl !== undefined) && (
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-300">Flight video (optional)</label>
+                  <label htmlFor={flightVideoFieldId} className="mb-1 block text-sm font-medium text-slate-200/92">Flight video (optional)</label>
                   <input
+                    id={flightVideoFieldId}
                     value={flightYoutubeUrl || ''}
                     onChange={(event) => onFlightYouTubeUrlChange?.(event.target.value)}
                     disabled={readOnly}
-                    className="w-full rounded-lg border border-slate-600 bg-slate-700 px-3 py-2 text-white focus:border-primary-500 focus:outline-none disabled:opacity-70"
+                    className="ff-auth-input w-full rounded-xl px-3 py-2 text-white disabled:opacity-70"
                     placeholder="https://www.youtube.com/watch?v=..."
                   />
                 </div>
@@ -227,13 +236,13 @@ export function BuildBuilder({
             </div>
 
             {(onImageAction || imagePreviewUrl) && (
-              <div className="min-w-0 space-y-2 rounded-lg border border-slate-700 bg-slate-900/60 p-3">
-                <p className="text-sm font-medium text-slate-300">Build image</p>
-                <div className="aspect-[4/3] w-full overflow-hidden rounded-lg border border-slate-700 bg-slate-800">
+              <div data-testid="build-image-panel" className="ff-modal-surface min-w-0 space-y-3 rounded-[26px] p-4">
+                <p className="font-public text-lg font-semibold tracking-[-0.03em] text-white">Build image</p>
+                <div data-testid="build-image-preview" className="ff-modal-surface-soft aspect-[4/3] w-full overflow-hidden rounded-[22px]">
                   {imagePreviewUrl ? (
-                    <img src={imagePreviewUrl} alt={title || 'Build image'} className="h-full w-full object-cover" />
+                    <img src={imagePreviewUrl} alt={title || 'Build image'} className="h-full w-full object-cover object-center" />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center text-slate-500">
+                    <div className="flex h-full w-full items-center justify-center text-slate-300/68">
                       No image
                     </div>
                   )}
@@ -242,13 +251,13 @@ export function BuildBuilder({
                   <button
                     type="button"
                     onClick={onImageAction}
-                    className="w-full rounded-md border border-slate-600 bg-slate-700 px-3 py-2 text-sm font-medium text-white transition hover:border-slate-500 hover:bg-slate-600"
+                    className="ff-auth-cta-secondary w-full justify-center text-sm"
                   >
                     {imageActionLabel ?? (imagePreviewUrl ? 'Change Image' : 'Upload Image')}
                   </button>
                 )}
                 {imageHelperText && (
-                  <p className="text-xs text-slate-500">{imageHelperText}</p>
+                  <p className="text-xs text-slate-300/72">{imageHelperText}</p>
                 )}
               </div>
             )}
