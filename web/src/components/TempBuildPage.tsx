@@ -161,7 +161,7 @@ export function TempBuildPage() {
   if (isLoading) {
     return (
       <div className="flex-1 overflow-y-auto p-6">
-        <div className="mx-auto w-full max-w-4xl rounded-xl border border-slate-700 bg-slate-800/60 p-8 text-center text-slate-400">
+        <div className="ff-auth-empty-state mx-auto w-full max-w-4xl p-8 text-center text-slate-300/78">
           Loading temporary build...
         </div>
       </div>
@@ -171,7 +171,7 @@ export function TempBuildPage() {
   if (!build || !routeToken) {
     return (
       <div className="flex-1 overflow-y-auto p-6">
-        <div className="mx-auto w-full max-w-4xl rounded-xl border border-red-500/30 bg-red-500/10 p-6 text-sm text-red-300">
+        <div className="mx-auto w-full max-w-4xl rounded-2xl border border-red-500/30 bg-red-500/10 p-6 text-sm text-red-300 backdrop-blur-xl">
           {error || 'Temporary build not found or expired.'}
         </div>
       </div>
@@ -181,7 +181,7 @@ export function TempBuildPage() {
   return (
     <div className="flex-1 overflow-y-auto p-6">
       <div className="mx-auto w-full max-w-4xl space-y-6">
-        <header className="rounded-2xl border border-slate-700 bg-slate-800/70 p-5">
+        <header data-testid="temp-build-header" className="ff-public-page-panel-strong rounded-[28px] p-5">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="space-y-2">
               <Link to="/builds" className="text-xs uppercase tracking-wide text-primary-400 hover:text-primary-300">
@@ -201,14 +201,14 @@ export function TempBuildPage() {
                 type="button"
                 onClick={handleCopy}
                 disabled={isCopying || isAutoSaving || isLoading || hydratedTokenRef.current !== activeToken || buildTokenRef.current !== activeToken}
-                className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-60"
+                className="ff-auth-cta-primary px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isCopying ? 'Copying...' : 'Copy Share URL'}
               </button>
             </div>
           </div>
 
-          <div className="mt-4 rounded-lg border border-slate-700 bg-slate-900/60 p-3 text-xs text-slate-300">
+          <div className="ff-modal-surface-soft mt-4 rounded-2xl p-3 text-xs text-slate-300">
             <p className="break-all">{shareUrl}</p>
           </div>
           <p className="mt-2 text-xs text-slate-400">This URL rotates when the build changes. Copy Share URL saves a permanent snapshot link.</p>

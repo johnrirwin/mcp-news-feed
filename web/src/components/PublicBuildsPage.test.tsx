@@ -127,6 +127,25 @@ describe('PublicBuildsPage', () => {
     expect(await screen.findByText('Est. MSRP: $114.99')).toBeInTheDocument();
   });
 
+  it('uses glass styling for the toolbar filters and build showcase cards', async () => {
+    mockedListPublicBuilds.mockResolvedValue({
+      builds: [makeBuild({ title: 'Kayou Build' })],
+      totalCount: 1,
+      sort: 'newest',
+    });
+
+    render(
+      <MemoryRouter>
+        <PublicBuildsPage />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByTestId('public-builds-toolbar').className).toContain('ff-builds-toolbar');
+    expect(screen.getByDisplayValue('Newest').className).toContain('ff-auth-select');
+    expect(screen.getByPlaceholderText('Example: 5, whoop, 7 inch').className).toContain('ff-auth-input');
+    expect(await screen.findByTestId('public-build-card-build-1')).toHaveClass('ff-builds-card');
+  });
+
   it('shows a plus suffix when some listed part prices are missing', async () => {
     mockedListPublicBuilds.mockResolvedValue({
       builds: [

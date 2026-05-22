@@ -118,12 +118,12 @@ export function PublicBuildsPage() {
   }, [frameFilter]);
 
   const controls = (
-    <div className="border-b border-slate-800 bg-slate-900">
-      <div className="px-4 md:px-6 py-4">
+    <div className="px-4 py-4 md:px-6 md:py-5">
+      <div data-testid="public-builds-toolbar" className="ff-builds-toolbar mx-auto w-full max-w-[1440px]">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold text-white">Public Builds</h1>
-            <p className="mt-1 text-sm text-slate-400">
+            <h1 className="font-public text-[2rem] font-bold tracking-[-0.05em] text-white md:text-[2.3rem]">Public Builds</h1>
+            <p className="mt-1 text-base text-slate-300/80">
               Browse pilot builds, compare parts, and start your own setup.
             </p>
           </div>
@@ -131,30 +131,30 @@ export function PublicBuildsPage() {
             type="button"
             disabled={isCreating}
             onClick={handleBuildYourOwn}
-            className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-primary-500 disabled:cursor-not-allowed disabled:opacity-60"
+            className="ff-auth-cta-primary px-5 py-3 text-sm disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isCreating ? 'Creating...' : 'Build Your Own'}
           </button>
         </div>
 
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
           <label className="text-sm text-slate-300">
-            <span className="mb-1 block text-xs uppercase tracking-wide text-slate-400">Sort</span>
+            <span className="ff-auth-tech-label mb-2 block">Sort</span>
             <select
               value="newest"
               disabled
-              className="h-11 w-full rounded-lg border border-slate-600 bg-slate-700 px-3 text-white"
+              className="ff-auth-select h-16 w-full rounded-2xl px-4 text-lg text-white disabled:cursor-default disabled:opacity-100"
             >
               <option value="newest">Newest</option>
             </select>
           </label>
           <label className="text-sm text-slate-300">
-            <span className="mb-1 block text-xs uppercase tracking-wide text-slate-400">Frame filter</span>
+            <span className="ff-auth-tech-label mb-2 block">Frame Filter</span>
             <input
               value={frameFilter}
               onChange={(event) => setFrameFilter(event.target.value)}
               placeholder="Example: 5, whoop, 7 inch"
-              className="h-11 w-full rounded-lg border border-slate-600 bg-slate-700 px-3 text-white placeholder:text-slate-500 focus:border-primary-500 focus:outline-none"
+              className="ff-auth-input h-16 w-full rounded-2xl px-4 text-lg text-white placeholder:text-slate-500"
             />
           </label>
         </div>
@@ -186,7 +186,7 @@ export function PublicBuildsPage() {
           }
         }}
       >
-        <div className="space-y-6">
+        <div className="mx-auto w-full max-w-[1440px] space-y-6">
           {error && (
             <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-300">
               {error}
@@ -194,9 +194,9 @@ export function PublicBuildsPage() {
           )}
 
           {isLoading ? (
-            <div className="rounded-xl border border-slate-700 bg-slate-800/60 p-8 text-center text-slate-400">Loading public builds...</div>
+            <div className="ff-auth-empty-state p-8 text-center text-slate-300/78">Loading public builds...</div>
           ) : builds.length === 0 ? (
-            <div className="rounded-xl border border-slate-700 bg-slate-800/60 p-8 text-center text-slate-400">{emptyMessage}</div>
+            <div className="ff-auth-empty-state p-8 text-center text-slate-300/78">{emptyMessage}</div>
           ) : (
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {builds.map((build) => {
@@ -261,20 +261,21 @@ export function PublicBuildsPage() {
                 return (
                   <div
                     key={build.id}
-                    className="overflow-hidden rounded-xl border border-slate-700 bg-slate-800/60 transition hover:border-primary-500/40 hover:bg-slate-800"
+                    data-testid={`public-build-card-${build.id}`}
+                    className="ff-builds-card"
                   >
                     <Link to={`/builds/${build.id}`} className="block">
-                      <div className="aspect-[16/9] w-full bg-slate-900">
+                      <div className="ff-builds-card-media aspect-[16/9] w-full overflow-hidden">
                         {build.mainImageUrl ? (
                           <img src={build.mainImageUrl} alt={build.title} className="h-full w-full object-cover" />
                         ) : (
                           <div className="flex h-full items-center justify-center text-sm text-slate-500">No build image</div>
                         )}
                       </div>
-                      <div className="space-y-3 p-4">
+                      <div className="ff-builds-card-body space-y-3 p-4">
                         <div>
-                          <h2 className="line-clamp-2 text-lg font-semibold text-white">{build.title}</h2>
-                          <p className="text-sm text-slate-400">by {pilotName}</p>
+                          <h2 className="line-clamp-2 font-public text-[1.9rem] font-semibold leading-none tracking-[-0.045em] text-white">{build.title}</h2>
+                          <p className="mt-1 text-sm text-slate-300/80">by {pilotName}</p>
                           <p className="mt-1 text-sm font-medium text-primary-300">Est. MSRP: {estimatedMsrpLabel}</p>
                         </div>
                         <ul className="space-y-1 text-sm text-slate-300">
@@ -298,7 +299,7 @@ export function PublicBuildsPage() {
                         </div>
                       </div>
                     </Link>
-                    <div className="px-4 pb-4">
+                    <div className="ff-builds-card-body px-4 pb-4 pt-0">
                       <div className="flex items-center gap-2 text-xs text-slate-400">
                         <button
                           type="button"

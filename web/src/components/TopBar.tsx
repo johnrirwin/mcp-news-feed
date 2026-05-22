@@ -51,7 +51,7 @@ export function TopBar({
   };
 
   return (
-    <header ref={headerRef} className="bg-slate-800 border-b border-slate-700 px-4 md:px-6 py-3 md:py-4">
+    <header ref={headerRef} className="ff-auth-toolbar" data-testid="news-topbar">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
         {/* Search - full width on mobile */}
         <div className="flex gap-2 flex-1 min-w-0 md:min-w-[200px] md:max-w-md">
@@ -75,19 +75,19 @@ export function TopBar({
               value={query}
               onChange={e => onQueryChange(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="ff-auth-input w-full rounded-xl py-2 pl-10 pr-4 text-sm"
             />
           </div>
           <button
             onClick={onSearch}
-            className="px-3 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg transition-colors"
+            className="ff-auth-cta-primary px-4 py-2 text-sm"
           >
             Search
           </button>
           {query && (
             <button
               onClick={handleClearSearch}
-              className="px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+              className="ff-auth-cta-secondary px-4 py-2 text-sm"
             >
               Clear
             </button>
@@ -107,14 +107,14 @@ export function TopBar({
               type="date"
               value={fromDate}
               onChange={e => onFromDateChange(e.target.value)}
-              className="px-2 md:px-3 py-1.5 md:py-2 bg-slate-900 border border-slate-700 rounded-lg text-white text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="ff-auth-input rounded-xl px-2 py-1.5 text-xs md:px-3 md:py-2 md:text-sm"
             />
             <label className="text-xs md:text-sm text-slate-400">To:</label>
             <input
               type="date"
               value={toDate}
               onChange={e => onToDateChange(e.target.value)}
-              className="px-2 md:px-3 py-1.5 md:py-2 bg-slate-900 border border-slate-700 rounded-lg text-white text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="ff-auth-input rounded-xl px-2 py-1.5 text-xs md:px-3 md:py-2 md:text-sm"
             />
           {(fromDate || toDate) && (
             <button
@@ -135,33 +135,33 @@ export function TopBar({
         {/* Source Type Filter */}
         <div className="flex items-center gap-2">
           <span className="text-xs md:text-sm text-slate-400 hidden sm:inline">Type:</span>
-          <div className="flex gap-1 bg-slate-900 rounded-lg p-1">
+          <div className="ff-auth-glass-panel flex gap-1 rounded-xl p-1">
             <button
               onClick={() => onSourceTypeChange('all')}
-              className={`px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded-md transition-colors ${
+              className={`px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded-lg transition-colors ${
                 sourceType === 'all'
-                  ? 'bg-primary-600 text-white'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'ff-auth-chip-active'
+                  : 'text-slate-300/75 hover:text-white'
               }`}
             >
               All
             </button>
             <button
               onClick={() => onSourceTypeChange('rss')}
-              className={`px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded-md transition-colors ${
+              className={`px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded-lg transition-colors ${
                 sourceType === 'rss'
-                  ? 'bg-primary-600 text-white'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'ff-auth-chip-active'
+                  : 'text-slate-300/75 hover:text-white'
               }`}
             >
               News
             </button>
             <button
               onClick={() => onSourceTypeChange('youtube')}
-              className={`px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded-md transition-colors ${
+              className={`px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded-lg transition-colors ${
                 sourceType === 'youtube'
-                  ? 'bg-primary-600 text-white'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'ff-auth-chip-active'
+                  : 'text-slate-300/75 hover:text-white'
               }`}
             >
               YouTube
@@ -172,23 +172,23 @@ export function TopBar({
         {/* Sort */}
         <div className="flex items-center gap-2">
           <span className="text-xs md:text-sm text-slate-400 hidden sm:inline">Sort:</span>
-          <div className="flex gap-1 bg-slate-900 rounded-lg p-1">
+          <div className="ff-auth-glass-panel flex gap-1 rounded-xl p-1">
             <button
               onClick={() => onSortChange('newest')}
-              className={`px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded-md transition-colors ${
+              className={`px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded-lg transition-colors ${
                 sort === 'newest'
-                  ? 'bg-primary-600 text-white'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'ff-auth-chip-active'
+                  : 'text-slate-300/75 hover:text-white'
               }`}
             >
               Newest
             </button>
             <button
               onClick={() => onSortChange('score')}
-              className={`px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded-md transition-colors ${
+              className={`px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm rounded-lg transition-colors ${
                 sort === 'score'
-                  ? 'bg-primary-600 text-white'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'ff-auth-chip-active'
+                  : 'text-slate-300/75 hover:text-white'
               }`}
             >
               Top
@@ -197,7 +197,7 @@ export function TopBar({
         </div>
 
         {/* Count */}
-        <div className="text-xs md:text-sm text-slate-400 ml-auto md:ml-0">
+        <div className="ff-auth-chip ml-auto md:ml-0">
           {totalCount.toLocaleString()} items
         </div>
         </div>

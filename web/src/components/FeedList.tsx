@@ -22,14 +22,14 @@ export function FeedList({ items, sources, isLoading, error, onItemClick, hasMor
   if (error) {
     return (
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="text-center max-w-md">
+        <div className="ff-auth-empty-state max-w-md">
           <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-white mb-2">Failed to Load Feed</h3>
-          <p className="text-slate-400 text-sm">{error}</p>
+          <h3 className="font-public text-xl font-semibold tracking-[-0.03em] text-white">Failed to Load Feed</h3>
+          <p className="mt-2 text-sm text-slate-300/74">{error}</p>
         </div>
       </div>
     );
@@ -39,7 +39,7 @@ export function FeedList({ items, sources, isLoading, error, onItemClick, hasMor
     return (
       <div className="flex-1 p-6 space-y-4">
         {[...Array(6)].map((_, i) => (
-          <div key={i} className="bg-slate-800 border border-slate-700 rounded-xl p-4 animate-pulse">
+          <div key={i} className="ff-auth-card animate-pulse rounded-[24px] p-4">
             <div className="flex gap-4">
               <div className="w-24 h-24 bg-slate-700 rounded-lg" />
               <div className="flex-1 space-y-3">
@@ -61,14 +61,14 @@ export function FeedList({ items, sources, isLoading, error, onItemClick, hasMor
   if (items.length === 0) {
     return (
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="text-center max-w-md">
-          <div className="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="ff-auth-empty-state max-w-md">
+          <div className="ff-auth-glass-panel mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
             <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-white mb-2">No Items Found</h3>
-          <p className="text-slate-400 text-sm">
+          <h3 className="font-public text-xl font-semibold tracking-[-0.03em] text-white">No Items Found</h3>
+          <p className="mt-2 text-sm text-slate-300/74">
             Try adjusting your filters or search query, or refresh to fetch new items.
           </p>
         </div>
@@ -103,7 +103,7 @@ export function FeedList({ items, sources, isLoading, error, onItemClick, hasMor
         
         {/* End of list indicator */}
         {!hasMore && items.length > 0 && (
-          <div className="text-center py-6 text-slate-500 text-sm">
+          <div className="text-center py-6 text-sm text-slate-300/58">
             You've reached the end • {items.length} items loaded
           </div>
         )}

@@ -448,8 +448,8 @@ function BasicIcon({ type }: { type: BasicItem['icon'] }) {
 
 function PathCardComponent({ path }: { path: PathCard }) {
   return (
-    <div className="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 hover:border-slate-600 transition-colors">
-      <div className="w-14 h-14 bg-primary-600/20 rounded-xl flex items-center justify-center mb-4 text-primary-400">
+    <div className="ff-public-page-panel-strong rounded-[28px] p-6 transition-colors hover:border-white/20">
+      <div className="ff-public-glass-panel w-14 h-14 rounded-xl flex items-center justify-center mb-4 text-primary-400">
         <PathIcon type={path.icon} />
       </div>
       <h3 className="text-xl font-semibold text-white mb-2">{path.title}</h3>
@@ -491,7 +491,7 @@ function PathCardComponent({ path }: { path: PathCard }) {
 
 function SimulatorCard({ sim }: { sim: Simulator }) {
   return (
-    <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 hover:border-slate-600 transition-colors flex flex-col">
+    <div className="ff-public-page-panel rounded-2xl p-4 hover:border-white/18 transition-colors flex flex-col">
       <div className="flex items-start justify-between gap-3 mb-2">
         <h4 className="text-base font-semibold text-white">{sim.name}</h4>
         <span className="px-2 py-0.5 bg-primary-600/20 text-primary-400 text-xs font-medium rounded-full whitespace-nowrap">
@@ -565,17 +565,17 @@ function CreatorCard({ creator, onSelect }: { creator: CreatorSpotlight; onSelec
     <button
       type="button"
       onClick={() => onSelect(creator)}
-      className={`block w-full text-left bg-slate-800 border rounded-xl p-5 hover:border-slate-500 transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/80 min-h-56 h-full ${
+      className={`ff-public-page-panel block w-full text-left rounded-xl p-5 transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/80 min-h-56 h-full ${
         creator.featured
           ? 'border-primary-500/50 ring-1 ring-primary-500/20'
-          : 'border-slate-700'
+          : 'hover:border-white/18'
       }`}
       aria-label={`Open creator details for ${creator.name}`}
     >
       <div className="flex items-start gap-4">
         {/* Creator icon */}
         <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-          creator.featured ? 'bg-primary-600/20' : 'bg-slate-700'
+          creator.featured ? 'bg-primary-600/20' : 'ff-public-glass-panel'
         }`}>
           <svg className={`w-6 h-6 ${creator.featured ? 'text-primary-400' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M16 7a4 4 0 11-8 0 4 4 0 018 0ZM4 20a8 8 0 0116 0" />
@@ -605,13 +605,13 @@ function CreatorCard({ creator, onSelect }: { creator: CreatorSpotlight; onSelec
               {visibleTags.map(tag => (
                 <span
                   key={tag}
-                  className="px-2 py-0.5 bg-slate-700 text-slate-300 text-xs rounded-full"
+                  className="ff-auth-chip text-xs"
                 >
                   {tag}
                 </span>
               ))}
               {hiddenTagCount > 0 && (
-                <span className="px-2 py-0.5 bg-slate-700 text-slate-400 text-xs rounded-full">
+                <span className="ff-auth-chip text-xs text-slate-400">
                   +{hiddenTagCount}
                 </span>
               )}
@@ -700,19 +700,19 @@ function CreatorLinksModal({ creator, onClose }: { creator: CreatorSpotlight | n
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="ff-modal-backdrop absolute inset-0" onClick={onClose} />
       <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={`creator-links-title-${creator.id}`}
         tabIndex={-1}
-        className="relative w-full max-w-md rounded-2xl border border-slate-700 bg-slate-800 p-6 shadow-2xl focus:outline-none"
+        className="ff-auth-shell ff-auth-modal-panel relative w-full max-w-md rounded-[28px] p-6 shadow-2xl focus:outline-none"
       >
         <button
           ref={closeButtonRef}
           onClick={onClose}
-          className="absolute right-4 top-4 rounded-lg p-2 text-slate-400 hover:bg-slate-700 hover:text-white transition-colors"
+          className="ff-modal-close absolute right-4 top-4 rounded-xl p-2 transition-colors"
           aria-label="Close creator details"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -739,8 +739,8 @@ function CreatorLinksModal({ creator, onClose }: { creator: CreatorSpotlight | n
               rel="noopener noreferrer"
               className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 link.platform === 'youtube'
-                  ? 'bg-primary-600 hover:bg-primary-500 text-white'
-                  : 'bg-slate-700 hover:bg-slate-600 text-white'
+                  ? 'ff-auth-cta-primary justify-center'
+                  : 'ff-auth-cta-secondary justify-center'
               }`}
             >
               <SocialIcon platform={link.platform} />
@@ -771,12 +771,12 @@ export function GettingStarted({ onSignIn }: GettingStartedProps) {
   }, []);
 
   return (
-    <div className="flex-1 overflow-y-auto bg-slate-900">
+    <div className="flex-1 overflow-y-auto">
       {/* Hero Section */}
-      <section className="relative px-6 py-16 md:py-24 overflow-hidden border-b border-slate-800">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/10 via-slate-900 to-slate-900" />
+      <section className="ff-public-section-band relative px-6 py-16 md:py-24 overflow-hidden border-b border-white/10">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/8 via-slate-950/16 to-slate-950/36" />
         <div className="relative max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="font-public text-4xl md:text-5xl font-bold tracking-[-0.05em] text-white mb-4">
             Taking Off
           </h1>
           <p className="text-xl text-slate-300 max-w-2xl mx-auto">
@@ -786,10 +786,10 @@ export function GettingStarted({ onSignIn }: GettingStartedProps) {
       </section>
 
       {/* Choose Your Path */}
-      <section className="px-6 py-16 border-b border-slate-800">
+      <section className="px-6 py-16 border-b border-white/10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Choose your path</h2>
+            <h2 className="font-public text-2xl md:text-3xl font-bold tracking-[-0.04em] text-white mb-3">Choose your path</h2>
             <p className="text-slate-400 max-w-xl mx-auto">
               Different types of flying suit different people. Pick what excites you most.
             </p>
@@ -803,19 +803,19 @@ export function GettingStarted({ onSignIn }: GettingStartedProps) {
       </section>
 
       {/* The Basics You'll Need */}
-      <section className="px-6 py-16 bg-slate-800/30 border-b border-slate-800">
+      <section className="ff-public-section-band px-6 py-16 border-b border-white/10">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">The basics you'll need</h2>
+            <h2 className="font-public text-2xl md:text-3xl font-bold tracking-[-0.04em] text-white mb-3">The basics you'll need</h2>
             <p className="text-slate-400 max-w-xl mx-auto">
               Before your first flight, understand these fundamentals.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {BASICS.map(basic => (
-              <div key={basic.id} className="bg-slate-800 border border-slate-700 rounded-xl p-5">
+              <div key={basic.id} className="ff-public-page-panel rounded-xl p-5">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-primary-600/20 rounded-lg flex items-center justify-center flex-shrink-0 text-primary-400">
+                  <div className="ff-public-glass-panel w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-primary-400">
                     <BasicIcon type={basic.icon} />
                   </div>
                   <div>
@@ -830,10 +830,10 @@ export function GettingStarted({ onSignIn }: GettingStartedProps) {
       </section>
 
       {/* Best Simulators */}
-      <section className="px-6 py-16 border-b border-slate-800">
+      <section className="px-6 py-16 border-b border-white/10">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Best simulators to practice</h2>
+            <h2 className="font-public text-2xl md:text-3xl font-bold tracking-[-0.04em] text-white mb-3">Best simulators to practice</h2>
             <p className="text-slate-400 max-w-xl mx-auto">
               Plug in your radio and build muscle memory before risking real hardware.
             </p>
@@ -877,10 +877,10 @@ export function GettingStarted({ onSignIn }: GettingStartedProps) {
       </section>
 
       {/* YouTube Creators */}
-      <section className="px-6 py-16 border-b border-slate-800">
+      <section className="px-6 py-16 border-b border-white/10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Learn from the pros</h2>
+            <h2 className="font-public text-2xl md:text-3xl font-bold tracking-[-0.04em] text-white mb-3">Learn from the pros</h2>
             <p className="text-slate-400 max-w-xl mx-auto">
               Some of the best FPV and drone education lives on YouTube and Instagram. These creators are trusted across the community.
             </p>
@@ -901,17 +901,17 @@ export function GettingStarted({ onSignIn }: GettingStartedProps) {
       </section>
 
       {/* Training Progression */}
-      <section className="px-6 py-16 bg-slate-800/30 border-b border-slate-800">
+      <section className="ff-public-section-band px-6 py-16 border-b border-white/10">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Training progression</h2>
+            <h2 className="font-public text-2xl md:text-3xl font-bold tracking-[-0.04em] text-white mb-3">Training progression</h2>
             <p className="text-slate-400 max-w-xl mx-auto">
               Follow this path from zero to confident pilot.
             </p>
           </div>
           <div className="relative">
             {/* Connection line */}
-            <div className="absolute left-6 top-8 bottom-8 w-0.5 bg-slate-700 hidden md:block" />
+            <div className="absolute left-6 top-8 bottom-8 w-0.5 bg-white/12 hidden md:block" />
             
             <div className="space-y-6">
               {PROGRESSION.map((step) => (
@@ -921,7 +921,7 @@ export function GettingStarted({ onSignIn }: GettingStartedProps) {
                     <span className="text-lg font-bold text-white">{step.step}</span>
                   </div>
                   {/* Content */}
-                  <div className="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-5 mt-0.5">
+                  <div className="ff-public-page-panel flex-1 rounded-xl p-5 mt-0.5">
                     <h3 className="text-base font-semibold text-white mb-1">{step.title}</h3>
                     <p className="text-slate-400 text-sm">{step.description}</p>
                   </div>
@@ -933,18 +933,18 @@ export function GettingStarted({ onSignIn }: GettingStartedProps) {
       </section>
 
       {/* Regulations and Safety */}
-      <section className="px-6 py-16 border-b border-slate-800">
+      <section className="px-6 py-16 border-b border-white/10">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Regulations and Safety</h2>
+            <h2 className="font-public text-2xl md:text-3xl font-bold tracking-[-0.04em] text-white mb-3">Regulations and Safety</h2>
             <p className="text-slate-400 max-w-xl mx-auto">
               Flying is fun—but do it responsibly. These basics apply almost everywhere.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {SAFETY_RULES.map(rule => (
-              <div key={rule.id} className="bg-slate-800 border border-slate-700 rounded-xl p-5">
-                <div className="w-10 h-10 bg-yellow-500/20 rounded-lg flex items-center justify-center mb-4">
+              <div key={rule.id} className="ff-public-page-panel rounded-xl p-5">
+                <div className="ff-public-glass-panel w-10 h-10 rounded-lg flex items-center justify-center mb-4">
                   <svg className="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>
@@ -962,7 +962,7 @@ export function GettingStarted({ onSignIn }: GettingStartedProps) {
               href="https://www.faa.gov/uas"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-white transition-colors"
+              className="ff-auth-cta-secondary inline-flex items-center gap-2 px-4 py-2 text-sm"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -976,7 +976,7 @@ export function GettingStarted({ onSignIn }: GettingStartedProps) {
       {/* Call to Action */}
       <section className="px-6 py-20">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+          <h2 className="font-public text-2xl md:text-3xl font-bold tracking-[-0.04em] text-white mb-4">
             Ready to start tracking your gear?
           </h2>
           <p className="text-slate-400 mb-8">
@@ -984,7 +984,7 @@ export function GettingStarted({ onSignIn }: GettingStartedProps) {
           </p>
           <button
             onClick={onSignIn}
-            className="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors shadow-lg shadow-primary-600/25 inline-flex items-center gap-2"
+            className="ff-public-cta-primary px-8 py-4 text-base inline-flex items-center gap-2"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -1000,7 +1000,7 @@ export function GettingStarted({ onSignIn }: GettingStartedProps) {
       />
 
       {/* Footer */}
-      <footer className="px-6 py-8 border-t border-slate-800 bg-slate-900">
+      <footer className="ff-public-footer-band px-6 py-8">
         <div className="max-w-6xl mx-auto text-center text-sm text-slate-500">
           <p>FlyingForge — Build it. Fly it. Share it.</p>
         </div>

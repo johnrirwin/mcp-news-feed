@@ -376,12 +376,12 @@ export function BatterySection({ onError }: BatterySectionProps) {
   // Render list view
   const renderList = () => {
     const controls = (
-      <div className="px-4 md:px-6 py-4 border-b border-slate-800 bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-slate-900/85">
+      <div className="ff-auth-toolbar">
         {/* Header */}
         <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-white">Batteries</h2>
-            <p className="text-sm text-slate-400">Track battery health, logs, and printable labels</p>
+            <h2 className="ff-auth-section-title text-xl">Batteries</h2>
+            <p className="ff-auth-page-subtitle mt-2 text-sm">Track battery health, logs, and printable labels</p>
           </div>
           <button
             onClick={() => {
@@ -390,7 +390,7 @@ export function BatterySection({ onError }: BatterySectionProps) {
               setViewMode('create');
               setIsMobileControlsOpen(false);
             }}
-            className="w-full sm:w-auto px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors flex items-center justify-center gap-2"
+            className="ff-auth-cta-primary w-full gap-2 sm:w-auto"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -400,7 +400,7 @@ export function BatterySection({ onError }: BatterySectionProps) {
         </div>
 
         {/* Filters */}
-        <div className="mt-4 flex flex-wrap gap-4 p-4 bg-slate-800 rounded-lg border border-slate-700">
+        <div className="ff-auth-card mt-4 rounded-[24px] p-4">
           <div className="w-full sm:max-w-xs">
             <label className="block text-xs font-medium text-slate-400 uppercase mb-1.5">Search</label>
             <input
@@ -496,7 +496,7 @@ export function BatterySection({ onError }: BatterySectionProps) {
                   key={battery.id}
                   role="button"
                   tabIndex={0}
-                  className="p-4 bg-slate-800 rounded-lg border border-slate-700 hover:border-slate-600 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="ff-auth-card ff-auth-card-hover rounded-[24px] p-4 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500"
                   onClick={() => handleViewBattery(battery)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -546,15 +546,15 @@ export function BatterySection({ onError }: BatterySectionProps) {
 
   // Render form (create/edit)
   const renderForm = () => (
-    <div className="bg-slate-800 border border-slate-700 rounded-2xl w-full max-h-[92vh] overflow-hidden flex flex-col">
-      <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-        <h2 id="battery-form-modal-title" className="text-lg font-semibold text-white">
+    <div className="ff-auth-modal-panel w-full max-h-[92vh] overflow-hidden rounded-[28px] flex flex-col">
+      <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+        <h2 id="battery-form-modal-title" className="font-public text-lg font-semibold text-white">
           {viewMode === 'create' ? 'Add New Battery' : 'Edit Battery'}
         </h2>
         <button
           onClick={closeFormModal}
           aria-label="Close battery form"
-          className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+          className="ff-modal-close rounded-xl p-2 transition-colors"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -694,7 +694,7 @@ export function BatterySection({ onError }: BatterySectionProps) {
         <div className="flex gap-4 pt-4">
           <button
             onClick={viewMode === 'create' ? handleCreateBattery : handleUpdateBattery}
-            className="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+            className="ff-auth-cta-primary px-6 py-2 text-sm"
           >
             {viewMode === 'create' ? 'Create Battery' : 'Save Changes'}
           </button>
@@ -710,17 +710,17 @@ export function BatterySection({ onError }: BatterySectionProps) {
     return (
       <div className="h-full flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between gap-4 px-4 md:px-6 py-4 border-b border-slate-700 flex-shrink-0">
+        <div className="flex flex-shrink-0 items-center justify-between gap-4 border-b border-white/10 px-4 py-4 md:px-6">
           <div className="flex items-center gap-3 md:gap-4 min-w-0">
             <h2 id="battery-detail-modal-title" className="text-xl font-semibold text-white truncate">{selectedBattery.name}</h2>
-            <span className="text-xs sm:text-sm px-2 py-1 bg-slate-700 text-slate-300 rounded font-mono">
+            <span className="ff-modal-surface-soft rounded-full px-2 py-1 text-xs font-mono text-slate-200 sm:text-sm">
               {selectedBattery.battery_code}
             </span>
           </div>
           <button
             onClick={closeDetailModal}
             aria-label="Close battery details"
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+            className="ff-modal-close rounded-xl p-2 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -731,7 +731,7 @@ export function BatterySection({ onError }: BatterySectionProps) {
         <div className="flex-1 min-h-0 overflow-y-auto px-4 md:px-6 py-4 md:py-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
             {/* Battery Info */}
-            <div className="bg-slate-800 rounded-lg border border-slate-700 p-6 md:h-[320px] overflow-y-auto">
+            <div className="ff-auth-card rounded-[24px] p-6 md:h-[320px] overflow-y-auto">
               <h3 className="font-medium text-white mb-4">Battery Details</h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
@@ -790,7 +790,7 @@ export function BatterySection({ onError }: BatterySectionProps) {
             </div>
 
             {/* Print Label */}
-            <div className="bg-slate-800 rounded-lg border border-slate-700 p-6 md:h-[320px] flex flex-col">
+            <div className="ff-auth-card rounded-[24px] p-6 md:h-[320px] flex flex-col">
               <h3 className="font-medium text-white mb-4">Print Label</h3>
               <p className="text-sm text-slate-400 mb-4">
                 Generate a printable label with QR code for this battery.
@@ -798,13 +798,13 @@ export function BatterySection({ onError }: BatterySectionProps) {
               <div className="space-y-2 mt-auto">
                 <button
                   onClick={() => handlePrintLabel(selectedBattery, 'small')}
-                  className="w-full px-4 py-2 border border-slate-600 text-slate-300 rounded-lg hover:bg-slate-700 text-sm transition-colors"
+                  className="ff-auth-cta-secondary w-full justify-center px-4 py-2 text-sm"
                 >
                   Small Label (1" × 0.5")
                 </button>
                 <button
                   onClick={() => handlePrintLabel(selectedBattery, 'standard')}
-                  className="w-full px-4 py-2 border border-slate-600 text-slate-300 rounded-lg hover:bg-slate-700 text-sm transition-colors"
+                  className="ff-auth-cta-secondary w-full justify-center px-4 py-2 text-sm"
                 >
                   Standard Label (2" × 1")
                 </button>
@@ -812,7 +812,7 @@ export function BatterySection({ onError }: BatterySectionProps) {
             </div>
 
             {/* Health Logs */}
-            <div className="bg-slate-800 rounded-lg border border-slate-700 p-6 md:h-[320px] flex flex-col">
+            <div className="ff-auth-card rounded-[24px] p-6 md:h-[320px] flex flex-col">
               <div className="flex justify-between items-center mb-4 flex-shrink-0">
                 <h3 className="font-medium text-white">Health Logs</h3>
                 <button
@@ -888,7 +888,7 @@ export function BatterySection({ onError }: BatterySectionProps) {
             </div>
 
             {/* Quick Stats */}
-            <div className="bg-slate-800 rounded-lg border border-slate-700 p-6 md:h-[320px]">
+            <div className="ff-auth-card rounded-[24px] p-6 md:h-[320px]">
               <h3 className="font-medium text-white mb-4">Quick Stats</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
@@ -912,17 +912,17 @@ export function BatterySection({ onError }: BatterySectionProps) {
           </div>
         </div>
 
-        <div className="border-t border-slate-700 bg-slate-900/95 px-4 md:px-6 py-4 flex-shrink-0">
+        <div className="ff-modal-footer flex-shrink-0 px-4 py-4 md:px-6">
           <div className="flex flex-col sm:flex-row sm:justify-end gap-3">
             <button
               onClick={() => handleEditBattery(selectedBattery)}
-              className="w-full sm:w-auto px-6 py-3 text-base font-medium text-white bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors"
+              className="ff-auth-cta-secondary w-full justify-center px-6 py-3 text-sm sm:w-auto"
             >
               Edit
             </button>
             <button
               onClick={() => setBatteryPendingDelete(selectedBattery)}
-              className="w-full sm:w-auto px-6 py-3 text-base font-medium bg-red-600 hover:bg-red-500 text-white rounded-lg transition-colors"
+              className="w-full rounded-xl border border-red-400/45 bg-red-500/20 px-6 py-3 text-sm font-medium text-red-50 transition-colors hover:bg-red-500/28 sm:w-auto"
             >
               Delete
             </button>
@@ -932,14 +932,15 @@ export function BatterySection({ onError }: BatterySectionProps) {
         {/* Log Modal */}
         {showLogModal && (
           <div 
-            className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+            className="fixed inset-0 z-50 flex items-center justify-center"
             onClick={() => setShowLogModal(false)}
             role="dialog"
             aria-modal="true"
             aria-labelledby="log-modal-title"
           >
+            <div className="ff-modal-backdrop absolute inset-0" />
             <div 
-              className="bg-slate-800 rounded-lg p-6 max-w-md w-full mx-4 border border-slate-700"
+              className="ff-auth-modal-panel mx-4 w-full max-w-md rounded-[28px] p-6"
               onClick={(e) => e.stopPropagation()}
               onKeyDown={(e) => {
                 if (e.key === 'Escape') {
@@ -952,7 +953,7 @@ export function BatterySection({ onError }: BatterySectionProps) {
                 <button
                   onClick={() => setShowLogModal(false)}
                   aria-label="Close add health log modal"
-                  className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+                  className="ff-modal-close rounded-xl p-2 transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1070,7 +1071,7 @@ export function BatterySection({ onError }: BatterySectionProps) {
         {batteryPendingDelete && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
-              className="absolute inset-0 bg-black/70"
+              className="ff-modal-backdrop absolute inset-0"
               onClick={() => {
                 if (!isDeletingBattery) {
                   setBatteryPendingDelete(null);
@@ -1082,7 +1083,7 @@ export function BatterySection({ onError }: BatterySectionProps) {
               aria-modal="true"
               aria-labelledby="battery-delete-dialog-title"
               aria-describedby="battery-delete-dialog-description"
-              className="relative bg-slate-800 rounded-xl p-6 max-w-md w-full shadow-2xl border border-red-500/50"
+              className="ff-auth-modal-panel relative w-full max-w-md rounded-[28px] border border-red-500/40 p-6 shadow-2xl"
             >
               <div className="flex items-start justify-between gap-3 mb-4">
                 <div className="flex items-center gap-3">
@@ -1098,7 +1099,7 @@ export function BatterySection({ onError }: BatterySectionProps) {
                   onClick={() => setBatteryPendingDelete(null)}
                   disabled={isDeletingBattery}
                   aria-label="Close delete battery modal"
-                  className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+                  className="ff-modal-close rounded-xl p-2 transition-colors disabled:opacity-50"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1113,7 +1114,7 @@ export function BatterySection({ onError }: BatterySectionProps) {
                   type="button"
                   onClick={() => void handleDeleteBattery()}
                   disabled={isDeletingBattery}
-                  className="w-full px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+                  className="w-full rounded-xl border border-red-400/45 bg-red-500/20 px-4 py-2 font-medium text-red-50 transition-colors hover:bg-red-500/28 disabled:opacity-50"
                 >
                   {isDeletingBattery ? 'Deleting...' : 'Delete Battery'}
                 </button>
@@ -1137,7 +1138,7 @@ export function BatterySection({ onError }: BatterySectionProps) {
           className="fixed inset-0 z-[70] flex items-start md:items-center justify-center p-4 md:p-6"
         >
           <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="ff-modal-backdrop absolute inset-0"
             onClick={closeFormModal}
           />
           <div ref={formDialogRef} tabIndex={-1} className="relative w-full max-w-3xl">
@@ -1154,13 +1155,13 @@ export function BatterySection({ onError }: BatterySectionProps) {
           className="fixed inset-0 z-[70] flex items-start md:items-center justify-center p-4 md:p-6"
         >
           <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="ff-modal-backdrop absolute inset-0"
             onClick={closeDetailModal}
           />
           <div
             ref={detailDialogRef}
             tabIndex={-1}
-            className="relative w-full max-w-6xl h-[92vh] max-h-[92vh] overflow-hidden bg-slate-900 border border-slate-700 rounded-2xl flex flex-col"
+            className="ff-auth-modal-panel relative flex h-[92vh] max-h-[92vh] w-full max-w-6xl overflow-hidden rounded-[30px]"
           >
             {renderDetail()}
           </div>

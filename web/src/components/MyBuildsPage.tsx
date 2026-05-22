@@ -703,9 +703,9 @@ export function MyBuildsPage() {
   return (
     <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6">
       <div className="mx-auto w-full max-w-7xl min-w-0 space-y-6">
-        <header className="rounded-2xl border border-slate-700 bg-slate-800/70 p-5">
-          <h1 className="text-2xl font-semibold text-white">My Builds</h1>
-          <p className="mt-1 text-sm text-slate-400">
+        <header className="ff-auth-card rounded-[30px] p-5">
+          <h1 className="ff-auth-page-title text-[2rem]">My Builds</h1>
+          <p className="ff-auth-page-subtitle mt-2 text-sm">
             Manage drafts, build from an existing aircraft, and submit builds for moderation before public release.
           </p>
 
@@ -713,7 +713,7 @@ export function MyBuildsPage() {
             <button
               type="button"
               onClick={handleCreateDraft}
-              className="h-10 rounded-lg bg-primary-600 px-4 text-sm font-medium text-white transition hover:bg-primary-500"
+              className="ff-auth-cta-primary h-10 px-4 text-sm"
             >
               New Draft
             </button>
@@ -752,8 +752,8 @@ export function MyBuildsPage() {
         )}
 
         <div className="grid min-w-0 gap-6 lg:grid-cols-[320px,minmax(0,1fr)]">
-          <aside className="min-w-0 space-y-3 rounded-xl border border-slate-700 bg-slate-800/60 p-4">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">Builds</h2>
+          <aside className="ff-auth-card min-w-0 space-y-3 rounded-[28px] p-4">
+            <h2 className="ff-auth-kicker">Builds</h2>
             {isLoadingList ? (
               <p className="text-sm text-slate-400">Loading builds...</p>
             ) : builds.length === 0 ? (
@@ -765,10 +765,10 @@ export function MyBuildsPage() {
                     key={item.id}
                     type="button"
                     onClick={() => setSelectedBuildId(item.id)}
-                    className={`w-full rounded-lg border px-3 py-2 text-left transition ${
+                    className={`w-full rounded-[18px] border px-3 py-2 text-left transition ${
                       selectedBuildId === item.id
-                        ? 'border-primary-500/50 bg-primary-500/10'
-                        : 'border-slate-700 bg-slate-900/60 hover:border-slate-600'
+                        ? 'border-primary-400/50 bg-primary-500/14'
+                        : 'border-white/10 bg-white/6 hover:border-white/18'
                     }`}
                   >
                     <p className="truncate text-sm font-medium text-white">{item.title || 'Untitled Build'}</p>
@@ -781,7 +781,7 @@ export function MyBuildsPage() {
             )}
           </aside>
 
-          <section className="min-w-0 space-y-4 rounded-xl border border-slate-700 bg-slate-800/60 p-4">
+          <section className="ff-auth-card min-w-0 space-y-4 rounded-[28px] p-4">
             {!selectedBuildId ? (
               <p className="text-sm text-slate-400">Select a build to edit.</p>
             ) : isLoadingBuild || !editorBuild ? (
@@ -949,20 +949,20 @@ export function MyBuildsPage() {
 
       {showDeleteConfirmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/70" onClick={handleCancelDelete} />
+          <div className="ff-modal-backdrop absolute inset-0" onClick={handleCancelDelete} />
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="delete-build-modal-title"
-            className="relative w-full max-w-md rounded-xl border border-red-500/40 bg-slate-800 p-6 shadow-2xl"
+            className="ff-auth-shell relative w-full max-w-md rounded-[28px] border border-red-500/40 bg-[linear-gradient(180deg,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0.04)_100%),linear-gradient(180deg,rgba(127,29,29,0.18)_0%,rgba(127,29,29,0.08)_100%),rgb(var(--ff-panel-strong-rgb)/0.42)] p-6 shadow-2xl backdrop-blur-[26px]"
           >
             <div className="mb-4 flex items-start justify-between gap-3">
-              <h3 id="delete-build-modal-title" className="text-lg font-semibold text-white">Delete build?</h3>
+              <h3 id="delete-build-modal-title" className="font-public text-lg font-semibold text-white">Delete build?</h3>
               <button
                 onClick={handleCancelDelete}
                 disabled={isSaving}
                 aria-label="Close delete build modal"
-                className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-slate-700 hover:text-white disabled:opacity-50"
+                className="ff-modal-close rounded-xl p-2 transition-colors disabled:opacity-50"
               >
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -983,7 +983,7 @@ export function MyBuildsPage() {
                 type="button"
                 onClick={handleCancelDelete}
                 disabled={isSaving}
-                className="rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-slate-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+                className="ff-auth-cta-secondary px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Cancel
               </button>
@@ -991,7 +991,7 @@ export function MyBuildsPage() {
                 type="button"
                 onClick={() => void handleConfirmDelete()}
                 disabled={isSaving}
-                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-60"
+                className="rounded-xl border border-red-400/45 bg-red-500/20 px-4 py-2 text-sm font-medium text-red-50 transition hover:bg-red-500/28 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isSaving ? 'Deleting...' : 'Delete'}
               </button>
@@ -1002,14 +1002,14 @@ export function MyBuildsPage() {
 
       {showDeclineNoticeModal && selectedDeclineReason && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/70" onClick={handleCloseDeclineNotice} />
+          <div className="ff-modal-backdrop absolute inset-0" onClick={handleCloseDeclineNotice} />
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="build-decline-feedback-title"
-            className="relative w-full max-w-lg rounded-xl border border-amber-500/40 bg-slate-800 p-6 shadow-2xl"
+            className="ff-auth-shell relative w-full max-w-lg rounded-[28px] border border-amber-500/40 bg-[linear-gradient(180deg,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.05)_100%),linear-gradient(180deg,rgba(245,158,11,0.16)_0%,rgba(245,158,11,0.06)_100%),rgb(var(--ff-panel-strong-rgb)/0.40)] p-6 shadow-2xl backdrop-blur-[26px]"
           >
-            <h3 id="build-decline-feedback-title" className="text-lg font-semibold text-white">Build moderation feedback</h3>
+            <h3 id="build-decline-feedback-title" className="font-public text-lg font-semibold text-white">Build moderation feedback</h3>
             <p className="mt-2 text-sm text-slate-300">
               <span className="font-semibold text-white">{editorBuild?.title || 'This build'}</span> was declined by a moderator.
               Review the feedback below before resubmitting.
@@ -1022,7 +1022,7 @@ export function MyBuildsPage() {
                 type="button"
                 onClick={handleCloseDeclineNotice}
                 ref={declineNoticePrimaryActionRef}
-                className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-primary-500"
+                className="ff-auth-cta-primary px-4 py-2 text-sm"
               >
                 Got it
               </button>

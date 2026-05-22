@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '../test/test-utils';
+import { fireEvent, render, screen } from '../test/test-utils';
 
 import { GearDetailModal } from './GearDetailModal';
 import type { GearCatalogItem } from '../gearCatalogTypes';
@@ -38,5 +38,26 @@ describe('GearDetailModal', () => {
     expect(link).toBeInTheDocument();
     expect(link.className).toContain('rounded-full');
     expect(link.className).toContain('bg-primary-600/20');
+  });
+
+  it('closes when clicking the backdrop', () => {
+    const onClose = vi.fn();
+    const { container } = render(
+      <GearDetailModal
+        item={buildItem()}
+        isOpen
+        onClose={onClose}
+        isAuthenticated
+      />,
+    );
+
+    const backdrop = container.querySelector('.ff-modal-backdrop');
+    if (!(backdrop instanceof HTMLElement)) {
+      throw new Error('Backdrop not found');
+    }
+
+    fireEvent.click(backdrop);
+
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 });

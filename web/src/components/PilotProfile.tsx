@@ -612,19 +612,16 @@ function PublishedBuildPreviewModal({
   const flightVideoEmbedURL = getYouTubeEmbedURL(build?.flightYoutubeUrl);
 
   return (
-    <div
-      className="fixed inset-0 z-[80] flex items-center justify-center p-4"
-      onClick={(event) => event.target === event.currentTarget && onClose()}
-    >
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-      <div className="relative w-full max-w-3xl max-h-[90vh] overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 flex flex-col">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700">
-          <h3 className="text-lg font-semibold text-white">Build Details</h3>
+    <div className="fixed inset-0 z-[80] flex items-center justify-center p-4">
+      <div className="ff-modal-backdrop absolute inset-0" onClick={onClose} aria-hidden="true" />
+      <div className="ff-auth-shell ff-auth-modal-panel relative flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-[30px]">
+        <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+          <h3 className="font-public text-lg font-semibold text-white">Build Details</h3>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close build details modal"
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+            className="ff-modal-close rounded-xl p-2 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -634,7 +631,7 @@ function PublishedBuildPreviewModal({
 
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
           {isLoading && (
-            <div className="rounded-lg border border-slate-700 bg-slate-800/60 p-6 text-center text-slate-400">
+            <div className="ff-modal-surface rounded-[22px] p-6 text-center text-slate-300">
               Loading build details...
             </div>
           )}
@@ -651,19 +648,19 @@ function PublishedBuildPreviewModal({
               </div>
 
               {build.mainImageUrl && (
-                <div className="overflow-hidden rounded-xl border border-slate-700 bg-slate-800/60">
+                <div className="ff-modal-surface overflow-hidden rounded-[24px]">
                   <img src={build.mainImageUrl} alt={build.title} className="max-h-[320px] w-full object-cover" />
                 </div>
               )}
 
               {(buildVideoEmbedURL || flightVideoEmbedURL) && (
-                <div className="rounded-xl border border-slate-700 bg-slate-800/60 p-4">
+                <div className="ff-modal-surface rounded-[24px] p-4">
                   <h5 className="text-sm font-semibold uppercase tracking-wide text-slate-400 mb-3">Videos</h5>
                   <div className="space-y-4">
                     {buildVideoEmbedURL && (
                       <div>
                         <p className="mb-2 text-sm font-medium text-slate-300">Build Video</p>
-                        <div className="aspect-video overflow-hidden rounded-lg border border-slate-700 bg-slate-900/60">
+                      <div className="ff-modal-surface aspect-video overflow-hidden rounded-[22px]">
                           <iframe
                             src={buildVideoEmbedURL}
                             title={`${build.title} - Build Video`}
@@ -679,7 +676,7 @@ function PublishedBuildPreviewModal({
                     {flightVideoEmbedURL && (
                       <div>
                         <p className="mb-2 text-sm font-medium text-slate-300">Flight Video</p>
-                        <div className="aspect-video overflow-hidden rounded-lg border border-slate-700 bg-slate-900/60">
+                        <div className="ff-modal-surface aspect-video overflow-hidden rounded-[22px]">
                           <iframe
                             src={flightVideoEmbedURL}
                             title={`${build.title} - Flight Video`}
@@ -696,7 +693,7 @@ function PublishedBuildPreviewModal({
                 </div>
               )}
 
-              <div className="rounded-lg border border-slate-700 bg-slate-800/60 p-4">
+              <div className="ff-modal-surface rounded-[22px] p-4">
                 <div className="flex items-center justify-between">
                   <h5 className="text-sm font-semibold uppercase tracking-wide text-slate-400">Estimated MSRP</h5>
                   <span className="text-lg font-semibold text-primary-300">{msrpLabel}</span>

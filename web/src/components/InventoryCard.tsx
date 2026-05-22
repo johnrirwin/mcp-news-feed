@@ -29,11 +29,11 @@ export function InventoryCard({ item, onOpen }: InventoryCardProps) {
         }
       }}
       aria-label={`Edit ${item.name}`}
-      className="bg-slate-800 border border-slate-700 rounded-xl p-4 hover:border-slate-600 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all cursor-pointer"
+      className="ff-auth-card ff-auth-card-hover cursor-pointer rounded-[24px] p-4 focus:outline-none focus:ring-2 focus:ring-primary-500"
     >
       <div className="flex gap-4">
         {/* Image */}
-        <div className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-slate-700">
+        <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-[18px] border border-white/10 bg-black/12">
           {item.imageUrl ? (
             <img
               src={item.imageUrl}
@@ -45,7 +45,7 @@ export function InventoryCard({ item, onOpen }: InventoryCardProps) {
               }}
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-slate-500">
+            <div className="flex h-full w-full items-center justify-center text-slate-400/70">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
@@ -58,19 +58,19 @@ export function InventoryCard({ item, onOpen }: InventoryCardProps) {
           {/* Header */}
           <div className="flex items-start justify-between gap-2 mb-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="px-2 py-0.5 bg-slate-700 text-slate-300 rounded text-xs">
+              <span className="ff-auth-chip text-[11px]">
                 {category?.label || item.category}
               </span>
             </div>
           </div>
 
           {/* Title */}
-          <h3 className="text-white font-medium mb-1 line-clamp-1">
+          <h3 className="mb-1 line-clamp-1 font-public text-lg font-semibold tracking-[-0.03em] text-white">
             {item.name}
           </h3>
 
           {/* Manufacturer & price */}
-          <div className="flex items-center gap-2 text-sm text-slate-400 mb-2">
+          <div className="mb-2 flex items-center gap-2 text-sm text-slate-300/72">
             {item.manufacturer && <span>{item.manufacturer}</span>}
             {item.purchasePrice && (
               <>
@@ -88,7 +88,7 @@ export function InventoryCard({ item, onOpen }: InventoryCardProps) {
 
           {/* Notes */}
           {item.notes && (
-            <p className="text-slate-500 text-sm line-clamp-1 mb-2">
+            <p className="mb-2 line-clamp-1 text-sm text-slate-300/62">
               {item.notes}
             </p>
           )}
@@ -96,10 +96,10 @@ export function InventoryCard({ item, onOpen }: InventoryCardProps) {
           {/* Actions */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-500 uppercase tracking-wide">Quantity</span>
+              <span className="text-xs uppercase tracking-wide text-slate-300/58">Quantity</span>
               <span className="text-white font-semibold">{item.quantity}</span>
             </div>
-            <div className="text-xs text-slate-500">
+            <div className="text-xs text-slate-300/58">
               Click to edit
             </div>
           </div>
@@ -131,14 +131,14 @@ export function InventoryList({
   if (error) {
     return (
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="text-center max-w-md">
+        <div className="ff-auth-empty-state max-w-md">
           <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-white mb-2">Failed to Load Inventory</h3>
-          <p className="text-slate-400 text-sm">{error}</p>
+          <h3 className="font-public text-xl font-semibold tracking-[-0.03em] text-white">Failed to Load Inventory</h3>
+          <p className="mt-2 text-sm text-slate-300/74">{error}</p>
         </div>
       </div>
     );
@@ -149,7 +149,7 @@ export function InventoryList({
     return (
       <div className="flex-1 p-6 space-y-4">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="bg-slate-800 border border-slate-700 rounded-xl p-4 animate-pulse">
+          <div key={i} className="ff-auth-card animate-pulse rounded-[24px] p-4">
             <div className="flex gap-4">
               <div className="w-20 h-20 bg-slate-700 rounded-lg" />
               <div className="flex-1 space-y-3">
@@ -170,14 +170,14 @@ export function InventoryList({
   if (!isLoading && items.length === 0) {
     return (
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="text-center max-w-md">
-          <div className="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="ff-auth-empty-state max-w-md">
+          <div className="ff-auth-glass-panel mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
             <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-white mb-2">No Gear Yet</h3>
-          <p className="text-slate-400 text-sm">
+          <h3 className="font-public text-xl font-semibold tracking-[-0.035em] text-white">No Gear Yet</h3>
+          <p className="mt-2 text-sm text-slate-300/74">
             Start building your inventory by adding equipment from the Equipment section or manually.
           </p>
         </div>
@@ -229,7 +229,7 @@ export function InventoryList({
     >
       {/* Show subtle loading overlay when filtering existing items */}
       {isLoading && items.length > 0 && (
-        <div className="absolute inset-0 bg-slate-900/50 flex items-center justify-center z-10">
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-950/35 backdrop-blur-[2px]">
           <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
         </div>
       )}
@@ -237,8 +237,8 @@ export function InventoryList({
         {sortedCategories.map(category => (
           <section key={category.value}>
             <div className="flex items-center gap-3 mb-3 md:mb-4">
-              <h2 className="text-base md:text-lg font-semibold text-white">{category.label}</h2>
-              <span className="px-2 py-0.5 bg-slate-700 rounded-full text-xs text-slate-400">
+              <h2 className="font-public text-lg font-semibold tracking-[-0.03em] text-white">{category.label}</h2>
+              <span className="ff-auth-chip text-xs">
                 {category.items.length}
               </span>
             </div>

@@ -33,9 +33,9 @@ export function ShopSection() {
   const [isMobileControlsOpen, setIsMobileControlsOpen] = useState(false);
 
   const controls = (
-    <div className="px-4 md:px-6 py-4 border-b border-slate-800 bg-slate-900">
-      <h1 className="text-xl font-semibold text-white">Shop Equipment</h1>
-      <p className="text-sm text-slate-400">
+    <div className="ff-auth-toolbar">
+      <h1 className="ff-auth-section-title">Shop Equipment</h1>
+      <p className="ff-auth-page-subtitle mt-2 text-sm">
         Trusted retailers for drone parts and gear
       </p>
     </div>
@@ -59,12 +59,12 @@ export function ShopSection() {
               rel="noopener noreferrer"
               className="group block h-full"
             >
-              <div className={`relative overflow-hidden rounded-xl border border-slate-700 bg-gradient-to-br ${shop.color} backdrop-blur-sm transition-all duration-300 hover:border-slate-500 hover:shadow-lg hover:shadow-slate-900/50 hover:-translate-y-1 h-full min-h-[280px] flex flex-col`}>
+              <div className={`ff-auth-card ff-auth-card-hover relative flex h-full min-h-[280px] flex-col overflow-hidden rounded-[28px] bg-gradient-to-br ${shop.color}`}>
                 {/* Card Content */}
                 <div className="p-6 h-full flex flex-col">
                   {/* Logo and Name */}
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-14 h-14 rounded-xl bg-slate-800/80 flex items-center justify-center text-3xl">
+                    <div className="ff-auth-glass-panel flex h-14 w-14 items-center justify-center rounded-2xl text-3xl">
                       {shop.logo}
                     </div>
                     <div>
@@ -87,7 +87,7 @@ export function ShopSection() {
                     {shop.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2 py-1 text-xs font-medium rounded-md bg-slate-800/60 text-slate-400"
+                        className="ff-auth-chip text-xs"
                       >
                         {tag}
                       </span>
@@ -95,8 +95,8 @@ export function ShopSection() {
                   </div>
 
                   {/* Visit Button */}
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-700/50 mt-auto">
-                    <span className="text-sm text-slate-400">Visit Store</span>
+                  <div className="mt-auto flex items-center justify-between border-t border-white/10 pt-4">
+                    <span className="text-sm text-slate-300/72">Visit Store</span>
                     <svg 
                       className="w-5 h-5 text-slate-400 group-hover:text-primary-400 group-hover:translate-x-1 transition-all" 
                       fill="none" 
@@ -117,14 +117,14 @@ export function ShopSection() {
           ))}
 
           {/* Add More Card */}
-          <div className="relative overflow-hidden rounded-xl border border-dashed border-slate-700 bg-slate-800/20 p-6 flex flex-col items-center justify-center text-center min-h-[280px] h-full">
-            <div className="w-14 h-14 rounded-xl bg-slate-800/50 flex items-center justify-center mb-4">
+          <div className="ff-auth-empty-state relative flex h-full min-h-[280px] flex-col items-center justify-center rounded-[28px] border-dashed p-6 text-center">
+            <div className="ff-auth-glass-panel mb-4 flex h-14 w-14 items-center justify-center rounded-2xl">
               <svg className="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
               </svg>
             </div>
-            <h3 className="text-sm font-medium text-slate-400 mb-1">More Coming Soon</h3>
-            <p className="text-xs text-slate-500">
+            <h3 className="font-public text-lg font-semibold tracking-[-0.03em] text-white">More Coming Soon</h3>
+            <p className="mt-2 text-xs text-slate-300/68">
               Additional trusted retailers will be added
             </p>
           </div>

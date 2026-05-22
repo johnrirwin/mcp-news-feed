@@ -3,6 +3,7 @@ package config
 import (
 	"crypto/x509"
 	"encoding/pem"
+	"errors"
 	"flag"
 	"os"
 	"strconv"
@@ -10,16 +11,33 @@ import (
 	"time"
 )
 
+const (
+	// EnvironmentProduction is the secure default runtime environment.
+	EnvironmentProduction = "production"
+
+	// DefaultJWTSecret is the local-development fallback for the main auth JWT
+	// signing secret. It must never be used outside an explicit development
+	// environment.
+	DefaultJWTSecret = "change-me-in-production"
+)
+
+var insecureJWTSecretPlaceholders = map[string]struct{}{
+	DefaultJWTSecret:                    {},
+	"replace-with-a-long-random-secret": {},
+	"dev-secret-change-in-production":   {},
+}
+
 // Config holds all application configuration
 type Config struct {
-	Server     ServerConfig
-	MCP        MCPConfig
-	Cache      CacheConfig
-	Database   DatabaseConfig
-	Logging    LoggingConfig
-	Auth       AuthConfig
-	Crypto     CryptoConfig
-	Moderation ModerationConfig
+	Environment string
+	Server      ServerConfig
+	MCP         MCPConfig
+	Cache       CacheConfig
+	Database    DatabaseConfig
+	Logging     LoggingConfig
+	Auth        AuthConfig
+	Crypto      CryptoConfig
+	Moderation  ModerationConfig
 }
 
 // ServerConfig holds HTTP/MCP server configuration
@@ -114,7 +132,9 @@ type ModerationConfig struct {
 
 // Load parses flags and environment variables to build configuration
 func Load() *Config {
-	cfg := &Config{}
+	cfg := &Config{
+		Environment: loadEnvironment(),
+	}
 
 	// Define flags with defaults
 	httpAddr := flag.String("http", ":8080", "HTTP server address")
@@ -175,7 +195,7 @@ func Load() *Config {
 	}
 
 	// Load auth config from environment
-	cfg.Auth = loadAuthConfig()
+	cfg.Auth = loadAuthConfig(cfg.Environment)
 
 	// Load crypto config from environment
 	cfg.Crypto = loadCryptoConfig()
@@ -184,6 +204,32 @@ func Load() *Config {
 	cfg.Moderation = loadModerationConfig()
 
 	return cfg
+}
+
+// Validate enforces startup-time configuration safety checks.
+func (c *Config) Validate() error {
+	if c == nil {
+		return errors.New("config is required")
+	}
+	if isExplicitDevelopmentEnvironment(c.Environment) {
+		return nil
+	}
+	if err := ValidateJWTSecret(c.Auth.JWTSecret); err != nil {
+		return err
+	}
+	return nil
+}
+
+// ValidateDeployAuthSecrets enforces the deploy-time auth secret contract used
+// by production rollouts before infrastructure changes are applied.
+func ValidateDeployAuthSecrets(jwtSecret, privateKeyPEM string) error {
+	if err := ValidateJWTSecret(jwtSecret); err != nil {
+		return err
+	}
+	if strings.TrimSpace(privateKeyPEM) == "" {
+		return errors.New("MCP_AUTH_PRIVATE_KEY_PEM is required")
+	}
+	return nil
 }
 
 func loadMCPConfig() MCPConfig {
@@ -287,7 +333,7 @@ func loadMCPConfig() MCPConfig {
 	}
 }
 
-func loadAuthConfig() AuthConfig {
+func loadAuthConfig(environment string) AuthConfig {
 	accessTTL := 15 * time.Minute
 	if v := os.Getenv("AUTH_ACCESS_TOKEN_TTL"); v != "" {
 		if d, err := time.ParseDuration(v); err == nil {
@@ -302,8 +348,13 @@ func loadAuthConfig() AuthConfig {
 		}
 	}
 
+	jwtSecret := strings.TrimSpace(os.Getenv("AUTH_JWT_SECRET"))
+	if jwtSecret == "" && isExplicitDevelopmentEnvironment(environment) {
+		jwtSecret = DefaultJWTSecret
+	}
+
 	return AuthConfig{
-		JWTSecret:          getEnvOrDefault("AUTH_JWT_SECRET", "change-me-in-production"),
+		JWTSecret:          jwtSecret,
 		JWTIssuer:          getEnvOrDefault("AUTH_JWT_ISSUER", "flyingforge"),
 		JWTAudience:        getEnvOrDefault("AUTH_JWT_AUDIENCE", "flyingforge-users"),
 		AccessTokenTTL:     accessTTL,
@@ -370,6 +421,43 @@ func getEnvOrDefault(key, defaultValue string) string {
 		return v
 	}
 	return defaultValue
+}
+
+// ValidateJWTSecret enforces the production JWT-signing secret contract.
+func ValidateJWTSecret(secret string) error {
+	secret = strings.TrimSpace(secret)
+	if secret == "" {
+		return errors.New("AUTH_JWT_SECRET is required unless APP_ENV explicitly opts into development, dev, or local mode")
+	}
+	if isKnownJWTSecretPlaceholder(secret) {
+		return errors.New("AUTH_JWT_SECRET must not use a known placeholder or development default outside APP_ENV=development/dev/local")
+	}
+	if len(secret) < 32 {
+		return errors.New("AUTH_JWT_SECRET must be at least 32 characters outside APP_ENV=development/dev/local")
+	}
+	return nil
+}
+
+func isKnownJWTSecretPlaceholder(secret string) bool {
+	_, found := insecureJWTSecretPlaceholders[strings.ToLower(strings.TrimSpace(secret))]
+	return found
+}
+
+func loadEnvironment() string {
+	environment := strings.ToLower(strings.TrimSpace(os.Getenv("APP_ENV")))
+	if environment == "" {
+		return EnvironmentProduction
+	}
+	return environment
+}
+
+func isExplicitDevelopmentEnvironment(environment string) bool {
+	switch strings.ToLower(strings.TrimSpace(environment)) {
+	case "development", "dev", "local":
+		return true
+	default:
+		return false
+	}
 }
 
 func selfHostedSigningKeyConfigured(privateKeyPEM string) bool {

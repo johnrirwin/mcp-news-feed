@@ -357,8 +357,8 @@ export function AddGearModal({ isOpen, onClose, onSubmit, onDelete, equipmentIte
   if (isSubmitting && hasPreselectedCatalogItem) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-        <div className="relative bg-slate-800 border border-slate-700 rounded-2xl p-8 flex flex-col items-center gap-4">
+        <div className="ff-modal-backdrop absolute inset-0" />
+        <div className="ff-auth-shell ff-auth-modal-panel relative flex flex-col items-center gap-4 rounded-[28px] p-8">
           <div className="w-8 h-8 border-2 border-primary-400 border-t-transparent rounded-full animate-spin" />
           <p className="text-white">Adding to inventory...</p>
         </div>
@@ -370,14 +370,14 @@ export function AddGearModal({ isOpen, onClose, onSubmit, onDelete, equipmentIte
   if (error && hasPreselectedCatalogItem) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-        <div className="relative bg-slate-800 border border-slate-700 rounded-2xl p-6 max-w-sm w-full">
+        <div className="ff-modal-backdrop absolute inset-0" onClick={onClose} />
+        <div className="ff-auth-shell ff-auth-modal-panel relative w-full max-w-sm rounded-[28px] p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white">Unable to Add Item</h3>
+            <h3 className="font-public text-lg font-semibold text-white">Unable to Add Item</h3>
             <button
               onClick={onClose}
               aria-label="Close add gear error modal"
-              className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+              className="ff-modal-close rounded-xl p-2 transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -413,18 +413,18 @@ export function AddGearModal({ isOpen, onClose, onSubmit, onDelete, equipmentIte
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="ff-modal-backdrop absolute inset-0"
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="relative bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col">
+      <div className="ff-auth-shell ff-auth-modal-panel relative flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-[28px]">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-          <h2 className="text-lg font-semibold text-white">{title}</h2>
+        <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+          <h2 className="font-public text-lg font-semibold text-white">{title}</h2>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+            className="ff-modal-close rounded-xl p-2 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -437,12 +437,12 @@ export function AddGearModal({ isOpen, onClose, onSubmit, onDelete, equipmentIte
           <div className="p-6 space-y-4">
             {/* Item image */}
             {(modalImageUrl || imageLoadFailed) && (
-              <div className="rounded-xl border border-slate-700 overflow-hidden bg-slate-900/40">
+              <div className="ff-modal-surface overflow-hidden rounded-[24px]">
                 {modalImageUrl && !imageLoadFailed ? (
                   <img
                     src={modalImageUrl}
                     alt={editItem?.name || equipmentItem?.name || name || 'Inventory item'}
-                    className="w-full h-44 object-contain bg-slate-900"
+                    className="h-44 w-full object-contain bg-transparent"
                     onError={() => setImageLoadFailed(true)}
                   />
                 ) : (
@@ -567,10 +567,10 @@ export function AddGearModal({ isOpen, onClose, onSubmit, onDelete, equipmentIte
                             key={`item-detail-tab-${index}`}
                             type="button"
                             onClick={() => setActiveItemDetailIndex(index)}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
+                            className={`rounded-xl px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors ${
                               activeItemDetailIndex === index
                                 ? 'bg-primary-600 text-white'
-                                : 'bg-slate-700 text-slate-300 hover:bg-slate-600 hover:text-white'
+                                : 'ff-modal-surface-soft text-slate-300 hover:text-white'
                             }`}
                           >
                             Item {index + 1}
@@ -579,7 +579,7 @@ export function AddGearModal({ isOpen, onClose, onSubmit, onDelete, equipmentIte
                       </div>
                     )}
 
-                    <div className="p-4 rounded-lg border border-slate-700 bg-slate-900/30 space-y-4">
+                    <div className="ff-modal-surface space-y-4 rounded-[22px] p-4">
                       {hasMultipleItemDetails && (
                         <div className="text-xs text-slate-400 uppercase tracking-wide">
                           Editing item {activeItemDetailIndex + 1} of {itemDetailForms.length}
@@ -632,7 +632,7 @@ export function AddGearModal({ isOpen, onClose, onSubmit, onDelete, equipmentIte
                     </div>
                   </div>
                 ) : (
-                  <div className="p-3 rounded-lg border border-slate-700 bg-slate-900/30 text-sm text-slate-400">
+                  <div className="ff-modal-surface rounded-[20px] p-3 text-sm text-slate-300">
                     Increase quantity above 0 to edit item details.
                   </div>
                 )}
@@ -703,7 +703,7 @@ export function AddGearModal({ isOpen, onClose, onSubmit, onDelete, equipmentIte
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between gap-3 px-6 py-4 border-t border-slate-700 bg-slate-800/50">
+          <div className="ff-modal-footer flex items-center justify-between gap-3 px-6 py-4">
             <div>
               {editItem && onDelete && (
                 <button
@@ -711,7 +711,7 @@ export function AddGearModal({ isOpen, onClose, onSubmit, onDelete, equipmentIte
                   type="button"
                   onClick={handleOpenDeleteConfirm}
                   disabled={isSubmitting || isDeleting}
-                  className="px-4 py-2 bg-red-600/80 hover:bg-red-600 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="rounded-xl border border-red-400/45 bg-red-500/20 px-4 py-2 text-sm font-medium text-red-100 transition-colors hover:bg-red-500/28 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isDeleting ? 'Deleting...' : 'Delete Item'}
                 </button>
@@ -721,7 +721,7 @@ export function AddGearModal({ isOpen, onClose, onSubmit, onDelete, equipmentIte
             <button
               type="submit"
               disabled={isSubmitting || isDeleting || !name.trim() || quantityInput.trim().length === 0}
-              className="px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center gap-2"
+              className="ff-auth-cta-primary flex items-center gap-2 px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isSubmitting && (
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -737,7 +737,7 @@ export function AddGearModal({ isOpen, onClose, onSubmit, onDelete, equipmentIte
       {showDeleteConfirmModal && editItem && (
         <div className="absolute inset-0 z-10 flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-black/70"
+            className="ff-modal-backdrop absolute inset-0"
             onClick={handleCancelDelete}
           />
           <div
@@ -745,7 +745,7 @@ export function AddGearModal({ isOpen, onClose, onSubmit, onDelete, equipmentIte
             aria-modal="true"
             aria-labelledby="inventory-delete-dialog-title"
             aria-describedby="inventory-delete-dialog-description"
-            className="relative bg-slate-800 rounded-xl p-6 max-w-md w-full shadow-2xl border border-red-500/50"
+            className="ff-auth-shell relative w-full max-w-md rounded-[28px] border border-red-500/50 bg-[linear-gradient(180deg,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0.04)_100%),linear-gradient(180deg,rgba(127,29,29,0.18)_0%,rgba(127,29,29,0.08)_100%),rgb(var(--ff-panel-strong-rgb)/0.42)] p-6 shadow-2xl backdrop-blur-[26px]"
           >
             <div className="flex items-start justify-between gap-3 mb-4">
               <div className="flex items-center gap-3">
@@ -754,14 +754,14 @@ export function AddGearModal({ isOpen, onClose, onSubmit, onDelete, equipmentIte
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                 </div>
-                <h3 id="inventory-delete-dialog-title" className="text-lg font-semibold text-white">Delete Item?</h3>
+                <h3 id="inventory-delete-dialog-title" className="font-public text-lg font-semibold text-white">Delete Item?</h3>
               </div>
               <button
                 type="button"
                 onClick={handleCancelDelete}
                 disabled={isDeleting}
                 aria-label="Close delete item modal"
-                className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+                className="ff-modal-close rounded-xl p-2 transition-colors disabled:opacity-50"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

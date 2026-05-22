@@ -14,12 +14,12 @@ export function AircraftCard({ aircraft, onSelect, onEdit, onDelete }: AircraftC
 
   return (
     <div 
-      className="bg-slate-800 border border-slate-700 rounded-xl p-4 hover:border-slate-600 transition-all cursor-pointer"
+      className="ff-auth-card ff-auth-card-hover cursor-pointer rounded-[24px] p-4"
       onClick={() => onSelect(aircraft)}
     >
       <div className="flex gap-4">
         {/* Image */}
-        <div className="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-slate-700">
+        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-[18px] border border-white/10 bg-black/12">
           {aircraft.hasImage ? (
             <img
               src={getAircraftImageUrl(aircraft.id)}
@@ -31,7 +31,7 @@ export function AircraftCard({ aircraft, onSelect, onEdit, onDelete }: AircraftC
               }}
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-4xl">
+            <div className="flex h-full w-full items-center justify-center text-4xl">
               {aircraftType?.icon || '🚁'}
             </div>
           )}
@@ -42,7 +42,7 @@ export function AircraftCard({ aircraft, onSelect, onEdit, onDelete }: AircraftC
           {/* Header */}
           <div className="flex items-start justify-between gap-2 mb-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="px-2 py-0.5 bg-slate-700 text-slate-300 rounded text-xs">
+              <span className="ff-auth-chip text-[11px]">
                 {aircraftType?.label || aircraft.type}
               </span>
             </div>
@@ -53,7 +53,7 @@ export function AircraftCard({ aircraft, onSelect, onEdit, onDelete }: AircraftC
             >
               <button
                 onClick={() => onEdit(aircraft)}
-                className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors"
+                className="rounded-xl p-1.5 text-slate-300/72 transition-colors hover:bg-white/10 hover:text-white"
                 title="Edit"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,7 +62,7 @@ export function AircraftCard({ aircraft, onSelect, onEdit, onDelete }: AircraftC
               </button>
               <button
                 onClick={() => onDelete(aircraft)}
-                className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-slate-700 rounded transition-colors"
+                className="rounded-xl p-1.5 text-slate-300/72 transition-colors hover:bg-white/10 hover:text-red-300"
                 title="Delete"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,20 +73,20 @@ export function AircraftCard({ aircraft, onSelect, onEdit, onDelete }: AircraftC
           </div>
 
           {/* Title */}
-          <h3 className="text-white font-medium mb-1">
+          <h3 className="mb-1 font-public text-lg font-semibold tracking-[-0.03em] text-white">
             {aircraft.name}
           </h3>
 
           {/* Nickname */}
           {aircraft.nickname && (
-            <p className="text-primary-400 text-sm mb-1">
+            <p className="mb-1 text-sm text-primary-300">
               "{aircraft.nickname}"
             </p>
           )}
 
           {/* Description */}
           {aircraft.description && (
-            <p className="text-slate-500 text-sm line-clamp-2">
+            <p className="line-clamp-2 text-sm text-slate-300/64">
               {aircraft.description}
             </p>
           )}

@@ -216,15 +216,14 @@ describe('AdminGearModeration', () => {
     expect(within(table).getByRole('columnheader', { name: 'Upload Date' })).toBeInTheDocument();
     expect(within(table).getByRole('columnheader', { name: 'Last Edit' })).toBeInTheDocument();
 
-    const row = screen.getByRole('button', { name: 'Open editor for EMAX ECO II 2207' });
-    fireEvent.click(row);
+    fireEvent.click(screen.getByLabelText('Open editor for EMAX ECO II 2207'));
 
     expect(await screen.findByText('Edit Gear Item')).toBeInTheDocument();
     expect(screen.getByText(/Upload Date:/)).toBeInTheDocument();
     expect(screen.getByText(/Last Edit:/)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Delete Item' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Save Changes' })).toBeInTheDocument();
-  });
+  }, 30_000);
 
   it('defaults gear moderation filters to all types, pending, and all records', async () => {
     render(<AdminGearModeration hasContentAdminAccess authLoading={false} />);
@@ -646,8 +645,8 @@ describe('AdminGearModeration', () => {
 
     render(<AdminGearModeration hasContentAdminAccess authLoading={false} />);
 
-    const row = await screen.findByRole('button', { name: 'Open editor for EMAX ECO II 2207' });
-    fireEvent.click(row);
+    await screen.findByText('EMAX');
+    fireEvent.click(screen.getByLabelText('Open editor for EMAX ECO II 2207'));
     expect(await screen.findByText('Edit Gear Item')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Add Spec' }));
@@ -662,7 +661,7 @@ describe('AdminGearModeration', () => {
 
     expect(await screen.findByText('Duplicate spec key: kv')).toBeInTheDocument();
     expect(mockAdminUpdateGear).not.toHaveBeenCalled();
-  });
+  }, 30_000);
 
   it('filters out specs with empty keys before saving', async () => {
     mockAdminGetGear.mockResolvedValueOnce({

@@ -64,4 +64,10 @@ describe('ItemDetail', () => {
 
     expect(screen.getByRole('link', { name: 'View Video' })).toHaveAttribute('href', item.url)
   })
+
+  it('renders the shared glass modal shell', () => {
+    render(<ItemDetail item={createFeedItem()} onClose={vi.fn()} />)
+
+    expect(screen.getByText('Test item').closest('.ff-auth-modal-panel')).toBeInTheDocument()
+  })
 })

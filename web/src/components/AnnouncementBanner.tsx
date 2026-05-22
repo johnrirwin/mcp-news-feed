@@ -22,20 +22,20 @@ export function AnnouncementBanner({ announcement, onDismiss, className = '' }: 
   const ctaLabel = announcement.ctaLabel?.trim();
 
   return (
-    <section className={`rounded-2xl border border-primary-500/30 bg-primary-500/10 p-4 md:p-5 ${className}`}>
+    <section className={`ff-auth-glass-panel rounded-[28px] p-4 md:p-5 ${className}`}>
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-primary-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-300">
+          <div className="ff-auth-chip mb-2 inline-flex items-center gap-2 text-primary-100">
             Announcement
           </div>
-          <h2 className="text-lg md:text-xl font-semibold text-white">{announcement.title}</h2>
-          <p className="mt-2 whitespace-pre-line text-sm md:text-base text-slate-200">{announcement.body}</p>
+          <h2 className="font-public text-xl font-semibold tracking-[-0.03em] text-white md:text-2xl">{announcement.title}</h2>
+          <p className="mt-2 whitespace-pre-line text-sm md:text-base text-slate-100/88">{announcement.body}</p>
           {ctaUrl && ctaLabel && (
             <div className="mt-4">
               {ctaUrl.startsWith('/') ? (
                 <Link
                   to={ctaUrl}
-                  className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+                  className="ff-auth-cta-primary inline-flex items-center gap-2 px-4 py-2 text-sm"
                 >
                   {ctaLabel}
                   <span aria-hidden="true">→</span>
@@ -45,7 +45,7 @@ export function AnnouncementBanner({ announcement, onDismiss, className = '' }: 
                   href={ctaUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+                  className="ff-auth-cta-primary inline-flex items-center gap-2 px-4 py-2 text-sm"
                 >
                   {ctaLabel}
                   <span aria-hidden="true">↗</span>

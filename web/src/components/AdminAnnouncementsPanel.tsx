@@ -115,25 +115,25 @@ function AnnouncementEditorModal({
 
   return (
     <div className="fixed inset-0 z-30 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/70" onClick={onClose} aria-hidden="true" />
+      <div className="absolute inset-0 ff-modal-backdrop" onClick={onClose} aria-hidden="true" />
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="announcement-editor-title"
-        className="relative z-10 flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-slate-700 bg-slate-800 shadow-2xl"
+        className="ff-admin-dialog relative z-10 flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-[30px]"
       >
-        <div className="flex items-center justify-between border-b border-slate-700 px-6 py-4">
+        <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
           <div>
-            <h2 id="announcement-editor-title" className="text-lg font-semibold text-white">
+            <h2 id="announcement-editor-title" className="font-public text-2xl font-semibold tracking-[-0.04em] text-white">
               {isEditing ? 'Edit Announcement' : 'Create Announcement'}
             </h2>
-            <p className="text-sm text-slate-400">Manage a first-party message shown across FlyingForge.</p>
+            <p className="text-sm text-slate-300/72">Manage a first-party message shown across FlyingForge.</p>
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close announcement editor"
-            className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-slate-700 hover:text-white"
+            className="rounded-xl p-2 text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -303,13 +303,13 @@ function AnnouncementEditorModal({
           </div>
         </div>
 
-        <div className="flex items-center justify-between border-t border-slate-700 px-6 py-4">
+        <div className="flex items-center justify-between border-t border-white/10 px-6 py-4">
           <div>
             {isEditing && announcement && (
               <button
                 type="button"
                 onClick={() => onRequestDelete(announcement)}
-                className="rounded-lg border border-red-500/40 px-4 py-2 text-sm font-medium text-red-300 transition-colors hover:bg-red-500/10"
+                className="rounded-xl border border-red-400/40 px-4 py-2 text-sm font-medium text-red-200 transition-colors hover:bg-red-500/12"
               >
                 Delete
               </button>
@@ -319,7 +319,7 @@ function AnnouncementEditorModal({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+              className="ff-auth-cta-secondary rounded-xl px-4 py-2 text-sm"
             >
               Cancel
             </button>
@@ -336,7 +336,7 @@ function AnnouncementEditorModal({
                   announcement?.id,
                 )
               }
-              className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="ff-auth-cta-primary rounded-xl px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSaving ? 'Saving...' : isEditing ? 'Save Changes' : 'Create Announcement'}
             </button>
@@ -460,17 +460,18 @@ export function AdminAnnouncementsPanel() {
 
   return (
     <>
-      <div className="rounded-xl border border-slate-800 bg-slate-900/40">
-        <div className="border-b border-slate-800 px-4 py-4 md:px-5">
+      <div className="ff-admin-surface overflow-hidden">
+        <div className="border-b border-white/10 px-4 py-4 md:px-5">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-white">Announcements</h2>
-              <p className="text-sm text-slate-400">Create site-wide or section-specific product updates.</p>
+              <p className="ff-auth-kicker">Admin messaging</p>
+              <h2 className="ff-auth-section-title mt-2">Announcements</h2>
+              <p className="text-sm text-slate-300/72">Create site-wide or section-specific product updates.</p>
             </div>
             <button
               type="button"
               onClick={openCreateModal}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+              className="ff-auth-cta-primary gap-2 px-4 py-2 text-sm"
             >
               <span aria-hidden="true">+</span>
               New Announcement
@@ -489,12 +490,12 @@ export function AdminAnnouncementsPanel() {
                     setAppliedQuery(query.trim());
                   }
                 }}
-                className="h-11 w-full rounded-lg border border-slate-700 bg-slate-900 px-3 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="ff-auth-input h-11 w-full rounded-xl px-3 placeholder:text-slate-500"
               />
               <button
                 type="button"
                 onClick={() => setAppliedQuery(query.trim())}
-                className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+                className="ff-auth-cta-primary px-4 py-2 text-sm"
               >
                 Search
               </button>
@@ -505,7 +506,7 @@ export function AdminAnnouncementsPanel() {
                     setQuery('');
                     setAppliedQuery('');
                   }}
-                  className="rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
+                  className="ff-auth-cta-secondary px-4 py-2 text-sm"
                 >
                   Clear
                 </button>
@@ -515,7 +516,7 @@ export function AdminAnnouncementsPanel() {
             <select
               value={status}
               onChange={(event) => setStatus(event.target.value as AnnouncementStatus | '')}
-              className="h-11 min-w-[180px] rounded-lg border border-slate-700 bg-slate-900 px-3 text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="ff-auth-select h-11 min-w-[180px] rounded-xl px-3"
             >
               {ALL_STATUSES.map((option) => (
                 <option key={option.label} value={option.value}>
@@ -525,26 +526,26 @@ export function AdminAnnouncementsPanel() {
             </select>
           </div>
 
-          <p className="mt-3 text-sm text-slate-400">{countLabel}</p>
+          <p className="mt-3 text-sm text-slate-300/72">{countLabel}</p>
           {error && <div className="mt-3 rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</div>}
         </div>
 
         <div className="p-4 md:p-5">
           {isLoading ? (
-            <div className="p-8 text-center">
+            <div className="ff-admin-empty-state p-8 text-center">
               <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-primary-500/30 border-t-primary-500" />
               <p className="mt-4 text-slate-400">Loading announcements...</p>
             </div>
           ) : items.length === 0 ? (
-            <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-8 text-center">
+            <div className="ff-admin-empty-state p-8 text-center">
               <p className="text-slate-400">No announcements found</p>
             </div>
           ) : (
             <>
-              <div className="hidden overflow-hidden rounded-xl border border-slate-800 md:block">
+              <div className="ff-admin-table-shell hidden md:block">
                 <table className="w-full text-sm">
-                  <thead className="bg-slate-900 text-slate-400">
-                    <tr className="border-b border-slate-800">
+                  <thead className="ff-admin-table-header text-slate-300/74">
+                    <tr className="border-b border-white/10">
                       <th className="px-4 py-3 text-left font-medium">Title</th>
                       <th className="px-4 py-3 text-left font-medium">Placements</th>
                       <th className="px-4 py-3 text-left font-medium">Audience</th>
@@ -567,7 +568,7 @@ export function AdminAnnouncementsPanel() {
                             openEditModal(announcement);
                           }
                         }}
-                        className="cursor-pointer border-t border-slate-800 bg-slate-900/40 transition-colors hover:bg-slate-800/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset"
+                        className="ff-admin-row ff-admin-row-hover cursor-pointer border-t border-white/8 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset"
                       >
                         <td className="px-4 py-3 text-white">
                           <div className="font-medium">{announcement.title}</div>
@@ -595,7 +596,7 @@ export function AdminAnnouncementsPanel() {
                     key={announcement.id}
                     type="button"
                     onClick={() => openEditModal(announcement)}
-                    className="w-full rounded-xl border border-slate-700 bg-slate-800/50 p-4 text-left transition hover:border-primary-500/50 hover:bg-slate-800"
+                    className="ff-admin-surface w-full p-4 text-left transition hover:border-primary-500/50"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
@@ -633,13 +634,13 @@ export function AdminAnnouncementsPanel() {
 
       {deleteCandidate && (
         <div className="fixed inset-0 z-40 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/70" onClick={closeDeleteDialog} aria-hidden="true" />
+          <div className="absolute inset-0 ff-modal-backdrop" onClick={closeDeleteDialog} aria-hidden="true" />
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="delete-announcement-dialog-title"
             aria-describedby="delete-announcement-dialog-description"
-            className="relative z-10 w-full max-w-md rounded-2xl border border-red-500/40 bg-slate-800 p-6 shadow-2xl"
+            className="ff-admin-danger-dialog relative z-10 w-full max-w-md rounded-[28px] p-6"
           >
             <div className="mb-4 flex items-start justify-between gap-3">
               <div>
@@ -656,7 +657,7 @@ export function AdminAnnouncementsPanel() {
                 onClick={closeDeleteDialog}
                 disabled={isSaving}
                 aria-label="Close delete announcement modal"
-                className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-slate-700 hover:text-white disabled:opacity-50"
+                className="rounded-xl p-2 text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-50"
               >
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -669,7 +670,7 @@ export function AdminAnnouncementsPanel() {
                 type="button"
                 onClick={closeDeleteDialog}
                 disabled={isSaving}
-                className="rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700 hover:text-white disabled:opacity-50"
+                className="ff-auth-cta-secondary px-4 py-2 text-sm disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -677,7 +678,7 @@ export function AdminAnnouncementsPanel() {
                 type="button"
                 onClick={() => void handleDelete(deleteCandidate)}
                 disabled={isSaving}
-                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-60"
+                className="rounded-xl bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isSaving ? 'Deleting...' : 'Delete Announcement'}
               </button>

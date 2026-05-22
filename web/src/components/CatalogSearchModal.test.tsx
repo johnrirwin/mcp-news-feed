@@ -88,6 +88,7 @@ describe('CatalogSearchModal', () => {
     });
 
     expect(screen.getByText("Can't find it? Add new gear")).toBeInTheDocument();
+    expect(screen.getByText('Search Gear Catalog').closest('.ff-auth-modal-panel')).toBeInTheDocument();
   });
 
   it('shows inventory matches and lets user select one for build use', async () => {

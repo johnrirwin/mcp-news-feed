@@ -90,6 +90,16 @@ function App() {
     return pathToSection[location.pathname] || 'home';
   })();
 
+  const isPublicShell = !isAuthenticated;
+  const isPublicHome = isPublicShell && activeSection === 'home';
+  const isAuthenticatedShell = isAuthenticated;
+  const appShellClassName = isPublicShell
+    ? `ff-public-shell ff-public-app-shell${isPublicHome ? ' ff-public-home-shell' : ''}`
+    : 'ff-auth-shell ff-auth-app-shell';
+  const mobileHeaderClassName = isPublicShell ? 'ff-public-mobile-header' : 'ff-auth-mobile-header';
+  const mobileChromeClassName = 'text-slate-200 hover:bg-white/10 hover:text-white';
+  const mobileBrandClassName = 'font-public tracking-[-0.04em] text-white';
+
   // News feed state
   const [items, setItems] = useState<FeedItem[]>([]);
   const [sources, setSources] = useState<SourceInfo[]>([]);
@@ -322,11 +332,6 @@ function App() {
     setEditingInventoryItem(null);
     setShowAddInventoryModal(true);
   }, []);
-
-  const handleSelectDashboardGearItem = useCallback((item: InventoryItem) => {
-    navigate('/inventory');
-    handleEditInventoryItem(item);
-  }, [handleEditInventoryItem, navigate]);
 
   // Delete inventory item handler
   const handleDeleteInventoryItem = useCallback(async (item: InventoryItem) => {
@@ -586,34 +591,36 @@ function App() {
       sources={sources}
       isAircraftLoading={isAircraftLoading}
       isNewsLoading={isLoading}
+      onAddAircraft={() => {
+        setEditingAircraft(null);
+        setShowAircraftForm(true);
+      }}
       onViewAllNews={() => navigate('/news')}
       onViewAllAircraft={() => navigate('/aircraft')}
-      onViewAllGear={() => navigate('/inventory')}
-      onSelectGearItem={handleSelectDashboardGearItem}
+      onViewAllBatteries={() => navigate('/batteries')}
       onSelectAircraft={handleSelectAircraft}
       onSelectNewsItem={setSelectedItem}
-      onSelectPilot={(pilotId) => {
-        setSelectedPilotId(pilotId);
-        navigate('/social');
-      }}
-      onGoToSocial={() => navigate('/social')}
     />
   );
 
   return (
-    <div className="flex h-screen supports-[height:100dvh]:h-[100dvh] bg-slate-900 text-white overflow-hidden">
+    <div
+      data-testid="app-shell"
+      className={`flex h-screen supports-[height:100dvh]:h-[100dvh] overflow-hidden text-white ${appShellClassName}`}
+    >
       <div ref={appShellRef} className="flex flex-1 min-h-0 min-w-0">
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-30 bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center justify-between">
+      <div data-testid="mobile-shell-header" className={`fixed left-0 right-0 top-0 z-30 flex items-center justify-between px-4 py-3 md:hidden ${mobileHeaderClassName}`}
+      >
         <button
           onClick={() => setIsMobileMenuOpen(true)}
-          className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
+          className={`rounded-lg p-2 ${mobileChromeClassName}`}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        <span className="text-lg font-semibold text-primary-400">FlyingForge</span>
+        <span className={`text-lg font-semibold ${mobileBrandClassName}`}>FlyingForge</span>
         <div className="w-10" /> {/* Spacer for balance */}
       </div>
 
@@ -631,7 +638,7 @@ function App() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-0 min-w-0 pt-14 md:pt-0">
+      <div className={`flex-1 flex flex-col min-h-0 min-w-0 pt-14 md:pt-0 ${isAuthenticatedShell ? 'relative' : ''}`}>
         <AppRoutes
           isAuthenticated={isAuthenticated}
           user={user}

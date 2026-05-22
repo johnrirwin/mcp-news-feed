@@ -92,9 +92,29 @@ jobs:
       - name: Run tests
         run: npm test -- --passWithNoTests
 
+  preflight-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: server/go.mod
+          cache-dependency-path: server/go.sum
+
+      - name: Preflight deploy auth secrets
+        env:
+          AUTH_JWT_SECRET: ${{ secrets.AUTH_JWT_SECRET }}
+          MCP_AUTH_PRIVATE_KEY_PEM: ${{ secrets.MCP_AUTH_PRIVATE_KEY_PEM }}
+        run: go run ./cmd/deploy-preflight
+
   # Build and push Docker images
   build-and-push:
-    needs: [test-server, test-web]
+    needs: [test-server, test-web, preflight-deploy]
     runs-on: ubuntu-latest
     outputs:
       server_image: ${{ steps.build-server.outputs.image }}
@@ -165,8 +185,6 @@ jobs:
           TF_VAR_auth_jwt_secret: ${{ secrets.AUTH_JWT_SECRET }}
           TF_VAR_mcp_auth_private_key_pem: ${{ secrets.MCP_AUTH_PRIVATE_KEY_PEM }}
         run: |
-          test -n "$TF_VAR_auth_jwt_secret" || { echo "AUTH_JWT_SECRET is required"; exit 1; }
-          test -n "$TF_VAR_mcp_auth_private_key_pem" || { echo "MCP_AUTH_PRIVATE_KEY_PEM is required"; exit 1; }
           terraform apply -auto-approve \
             -var="google_client_id=${{ secrets.GOOGLE_CLIENT_ID }}" \
             -var="google_client_secret=${{ secrets.GOOGLE_CLIENT_SECRET }}" \
@@ -186,8 +204,6 @@ jobs:
           TF_VAR_auth_jwt_secret: ${{ secrets.AUTH_JWT_SECRET }}
           TF_VAR_mcp_auth_private_key_pem: ${{ secrets.MCP_AUTH_PRIVATE_KEY_PEM }}
         run: |
-          test -n "$TF_VAR_auth_jwt_secret" || { echo "AUTH_JWT_SECRET is required"; exit 1; }
-          test -n "$TF_VAR_mcp_auth_private_key_pem" || { echo "MCP_AUTH_PRIVATE_KEY_PEM is required"; exit 1; }
           # Cost optimization: disable NAT gateways and VPC endpoints; tasks egress via the internet gateway.
           terraform plan \
             -var="google_client_id=${{ secrets.GOOGLE_CLIENT_ID }}" \

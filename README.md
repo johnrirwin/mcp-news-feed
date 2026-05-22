@@ -82,7 +82,10 @@ go mod tidy
 # Copy and configure environment
 cp .env.example .env
 
-# Run the server (HTTP mode)
+# Run the server (HTTP mode). The example env sets APP_ENV=development so local
+# startup can use local-only defaults; `development`, `dev`, and `local` are
+# the explicit escape-hatch values. Production should use a unique 32+
+# character AUTH_JWT_SECRET and leave APP_ENV unset or set to production.
 go run ./cmd/server
 
 # Or run in MCP mode for AI assistant integration
@@ -116,6 +119,7 @@ The web app will be available at `http://localhost:5173`.
 |----------|---------|-------------|
 | `HTTP_ADDR` | `:8080` | HTTP server address |
 | `MCP_MODE` | `false` | Run in MCP stdio mode |
+| `APP_ENV` | `production` | Runtime environment. Set to `development`, `dev`, or `local` only for explicit local/dev escape hatches that permit insecure defaults. |
 | `MCP_PUBLIC_BASE_URL` | (empty) | Public HTTPS base URL used for MCP protected-resource metadata |
 | `MCP_ALLOWED_ORIGINS` | `https://chatgpt.com,https://chat.openai.com` | Allowed browser origins for the HTTP MCP endpoint |
 | `MCP_AUTH_SELF_HOSTED` | `false` | Enable FlyingForge as the OAuth authorization server for MCP |
@@ -133,7 +137,7 @@ The web app will be available at `http://localhost:5173`.
 | `MCP_AUTH_CODE_TTL` | `10m` | Self-hosted OAuth authorization-code lifetime |
 | `MCP_AUTH_REFRESH_TOKEN_TTL` | `720h` | Self-hosted OAuth refresh-token lifetime |
 | `MCP_AUTH_SESSION_TTL` | `24h` | Browser login-session lifetime for the self-hosted OAuth flow |
-| `AUTH_JWT_SECRET` | (required) | Secret key for signing the main web auth tokens and self-hosted OAuth browser-session tokens |
+| `AUTH_JWT_SECRET` | (required in production) | Secret key for signing the main web auth tokens and self-hosted OAuth browser-session tokens; production requires a unique value that is at least 32 characters and not a placeholder. |
 | `CACHE_TTL` | `5m` | Cache TTL for feed items |
 | `RATE_LIMIT` | `1s` | Min delay between requests to same host |
 | `LOG_LEVEL` | `info` | Log level (debug, info, warn, error) |
