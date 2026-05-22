@@ -208,7 +208,7 @@ export function PilotProfile({ pilotId, onBack, onSelectPilot, isModal = false, 
   }
 
   const profileCard = (
-    <div className="bg-slate-800 rounded-lg p-6">
+    <div data-testid="pilot-profile-card" className="ff-auth-card rounded-[30px] p-6 md:p-7">
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
         {/* Avatar */}
         <div className="flex items-center gap-4 sm:block">
@@ -216,11 +216,11 @@ export function PilotProfile({ pilotId, onBack, onSelectPilot, isModal = false, 
             <img
               src={profile.effectiveAvatarUrl}
               alt=""
-              className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-slate-600 flex-shrink-0"
+              className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover ring-2 ring-white/14 shadow-[0_0_0_1px_rgba(255,255,255,0.06)] flex-shrink-0"
             />
           ) : (
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-slate-700 flex items-center justify-center border-2 border-slate-600 flex-shrink-0">
-              <svg className="w-10 h-10 sm:w-12 sm:h-12 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="ff-modal-surface-soft flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-full ring-1 ring-white/12 flex-shrink-0">
+              <svg className="w-10 h-10 sm:w-12 sm:h-12 text-slate-300/55" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
@@ -230,13 +230,13 @@ export function PilotProfile({ pilotId, onBack, onSelectPilot, isModal = false, 
             <div className="flex items-center gap-2 flex-wrap">
               <h1 className="text-xl font-bold text-white truncate">{getDisplayName()}</h1>
               {isOwnProfile && (
-                <span className="px-2 py-0.5 text-xs font-medium bg-slate-700 text-slate-300 rounded whitespace-nowrap flex-shrink-0">
+                <span className="ff-auth-chip whitespace-nowrap flex-shrink-0">
                   You
                 </span>
               )}
             </div>
             {profile.displayName && (
-              <p className="text-slate-400 text-sm mt-0.5">{profile.displayName}</p>
+              <p className="text-slate-200/82 text-sm mt-0.5">{profile.displayName}</p>
             )}
           </div>
         </div>
@@ -246,29 +246,29 @@ export function PilotProfile({ pilotId, onBack, onSelectPilot, isModal = false, 
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-2xl font-bold text-white truncate">{getDisplayName()}</h1>
             {isOwnProfile && (
-              <span className="px-2 py-0.5 text-xs font-medium bg-slate-700 text-slate-300 rounded whitespace-nowrap flex-shrink-0">
+              <span className="ff-auth-chip whitespace-nowrap flex-shrink-0">
                 You
               </span>
             )}
           </div>
           {profile.displayName && (
-            <p className="text-slate-400 mt-1">{profile.displayName}</p>
+            <p className="text-slate-200/82 mt-1">{profile.displayName}</p>
           )}
           <div className="flex items-center gap-4 mt-2 text-sm">
             <button 
               onClick={() => setShowFollowList('followers')}
-              className="text-slate-400 hover:text-white transition-colors"
+              className="text-slate-300/80 hover:text-white transition-colors"
             >
               <span className="font-medium text-white">{profile.followerCount}</span> followers
             </button>
             <button 
               onClick={() => setShowFollowList('following')}
-              className="text-slate-400 hover:text-white transition-colors"
+              className="text-slate-300/80 hover:text-white transition-colors"
             >
               <span className="font-medium text-white">{profile.followingCount}</span> following
             </button>
           </div>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-slate-300/68 mt-1">
             Member since {new Date(profile.createdAt).toLocaleDateString()}
           </p>
         </div>
@@ -278,10 +278,10 @@ export function PilotProfile({ pilotId, onBack, onSelectPilot, isModal = false, 
           <button
             onClick={handleFollowToggle}
             disabled={isFollowLoading}
-            className={`hidden sm:block px-4 py-2 rounded-lg font-medium transition-colors flex-shrink-0 ${
+            className={`hidden sm:inline-flex flex-shrink-0 text-sm ${
               isFollowing
-                ? 'bg-slate-700 text-white hover:bg-slate-600'
-                : 'bg-primary-500 text-white hover:bg-primary-600'
+                ? 'ff-auth-cta-secondary'
+                : 'ff-auth-cta-primary'
             } disabled:opacity-50`}
           >
             {isFollowLoading ? '...' : isFollowing ? 'Following' : 'Follow'}
@@ -294,13 +294,13 @@ export function PilotProfile({ pilotId, onBack, onSelectPilot, isModal = false, 
         <div className="flex items-center gap-4 text-sm">
           <button 
             onClick={() => setShowFollowList('followers')}
-            className="text-slate-400 hover:text-white transition-colors"
+            className="text-slate-300/80 hover:text-white transition-colors"
           >
             <span className="font-medium text-white">{profile.followerCount}</span> followers
           </button>
           <button 
             onClick={() => setShowFollowList('following')}
-            className="text-slate-400 hover:text-white transition-colors"
+            className="text-slate-300/80 hover:text-white transition-colors"
           >
             <span className="font-medium text-white">{profile.followingCount}</span> following
           </button>
@@ -309,10 +309,10 @@ export function PilotProfile({ pilotId, onBack, onSelectPilot, isModal = false, 
           <button
             onClick={handleFollowToggle}
             disabled={isFollowLoading}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors flex-shrink-0 ${
+            className={`inline-flex flex-shrink-0 text-sm ${
               isFollowing
-                ? 'bg-slate-700 text-white hover:bg-slate-600'
-                : 'bg-primary-500 text-white hover:bg-primary-600'
+                ? 'ff-auth-cta-secondary'
+                : 'ff-auth-cta-primary'
             } disabled:opacity-50`}
           >
             {isFollowLoading ? '...' : isFollowing ? 'Following' : 'Follow'}
@@ -321,7 +321,7 @@ export function PilotProfile({ pilotId, onBack, onSelectPilot, isModal = false, 
       </div>
 
       {/* Mobile: Member since */}
-      <p className="sm:hidden text-sm text-slate-500 mt-2">
+      <p className="sm:hidden text-sm text-slate-300/68 mt-2">
         Member since {new Date(profile.createdAt).toLocaleDateString()}
       </p>
     </div>
@@ -330,17 +330,17 @@ export function PilotProfile({ pilotId, onBack, onSelectPilot, isModal = false, 
   const publishedBuilds = profile.publishedBuilds ?? [];
 
   const aircraftSection = (
-    <div className="bg-slate-800 rounded-lg p-6">
+    <div data-testid="pilot-profile-aircraft-section" className="ff-auth-card rounded-[30px] p-6">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-white">Aircraft</h2>
-        <span className="text-sm text-slate-400">
+        <h2 className="font-public text-xl font-semibold tracking-[-0.03em] text-white">Aircraft</h2>
+        <span className="text-sm text-slate-300/70">
           {profile.aircraft.length} aircraft
         </span>
       </div>
 
       {profile.aircraft.length === 0 ? (
-        <div className="text-center py-8 text-slate-500">
-          <svg className="w-12 h-12 mx-auto mb-3 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="ff-modal-surface rounded-[24px] px-6 py-10 text-center text-slate-300/78">
+          <svg className="w-12 h-12 mx-auto mb-3 text-slate-300/55" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
           </svg>
           <p>No aircraft to display</p>
@@ -360,17 +360,17 @@ export function PilotProfile({ pilotId, onBack, onSelectPilot, isModal = false, 
   );
 
   const publishedBuildsSection = (
-    <div className="bg-slate-800 rounded-lg p-6">
+    <div data-testid="pilot-profile-builds-section" className="ff-auth-card rounded-[30px] p-6">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-white">Published Builds</h2>
-        <span className="text-sm text-slate-400">
+        <h2 className="font-public text-xl font-semibold tracking-[-0.03em] text-white">Published Builds</h2>
+        <span className="text-sm text-slate-300/70">
           {publishedBuilds.length} build{publishedBuilds.length === 1 ? '' : 's'}
         </span>
       </div>
 
       {publishedBuilds.length === 0 ? (
-        <div className="text-center py-8 text-slate-500">
-          <svg className="w-12 h-12 mx-auto mb-3 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="ff-modal-surface rounded-[24px] px-6 py-10 text-center text-slate-300/78">
+          <svg className="w-12 h-12 mx-auto mb-3 text-slate-300/55" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7h18M7 12h10M9 17h6" />
           </svg>
           <p>No published builds yet</p>
@@ -384,24 +384,24 @@ export function PilotProfile({ pilotId, onBack, onSelectPilot, isModal = false, 
               onClick={() => {
                 void handleOpenBuildPreview(build.id);
               }}
-              className="w-full text-left bg-slate-900 rounded-lg overflow-hidden border border-slate-700 transition-all hover:border-primary-500 hover:shadow-lg"
+              className="ff-builds-card w-full overflow-hidden rounded-[28px] text-left"
             >
-              <div className="aspect-video bg-slate-800 flex items-center justify-center">
+              <div className="ff-builds-card-media aspect-video flex items-center justify-center">
                 {build.mainImageUrl ? (
                   <img src={build.mainImageUrl} alt={build.title} className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-sm text-slate-500">No build image</span>
+                  <span className="text-sm text-slate-300/55">No build image</span>
                 )}
               </div>
-              <div className="p-4">
+              <div className="ff-builds-card-body p-4">
                 <h3 className="font-medium text-white line-clamp-2">{build.title}</h3>
                 {build.description && (
-                  <p className="text-sm text-slate-400 mt-2 line-clamp-2">{build.description}</p>
+                  <p className="mt-2 line-clamp-2 text-sm text-slate-300/82">{build.description}</p>
                 )}
-                <p className="text-xs text-slate-500 mt-3">
+                <p className="mt-3 text-xs text-slate-300/58">
                   Published {new Date(build.publishedAt || build.createdAt).toLocaleDateString()}
                 </p>
-                <p className="text-xs text-primary-300 mt-1">View build details</p>
+                <p className="mt-1 text-xs text-primary-200">View build details</p>
               </div>
             </button>
           ))}
@@ -507,11 +507,11 @@ function AircraftCard({ aircraft, onClick }: { aircraft: AircraftPublic; onClick
 
   return (
     <div 
-      className="bg-slate-900 rounded-lg overflow-hidden border border-slate-700 transition-all cursor-pointer hover:border-slate-500 hover:shadow-lg"
+      className="ff-auth-card ff-auth-card-hover cursor-pointer overflow-hidden rounded-[28px] transition-all"
       onClick={onClick}
     >
       {/* Image */}
-      <div className="aspect-video bg-slate-800 flex items-center justify-center relative">
+      <div className="ff-modal-surface relative flex aspect-video items-center justify-center overflow-hidden">
         <AircraftImage
           aircraftId={aircraft.id}
           aircraftName={aircraft.name}
@@ -524,8 +524,8 @@ function AircraftCard({ aircraft, onClick }: { aircraft: AircraftPublic; onClick
           }
         />
         {/* Click hint overlay */}
-        <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 hover:opacity-100">
-          <span className="bg-slate-900/90 px-3 py-1.5 rounded-lg text-sm text-white">
+        <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-200 hover:bg-black/15 hover:opacity-100">
+          <span className="ff-modal-surface-soft rounded-xl px-3 py-1.5 text-sm text-white">
             View Details
           </span>
         </div>
@@ -535,16 +535,16 @@ function AircraftCard({ aircraft, onClick }: { aircraft: AircraftPublic; onClick
       <div className="p-4">
         <h3 className="font-medium text-white truncate">{aircraft.name}</h3>
         {aircraft.nickname && (
-          <p className="text-sm text-slate-400 truncate mt-0.5">"{aircraft.nickname}"</p>
+          <p className="mt-0.5 truncate text-sm text-slate-300/82">"{aircraft.nickname}"</p>
         )}
         <div className="flex items-center gap-2 mt-2 flex-wrap">
           {aircraft.type && (
-            <span className="px-2 py-0.5 bg-slate-700 rounded text-xs text-slate-300">
+            <span className="ff-auth-chip">
               {formatType(aircraft.type)}
             </span>
           )}
           {componentCount > 0 && (
-            <span className="px-2 py-0.5 bg-slate-700 rounded text-xs text-slate-400">
+            <span className="ff-auth-chip">
               {componentCount} component{componentCount !== 1 ? 's' : ''}
             </span>
           )}
@@ -555,7 +555,7 @@ function AircraftCard({ aircraft, onClick }: { aircraft: AircraftPublic; onClick
           )}
         </div>
         {aircraft.description && (
-          <p className="text-sm text-slate-500 mt-2 line-clamp-2">{aircraft.description}</p>
+          <p className="mt-2 line-clamp-2 text-sm text-slate-300/68">{aircraft.description}</p>
         )}
       </div>
     </div>
@@ -700,7 +700,7 @@ function PublishedBuildPreviewModal({
                 </div>
               </div>
 
-              <div className="rounded-lg border border-slate-700 bg-slate-800/60 p-4">
+              <div className="ff-modal-surface rounded-[22px] p-4">
                 <h5 className="text-sm font-semibold uppercase tracking-wide text-slate-400 mb-3">Core Components</h5>
                 <ul className="space-y-2 text-sm text-slate-300">
                   <li>Frame: {frame ? getBuildPartDisplayName(frame) : '—'}</li>
@@ -722,7 +722,7 @@ function PublishedBuildPreviewModal({
           )}
         </div>
 
-        <div className="px-5 py-4 border-t border-slate-700 bg-slate-900/80 flex items-center justify-end gap-2">
+        <div className="flex items-center justify-end gap-2 border-t border-white/10 bg-white/5 px-5 py-4 backdrop-blur-xl">
           {build && (
             <Link
               to={`/builds/${build.id}`}

@@ -144,8 +144,10 @@ describe('PilotProfile', () => {
     });
 
     expect(await screen.findByText('Published Builds')).toBeInTheDocument();
-    expect(screen.getByText('Kayou Mini Build')).toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: /Kayou Mini Build/i }));
+    const buildButton = screen.getByRole('button', { name: /Kayou Mini Build/i });
+    expect(buildButton).toBeInTheDocument();
+    expect(buildButton).toHaveClass('ff-builds-card');
+    await userEvent.click(buildButton);
 
     await waitFor(() => {
       expect(mockedGetPublicBuild).toHaveBeenCalledWith('build-1');
@@ -230,6 +232,9 @@ describe('PilotProfile', () => {
 
     expect(await screen.findByText('No published builds yet')).toBeInTheDocument();
     expect(screen.getByText('0 builds')).toBeInTheDocument();
+    expect(screen.getByTestId('pilot-profile-card')).toHaveClass('ff-auth-card');
+    expect(screen.getByTestId('pilot-profile-builds-section')).toHaveClass('ff-auth-card');
+    expect(screen.getByTestId('pilot-profile-aircraft-section')).toHaveClass('ff-auth-card');
   });
 
   it('deduplicates reused catalog items when calculating MSRP in build preview', async () => {

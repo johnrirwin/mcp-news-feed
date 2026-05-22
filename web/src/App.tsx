@@ -696,22 +696,19 @@ function App() {
           aria-labelledby="pilot-profile-modal-title"
           className="fixed inset-0 z-[70] flex items-start md:items-center justify-center p-4 md:p-6"
         >
-          <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={() => setSelectedPilotId(null)}
-          />
+          <div className="ff-modal-backdrop absolute inset-0" onClick={() => setSelectedPilotId(null)} />
           <div
             ref={pilotProfileDialogRef}
             tabIndex={-1}
-            className="relative w-full max-w-4xl h-[92vh] max-h-[92vh] overflow-hidden bg-slate-900 border border-slate-700 rounded-2xl flex flex-col"
+            className="ff-auth-shell ff-auth-modal-panel relative flex h-[92vh] max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-[30px]"
           >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700">
-              <h2 id="pilot-profile-modal-title" className="text-lg font-semibold text-white">Pilot Profile</h2>
+            <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+              <h2 id="pilot-profile-modal-title" className="font-public text-lg font-semibold text-white">Pilot Profile</h2>
               <button
                 ref={pilotProfileCloseButtonRef}
                 onClick={() => setSelectedPilotId(null)}
                 aria-label="Close pilot profile modal"
-                className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+                className="ff-modal-close rounded-xl p-2 transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

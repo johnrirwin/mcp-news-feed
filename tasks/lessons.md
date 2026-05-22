@@ -132,3 +132,8 @@ Review this file at the start of each session and apply any relevant rules befor
 - Context: the logged-in sidebar footer was simplified to an avatar-only treatment, but the profile photo still looked a few pixels off-center inside the circular frame.
 - Correction from user: the photo needed to be visually centered.
 - Rule to follow next time: when placing user-uploaded or arbitrary images into small circular avatars, always set explicit `object-cover` and `object-center` styling instead of relying on default image layout.
+
+### 2026-05-21 — Audit drill-down and modal variants after shell redesigns
+- Context: the core pages were restyled, but the social pilot profile flow still surfaced an old solid modal wrapper and legacy section cards because the drill-down/modal variant had not been audited with the same rigor.
+- Correction from user: clicking pilot profiles in social still showed the old solid styling, so the redesign had not fully propagated.
+- Rule to follow next time: after a shell/theme redesign, audit every drill-down path and modal variant in that feature flow—not just the top-level route—to catch legacy wrappers and nested cards.
