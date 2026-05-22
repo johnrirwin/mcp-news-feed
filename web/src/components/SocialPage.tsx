@@ -107,7 +107,7 @@ export function CallSignPromptModal({
                 setCallSign(e.target.value);
                 setError(null);
               }}
-              className={`w-full rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+              className={`ff-auth-input w-full rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                 error ? 'border-red-500' : 'border-slate-600'
               }`}
               placeholder="Enter your call sign"

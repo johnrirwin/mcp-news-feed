@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 
@@ -15,11 +16,17 @@ vi.mock('./components', () => ({
   AddGearModal: () => null,
   AircraftForm: () => null,
   AircraftDetail: () => null,
-  PilotProfile: () => null,
+  PilotProfile: ({ pilotId }: { pilotId: string }) => <div data-testid="pilot-profile-stub">{pilotId}</div>,
 }));
 
 vi.mock('./AppRoutes', () => ({
-  AppRoutes: () => <div data-testid="app-routes" />,
+  AppRoutes: ({ onSelectPilot }: { onSelectPilot?: (pilotId: string) => void }) => (
+    <div data-testid="app-routes">
+      <button type="button" onClick={() => onSelectPilot?.('pilot-1')}>
+        open-pilot-profile
+      </button>
+    </div>
+  ),
 }));
 
 vi.mock('./hooks', () => ({
@@ -132,5 +139,36 @@ describe('App shell styling', () => {
     expect(screen.getByTestId('app-shell')).toHaveClass('ff-auth-shell');
     expect(screen.getByTestId('app-shell')).toHaveClass('ff-auth-app-shell');
     expect(screen.getByTestId('mobile-shell-header')).toHaveClass('ff-auth-mobile-header');
+  });
+
+  it('uses the shared glass modal shell for social pilot profiles', async () => {
+    mockUseAuth.mockReturnValue({
+      isAuthenticated: true,
+      user: {
+        id: 'user-1',
+        email: 'pilot@example.com',
+        displayName: 'Pilot',
+      },
+      logout: vi.fn(),
+      isLoading: false,
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/social']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(mockedGetSources).toHaveBeenCalled();
+      expect(mockedGetItems).toHaveBeenCalled();
+    });
+
+    await userEvent.click(screen.getByRole('button', { name: 'open-pilot-profile' }));
+
+    const dialog = await screen.findByRole('dialog', { name: 'Pilot Profile' });
+    expect(dialog.querySelector('.ff-modal-backdrop')).toBeInTheDocument();
+    expect(dialog.querySelector('.ff-auth-modal-panel')).toBeInTheDocument();
+    expect(screen.getByTestId('pilot-profile-stub')).toHaveTextContent('pilot-1');
   });
 });

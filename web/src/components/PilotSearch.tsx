@@ -66,16 +66,16 @@ export function PilotSearch({ onSelectPilot }: PilotSearchProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div data-testid="pilot-search-shell" className="max-w-4xl mx-auto p-6">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white mb-2">Pilot Directory</h1>
-        <p className="text-slate-400">
+        <h1 className="ff-auth-page-title mb-2">Pilot Directory</h1>
+        <p className="ff-auth-page-subtitle">
           Search for other pilots by their callsign to view their profiles and aircraft.
         </p>
       </div>
 
       {/* Search Input */}
-      <div className="mb-6">
+      <div className="ff-auth-card mb-6 rounded-[28px] p-5">
         <div className="relative">
           <input
             type="text"
@@ -83,10 +83,10 @@ export function PilotSearch({ onSelectPilot }: PilotSearchProps) {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search by callsign..."
-            className="w-full px-4 py-3 pl-12 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-primary-500"
+            className="ff-auth-input w-full rounded-2xl px-4 py-3 pl-12 text-white focus:outline-none focus:ring-2 focus:ring-primary-400/60"
           />
           <svg
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300/55"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -104,7 +104,7 @@ export function PilotSearch({ onSelectPilot }: PilotSearchProps) {
             </div>
           )}
         </div>
-        <p className="mt-2 text-xs text-slate-500">
+        <p className="mt-2 text-xs text-slate-300/58">
           Enter at least 2 characters to search
         </p>
       </div>
@@ -118,9 +118,9 @@ export function PilotSearch({ onSelectPilot }: PilotSearchProps) {
 
       {/* Results */}
       {hasSearched && results.length === 0 && !isLoading && (
-        <div className="text-center py-12 text-slate-500">
+        <div className="ff-auth-card rounded-[28px] px-6 py-12 text-center text-slate-300/78">
           <svg
-            className="w-16 h-16 mx-auto mb-4 text-slate-600"
+            className="w-16 h-16 mx-auto mb-4 text-slate-300/55"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -139,14 +139,14 @@ export function PilotSearch({ onSelectPilot }: PilotSearchProps) {
 
       {results.length > 0 && (
         <div className="space-y-2">
-          <p className="text-sm text-slate-400 mb-4">
+          <p className="text-sm text-slate-300/72 mb-4">
             Found {results.length} pilot{results.length !== 1 ? 's' : ''}
           </p>
           {results.map((pilot) => (
             <button
               key={pilot.id}
               onClick={() => onSelectPilot(pilot.id)}
-              className="w-full flex items-center gap-4 p-4 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors text-left"
+              className="ff-auth-card ff-auth-card-hover flex w-full items-center gap-4 rounded-[24px] p-4 text-left"
             >
               {/* Avatar */}
               {pilot.effectiveAvatarUrl ? (
@@ -156,9 +156,9 @@ export function PilotSearch({ onSelectPilot }: PilotSearchProps) {
                   className="w-12 h-12 rounded-full object-cover"
                 />
               ) : (
-                <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center">
+                <div className="ff-modal-surface-soft flex h-12 w-12 items-center justify-center rounded-full">
                   <svg
-                    className="w-6 h-6 text-slate-500"
+                    className="w-6 h-6 text-slate-300/55"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -179,7 +179,7 @@ export function PilotSearch({ onSelectPilot }: PilotSearchProps) {
                   {getDisplayName(pilot)}
                 </div>
                 {pilot.displayName && (
-                  <div className="text-sm text-slate-400 truncate">
+                  <div className="text-sm text-slate-300/78 truncate">
                     {pilot.displayName}
                   </div>
                 )}
@@ -187,7 +187,7 @@ export function PilotSearch({ onSelectPilot }: PilotSearchProps) {
 
               {/* Arrow */}
               <svg
-                className="w-5 h-5 text-slate-500"
+                className="w-5 h-5 text-slate-300/45"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -206,9 +206,9 @@ export function PilotSearch({ onSelectPilot }: PilotSearchProps) {
 
       {/* Initial state */}
       {!hasSearched && !isLoading && (
-        <div className="text-center py-12 text-slate-500">
+        <div className="ff-auth-card rounded-[28px] px-6 py-12 text-center text-slate-300/78">
           <svg
-            className="w-16 h-16 mx-auto mb-4 text-slate-600"
+            className="w-16 h-16 mx-auto mb-4 text-slate-300/55"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
