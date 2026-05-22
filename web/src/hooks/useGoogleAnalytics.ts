@@ -67,7 +67,7 @@ function flushEventQueue() {
 
 // Initialize Google Analytics
 function initGA() {
-  if (!GA_MEASUREMENT_ID || typeof window === 'undefined') return;
+  if (!GA_MEASUREMENT_ID || typeof window === 'undefined' || typeof document === 'undefined') return;
 
   // Don't initialize if already done
   if (isGAReady) return;
@@ -79,7 +79,7 @@ function initGA() {
   
   // Mark as ready and flush queue when script loads
   script.onload = () => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
     isGAReady = true;
     flushEventQueue();
   };

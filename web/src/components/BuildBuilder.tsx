@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 import type { GearCatalogItem, GearType } from '../gearCatalogTypes';
 import { getCatalogItemDisplayName } from '../gearCatalogTypes';
 import type { BuildPart, BuildValidationError } from '../buildTypes';
@@ -72,7 +72,12 @@ export function BuildBuilder({
   imageHelperText,
 }: BuildBuilderProps) {
   const { isAuthenticated } = useAuth();
+  const fieldIdBase = useId();
   const [pickerGearType, setPickerGearType] = useState<GearType | null>(null);
+  const titleFieldId = `${fieldIdBase}-title`;
+  const descriptionFieldId = `${fieldIdBase}-description`;
+  const buildVideoFieldId = `${fieldIdBase}-build-video`;
+  const flightVideoFieldId = `${fieldIdBase}-flight-video`;
 
   const partsByType = useMemo(() => {
     const map = new Map<GearType, BuildPart>();
@@ -180,8 +185,9 @@ export function BuildBuilder({
           <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr),260px]">
             <div className="min-w-0 space-y-3">
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-200/92">Build title</label>
+                <label htmlFor={titleFieldId} className="mb-1 block text-sm font-medium text-slate-200/92">Build title</label>
                 <input
+                  id={titleFieldId}
                   value={title}
                   onChange={(event) => onTitleChange(event.target.value)}
                   disabled={readOnly}
@@ -190,8 +196,9 @@ export function BuildBuilder({
                 />
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-200/92">Description</label>
+                <label htmlFor={descriptionFieldId} className="mb-1 block text-sm font-medium text-slate-200/92">Description</label>
                 <textarea
+                  id={descriptionFieldId}
                   value={description}
                   onChange={(event) => onDescriptionChange(event.target.value)}
                   disabled={readOnly}
@@ -202,8 +209,9 @@ export function BuildBuilder({
               </div>
               {(onYouTubeUrlChange || youtubeUrl !== undefined) && (
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-200/92">Build video (optional)</label>
+                  <label htmlFor={buildVideoFieldId} className="mb-1 block text-sm font-medium text-slate-200/92">Build video (optional)</label>
                   <input
+                    id={buildVideoFieldId}
                     value={youtubeUrl || ''}
                     onChange={(event) => onYouTubeUrlChange?.(event.target.value)}
                     disabled={readOnly}
@@ -214,8 +222,9 @@ export function BuildBuilder({
               )}
               {(onFlightYouTubeUrlChange || flightYoutubeUrl !== undefined) && (
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-200/92">Flight video (optional)</label>
+                  <label htmlFor={flightVideoFieldId} className="mb-1 block text-sm font-medium text-slate-200/92">Flight video (optional)</label>
                   <input
+                    id={flightVideoFieldId}
                     value={flightYoutubeUrl || ''}
                     onChange={(event) => onFlightYouTubeUrlChange?.(event.target.value)}
                     disabled={readOnly}

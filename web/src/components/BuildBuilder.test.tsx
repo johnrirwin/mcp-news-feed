@@ -33,9 +33,13 @@ describe('BuildBuilder', () => {
       <BuildBuilder
         title="Kayou Build"
         description=""
+        youtubeUrl=""
+        flightYoutubeUrl=""
         parts={[]}
         onTitleChange={vi.fn()}
         onDescriptionChange={vi.fn()}
+        onYouTubeUrlChange={vi.fn()}
+        onFlightYouTubeUrlChange={vi.fn()}
         onPartsChange={vi.fn()}
         imagePreviewUrl="https://example.com/build.png"
         onImageAction={vi.fn()}
@@ -48,5 +52,9 @@ describe('BuildBuilder', () => {
     expect(screen.getByTestId('build-image-preview')).toHaveClass('ff-modal-surface-soft');
     expect(screen.getByRole('button', { name: 'Change Image' })).toHaveClass('ff-auth-cta-secondary');
     expect(screen.getByText('JPEG or PNG. Max 2MB.')).toHaveClass('text-xs', 'text-slate-300/72');
+    expect(screen.getByLabelText('Build title')).toBeInTheDocument();
+    expect(screen.getByLabelText('Description')).toBeInTheDocument();
+    expect(screen.getByLabelText('Build video (optional)')).toBeInTheDocument();
+    expect(screen.getByLabelText('Flight video (optional)')).toBeInTheDocument();
   });
 });
