@@ -209,12 +209,12 @@ export const Sidebar = memo(function Sidebar({
           className={`group ff-public-nav-item ${isActive ? 'ff-public-nav-item-active' : ''}`}
         >
           {isActive && (
-            <span className="absolute left-0 top-1/2 h-11 w-1 -translate-y-1/2 rounded-full bg-gradient-to-b from-violet-300 via-primary-400 to-sky-300 shadow-[0_0_18px_rgba(96,165,250,0.65)]" />
+            <span className="ff-public-nav-indicator" />
           )}
           <span className={`ff-public-nav-icon ${isActive ? 'ff-public-nav-icon-active' : ''}`}>
             {icon}
           </span>
-          <span className="text-sm font-medium tracking-tight">{label}</span>
+          <span className="ff-public-nav-label">{label}</span>
         </button>
       );
     }
@@ -225,7 +225,7 @@ export const Sidebar = memo(function Sidebar({
         onClick={() => handleNavigation(section)}
         aria-current={isActive ? 'page' : undefined}
         className={isAuthenticatedShell
-          ? `ff-auth-nav-item ${isActive ? 'ff-auth-nav-item-active' : ''}`
+          ? `group ff-auth-nav-item ${isActive ? 'ff-auth-nav-item-active' : ''}`
           : `flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors ${
               isActive
                 ? 'bg-slate-800 text-white shadow-[inset_0_0_0_1px_rgba(96,165,250,0.18)]'
@@ -234,10 +234,13 @@ export const Sidebar = memo(function Sidebar({
       >
         {isAuthenticatedShell ? (
           <>
+            {isActive && (
+              <span className="ff-auth-nav-indicator" />
+            )}
             <span className={`ff-auth-nav-icon ${isActive ? 'ff-auth-nav-icon-active' : ''}`}>
               {icon}
             </span>
-            <span className="flex-1 font-public text-sm font-semibold tracking-[-0.025em]">{label}</span>
+            <span className="ff-auth-nav-label">{label}</span>
           </>
         ) : (
           <>
@@ -261,16 +264,16 @@ export const Sidebar = memo(function Sidebar({
       <aside
         className={`fixed left-0 top-0 z-50 flex h-screen supports-[height:100dvh]:h-[100dvh] md:static md:h-auto md:flex-shrink-0 ${
           isPublicShell
-            ? 'ff-public-shell ff-public-rail w-72 md:w-[210px]'
+            ? 'ff-public-shell ff-public-rail w-64 md:w-[182px]'
             : isAuthenticatedShell
-              ? 'ff-auth-shell ff-auth-rail w-72 md:w-[236px]'
+              ? 'ff-auth-shell ff-auth-rail w-72 md:w-[194px]'
               : 'w-72 border-r border-slate-800 bg-slate-900 md:w-64'
         } overflow-y-auto overflow-x-hidden overscroll-y-contain [-webkit-overflow-scrolling:touch] transform transition-transform duration-300 ease-in-out ${
           isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
         <div className="flex min-h-full w-full flex-col">
-          <div className={`px-4 pb-3 pt-4 ${
+          <div className={`px-5 pb-2 pt-6 ${
             isPublicShell
               ? 'border-b border-white/10'
               : isAuthenticatedShell
@@ -283,9 +286,9 @@ export const Sidebar = memo(function Sidebar({
                 onClick={() => handleNavigation(isAuthenticated ? 'dashboard' : 'home')}
                 className={`text-left transition-colors ${
                   isPublicShell
-                    ? 'font-public text-[1.9rem] font-bold leading-none tracking-[-0.05em] text-white hover:text-primary-100'
-                    : isAuthenticatedShell
-                      ? 'font-public text-[1.82rem] font-bold leading-none tracking-[-0.05em] text-white hover:text-primary-100'
+                    ? 'font-public text-[1.68rem] font-bold leading-none tracking-[-0.05em] text-white hover:text-primary-100'
+                  : isAuthenticatedShell
+                      ? 'font-public text-[1.68rem] font-bold leading-none tracking-[-0.05em] text-white hover:text-primary-100'
                     : 'text-xl font-semibold tracking-tight text-white hover:text-primary-300'
                 }`}
               >
@@ -311,8 +314,8 @@ export const Sidebar = memo(function Sidebar({
 
           {isPublicShell ? (
             <>
-              <div className="px-4 py-6">
-                <nav className="mx-auto flex w-full max-w-[116px] flex-col gap-3">
+              <div className="px-4 py-7">
+                <nav className="mx-auto flex w-full max-w-[86px] flex-col gap-7">
                   {publicNavigation.map((item) => (
                     <NavItem key={item.section} {...item} compact />
                   ))}
@@ -321,24 +324,21 @@ export const Sidebar = memo(function Sidebar({
 
               <div className="flex-1" />
 
-              <div className="px-4 pb-4">
-                <div className="ff-public-glass-panel rounded-[28px] p-4">
+              <div className="px-5 pb-5">
+                <div className="mx-auto w-full max-w-[112px] text-center">
                   {authLoading ? (
                     <div className="flex items-center justify-center py-5">
                       <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-500/70 border-t-primary-300" />
                     </div>
                   ) : (
                     <>
-                      <p className="text-xs font-medium uppercase tracking-[0.24em] text-slate-300/65">
+                      <p className="text-[0.64rem] font-medium uppercase tracking-[0.28em] text-slate-300/55">
                         Ready to launch?
-                      </p>
-                      <p className="mt-2 text-sm leading-6 text-slate-200/80">
-                        Sign in to start tracking aircraft, organize your gear, and build your flying hub.
                       </p>
                       <button
                         type="button"
                         onClick={onSignIn}
-                        className="ff-public-cta-primary mt-4 w-full px-4 py-3 text-sm"
+                        className="ff-public-cta-primary mt-3 w-full px-3 py-2.5 text-sm"
                       >
                         Sign In
                       </button>
@@ -349,19 +349,19 @@ export const Sidebar = memo(function Sidebar({
             </>
 	          ) : (
 	            <>
-	              <div className="px-4 py-4">
-	                <nav className={`flex flex-col ${isAuthenticatedShell ? 'gap-2' : 'gap-1'}`}>
+	              <div className="px-4 py-6">
+	                <nav className={`mx-auto flex w-full max-w-[110px] flex-col ${isAuthenticatedShell ? 'gap-4' : 'gap-1'}`}>
 	                  {authenticatedPublicNavigation.map((item) => (
 	                    <NavItem key={item.section} {...item} />
 	                  ))}
 	
-	                  <div className={`my-2 ${isAuthenticatedShell ? 'border-t border-white/10' : 'border-t border-slate-800'}`} />
+	                  <div className={`my-1 ${isAuthenticatedShell ? 'border-t border-white/10' : 'border-t border-slate-800'}`} />
 	
 	                  {authenticatedPrivateNavigation.map((item) => (
 	                    <NavItem key={item.section} {...item} />
 	                  ))}
 	
-	                  {adminNavigation.length > 0 && <div className={`my-2 ${isAuthenticatedShell ? 'border-t border-white/10' : 'border-t border-slate-800'}`} />}
+	                  {adminNavigation.length > 0 && <div className={`my-1 ${isAuthenticatedShell ? 'border-t border-white/10' : 'border-t border-slate-800'}`} />}
 	
 	                  {adminNavigation.map((item) => (
 	                    <NavItem key={item.section} {...item} />
@@ -371,17 +371,17 @@ export const Sidebar = memo(function Sidebar({
 
               <div className="flex-1" />
 
-	              <div className={`${isAuthenticatedShell ? 'border-t border-white/10 p-4' : 'border-t border-slate-800 p-4'}`}>
+	              <div className={`${isAuthenticatedShell ? 'border-t border-white/10 px-5 pb-5 pt-4' : 'border-t border-slate-800 p-4'}`}>
 	                {authLoading ? (
 	                  <div className="flex items-center justify-center py-2">
 	                    <div className={`h-5 w-5 animate-spin rounded-full border-2 ${isAuthenticatedShell ? 'border-white/30 border-t-primary-300' : 'border-slate-600 border-t-primary-500'}`} />
 	                  </div>
 	                ) : isAuthenticated && user ? (
-	                  <div className={`space-y-3 ${isAuthenticatedShell ? 'ff-auth-glass-panel rounded-[24px] p-3.5' : ''}`}>
+	                  <div className={`mx-auto w-full max-w-[118px] space-y-3 text-center ${isAuthenticatedShell ? 'ff-auth-glass-panel rounded-[26px] p-3.5' : ''}`}>
 	                    <button
 	                      type="button"
 	                      onClick={() => handleNavigation('profile')}
-	                      className={`-m-2 flex w-full items-center gap-3 rounded-xl p-2 transition-colors ${
+	                      className={`-m-1 flex w-full flex-col items-center gap-2 rounded-xl p-1 transition-colors ${
                           isAuthenticatedShell
                             ? 'hover:bg-white/10'
                             : 'hover:bg-slate-800'
@@ -391,34 +391,23 @@ export const Sidebar = memo(function Sidebar({
 	                        <img
 	                          src={user.avatarUrl}
 	                          alt={user.displayName || 'User'}
-	                          className={`h-9 w-9 flex-shrink-0 rounded-full ${isAuthenticatedShell ? 'ring-2 ring-white/10' : ''}`}
+	                          className={`h-11 w-11 flex-shrink-0 rounded-full object-cover object-center ${isAuthenticatedShell ? 'ring-2 ring-white/10' : ''}`}
 	                        />
 	                      ) : (
-	                        <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full ${isAuthenticatedShell ? 'bg-white/12 ring-1 ring-white/14' : 'bg-primary-600'}`}>
+	                        <div className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full ${isAuthenticatedShell ? 'bg-white/12 ring-1 ring-white/14' : 'bg-primary-600'}`}>
 	                          <span className="text-sm font-medium text-white">
 	                            {(user.displayName || user.email || '?')[0].toUpperCase()}
 	                          </span>
 	                        </div>
 	                      )}
-	                      <div className="min-w-0 flex-1 text-left">
-	                        <div className={`truncate text-sm text-white ${isAuthenticatedShell ? 'font-public font-semibold tracking-[-0.02em]' : 'font-medium'}`}>
-	                          {user.displayName || user.email}
-	                        </div>
-	                        {user.displayName && user.email && (
-	                          <div className={`truncate text-xs ${isAuthenticatedShell ? 'text-slate-300/70' : 'text-slate-500'}`}>{user.email}</div>
-	                        )}
-	                      </div>
 	                    </button>
 	                    <button
 	                      type="button"
 	                      onClick={onSignOut}
 	                      className={isAuthenticatedShell
-                        ? 'ff-auth-cta-secondary w-full gap-2 px-3 py-2.5 text-sm'
-                        : 'flex w-full items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-400 transition-colors hover:bg-slate-800 hover:text-white'}
+	                        ? 'ff-auth-cta-secondary w-full px-3 py-2.5 text-sm whitespace-nowrap'
+	                        : 'flex w-full items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-400 transition-colors hover:bg-slate-800 hover:text-white'}
 	                    >
-	                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-	                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                      </svg>
                       Sign Out
                     </button>
                   </div>
@@ -427,8 +416,8 @@ export const Sidebar = memo(function Sidebar({
 	                    type="button"
 	                    onClick={onSignIn}
 	                    className={isAuthenticatedShell
-                      ? 'ff-auth-cta-primary w-full gap-2 px-4 py-2.5 text-sm'
-                      : 'flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700'}
+	                      ? 'ff-auth-cta-primary mx-auto w-full max-w-[118px] gap-2 px-4 py-2.5 text-sm'
+	                      : 'flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700'}
 	                  >
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />

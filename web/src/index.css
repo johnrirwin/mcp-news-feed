@@ -144,18 +144,17 @@ body {
 
   .ff-public-rail {
     @apply relative overflow-hidden;
-    border-right: 1px solid rgba(255, 255, 255, 0.16);
+    border-right: 1px solid rgba(255, 255, 255, 0.14);
     background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 18%, rgba(255, 255, 255, 0.02) 100%),
-      linear-gradient(180deg, rgba(16, 19, 26, 0.12) 0%, rgba(16, 19, 26, 0.08) 38%, rgba(16, 19, 26, 0.16) 100%),
-      rgb(var(--ff-midnight-rgb) / 0.03);
+      linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.06) 18%, rgba(255, 255, 255, 0.015) 100%),
+      linear-gradient(180deg, rgba(16, 19, 26, 0.10) 0%, rgba(16, 19, 26, 0.06) 38%, rgba(16, 19, 26, 0.12) 100%),
+      rgb(var(--ff-midnight-rgb) / 0.02);
     box-shadow:
       inset -1px 0 0 rgba(255, 255, 255, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      0 24px 80px rgba(2, 6, 23, 0.18),
-      14px 0 44px rgba(2, 6, 23, 0.08);
-    backdrop-filter: blur(30px) saturate(160%);
-    -webkit-backdrop-filter: blur(30px) saturate(160%);
+      inset 0 1px 0 rgba(255, 255, 255, 0.10),
+      10px 0 34px rgba(2, 6, 23, 0.10);
+    backdrop-filter: blur(28px) saturate(148%);
+    -webkit-backdrop-filter: blur(28px) saturate(148%);
   }
 
   .ff-public-rail::before {
@@ -164,10 +163,10 @@ body {
     inset: 0;
     pointer-events: none;
     background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 16%, transparent 38%),
-      radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.24), transparent 26%),
-      radial-gradient(circle at 78% 18%, rgb(var(--ff-blue-rgb) / 0.08), transparent 30%);
-    opacity: 0.95;
+      linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.04) 18%, transparent 42%),
+      radial-gradient(circle at 14% 0%, rgba(255, 255, 255, 0.18), transparent 20%),
+      radial-gradient(circle at 74% 18%, rgb(var(--ff-blue-rgb) / 0.06), transparent 24%);
+    opacity: 0.90;
   }
 
   .ff-public-rail::after {
@@ -285,44 +284,62 @@ body {
   }
 
   .ff-public-nav-item {
-    @apply relative flex flex-col items-center justify-center gap-2 rounded-[26px] px-3 py-4 text-center text-slate-200 transition-all duration-200;
-    color: rgba(226, 232, 240, 0.84);
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    background: rgba(255, 255, 255, 0.03);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(18px) saturate(135%);
-    -webkit-backdrop-filter: blur(18px) saturate(135%);
+    @apply relative flex flex-col items-center justify-center gap-2 px-2 py-1.5 text-center transition-all duration-200;
+    color: rgba(226, 232, 240, 0.74);
   }
 
   .ff-public-nav-item:hover {
-    border-color: rgba(255, 255, 255, 0.16);
-    background: rgba(255, 255, 255, 0.10);
     color: white;
-    box-shadow: 0 14px 32px rgba(2, 6, 23, 0.14);
+    transform: translateX(1px);
   }
 
   .ff-public-nav-item-active {
-    border-color: rgba(255, 255, 255, 0.22);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 100%), rgb(var(--ff-midnight-rgb) / 0.16);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 0 34px rgb(var(--ff-purple-rgb) / 0.20), 0 18px 34px rgba(2, 6, 23, 0.18);
     color: white;
+    text-shadow: 0 0 18px rgb(var(--ff-blue-rgb) / 0.18);
+  }
+
+  .ff-public-nav-indicator {
+    position: absolute;
+    left: -1.15rem;
+    top: 50%;
+    height: 2.9rem;
+    width: 0.24rem;
+    transform: translateY(-50%);
+    border-radius: 9999px;
+    background: linear-gradient(180deg, rgb(var(--ff-purple-rgb) / 0.9) 0%, rgb(var(--ff-blue-rgb) / 0.95) 100%);
+    box-shadow: 0 0 16px rgb(var(--ff-blue-rgb) / 0.58);
   }
 
   .ff-public-nav-icon {
-    @apply flex h-11 w-11 items-center justify-center rounded-2xl text-slate-100/90 transition-colors;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%), rgb(var(--ff-midnight-rgb) / 0.14);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    @apply flex h-10 w-10 items-center justify-center rounded-2xl transition-all duration-200;
+    color: rgba(191, 219, 254, 0.86);
+    border: 1px solid transparent;
+    background: transparent;
   }
 
   .ff-public-nav-item:hover .ff-public-nav-icon {
-    border-color: rgba(255, 255, 255, 0.18);
+    color: rgba(239, 246, 255, 0.98);
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
   }
 
   .ff-public-nav-icon-active {
     border-color: rgba(255, 255, 255, 0.18);
-    background-image: var(--ff-primary-gradient);
-    box-shadow: 0 10px 28px rgb(var(--ff-purple-rgb) / 0.28);
+    background:
+      radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.02) 56%, transparent 100%),
+      linear-gradient(180deg, rgb(var(--ff-purple-rgb) / 0.14) 0%, rgb(var(--ff-blue-rgb) / 0.10) 100%);
+    color: white;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.04),
+      0 0 28px rgb(var(--ff-blue-rgb) / 0.32),
+      0 0 18px rgb(var(--ff-purple-rgb) / 0.18);
+  }
+
+  .ff-public-nav-label {
+    font-size: 0.92rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: inherit;
   }
 
   .ff-auth-shell {
@@ -358,15 +375,15 @@ body {
     @apply relative overflow-hidden;
     border-right: 1px solid rgba(255, 255, 255, 0.14);
     background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.08) 18%, rgba(255, 255, 255, 0.02) 100%),
-      linear-gradient(180deg, rgba(16, 19, 26, 0.16) 0%, rgba(16, 19, 26, 0.10) 44%, rgba(16, 19, 26, 0.22) 100%),
-      rgb(var(--ff-midnight-rgb) / 0.08);
+      linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.06) 18%, rgba(255, 255, 255, 0.015) 100%),
+      linear-gradient(180deg, rgba(16, 19, 26, 0.14) 0%, rgba(16, 19, 26, 0.08) 44%, rgba(16, 19, 26, 0.18) 100%),
+      rgb(var(--ff-midnight-rgb) / 0.04);
     box-shadow:
       inset -1px 0 0 rgba(255, 255, 255, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.10),
-      18px 0 56px rgba(2, 6, 23, 0.14);
-    backdrop-filter: blur(30px) saturate(160%);
-    -webkit-backdrop-filter: blur(30px) saturate(160%);
+      inset 0 1px 0 rgba(255, 255, 255, 0.09),
+      10px 0 34px rgba(2, 6, 23, 0.11);
+    backdrop-filter: blur(28px) saturate(150%);
+    -webkit-backdrop-filter: blur(28px) saturate(150%);
   }
 
   .ff-auth-rail::before {
@@ -375,10 +392,10 @@ body {
     inset: 0;
     pointer-events: none;
     background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 22%, transparent 38%),
-      radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.18), transparent 24%),
-      radial-gradient(circle at 76% 18%, rgb(var(--ff-blue-rgb) / 0.08), transparent 28%);
-    opacity: 0.92;
+      linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.04) 20%, transparent 40%),
+      radial-gradient(circle at 14% 0%, rgba(255, 255, 255, 0.16), transparent 20%),
+      radial-gradient(circle at 74% 18%, rgb(var(--ff-blue-rgb) / 0.06), transparent 24%);
+    opacity: 0.90;
   }
 
   .ff-auth-rail > * {
@@ -477,43 +494,64 @@ body {
   }
 
   .ff-auth-nav-item {
-    @apply flex w-full items-center gap-3 rounded-[22px] px-3.5 py-3 text-left transition-all duration-200;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(255, 255, 255, 0.03);
-    color: rgba(226, 232, 240, 0.80);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(16px) saturate(145%);
-    -webkit-backdrop-filter: blur(16px) saturate(145%);
+    @apply relative flex w-full flex-col items-center justify-center gap-2 px-2 py-1.5 text-center transition-all duration-200;
+    color: rgba(226, 232, 240, 0.74);
   }
 
   .ff-auth-nav-item:hover {
-    border-color: rgba(255, 255, 255, 0.14);
-    background: rgba(255, 255, 255, 0.10);
     color: white;
+    transform: translateX(1px);
   }
 
   .ff-auth-nav-item-active {
-    border-color: rgba(255, 255, 255, 0.18);
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.06) 100%),
-      rgb(var(--ff-midnight-rgb) / 0.22);
     color: white;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 0 30px rgb(var(--ff-purple-rgb) / 0.18), 0 16px 36px rgba(2, 6, 23, 0.18);
+    text-shadow: 0 0 18px rgb(var(--ff-blue-rgb) / 0.18);
+  }
+
+  .ff-auth-nav-indicator {
+    position: absolute;
+    left: -1.15rem;
+    top: 50%;
+    height: 2.9rem;
+    width: 0.24rem;
+    transform: translateY(-50%);
+    border-radius: 9999px;
+    background: linear-gradient(180deg, rgb(var(--ff-purple-rgb) / 0.88) 0%, rgb(var(--ff-blue-rgb) / 0.94) 100%);
+    box-shadow: 0 0 16px rgb(var(--ff-blue-rgb) / 0.56);
   }
 
   .ff-auth-nav-icon {
-    @apply flex h-11 w-11 items-center justify-center rounded-2xl text-slate-100/90 transition-colors;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%),
-      rgb(var(--ff-midnight-rgb) / 0.14);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    @apply flex h-10 w-10 items-center justify-center rounded-2xl transition-all duration-200;
+    color: rgba(191, 219, 254, 0.84);
+    border: 1px solid transparent;
+    background: transparent;
   }
 
   .ff-auth-nav-icon-active {
     border-color: rgba(255, 255, 255, 0.18);
-    background-image: var(--ff-primary-gradient);
-    box-shadow: 0 10px 28px rgb(var(--ff-purple-rgb) / 0.24);
+    background:
+      radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.02) 56%, transparent 100%),
+      linear-gradient(180deg, rgb(var(--ff-purple-rgb) / 0.14) 0%, rgb(var(--ff-blue-rgb) / 0.10) 100%);
+    color: white;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.04),
+      0 0 28px rgb(var(--ff-blue-rgb) / 0.32),
+      0 0 18px rgb(var(--ff-purple-rgb) / 0.18);
+  }
+
+  .ff-auth-nav-item:hover .ff-auth-nav-icon {
+    color: rgba(239, 246, 255, 0.98);
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .ff-auth-nav-label {
+    font-size: 0.82rem;
+    line-height: 1.05rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: inherit;
+    text-wrap: balance;
   }
 
   .ff-auth-cta-primary {

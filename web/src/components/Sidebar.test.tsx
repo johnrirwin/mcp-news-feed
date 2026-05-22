@@ -49,6 +49,7 @@ describe('Sidebar', () => {
       render(<Sidebar {...createDefaultProps()} />)
 
       expect(screen.getByText('FlyingForge')).toBeInTheDocument()
+      expect(screen.getByRole('complementary')).toHaveClass('ff-public-rail')
       expect(screen.getByRole('button', { name: /Home/i })).toBeInTheDocument()
       expect(screen.getByRole('button', { name: /News/i })).toBeInTheDocument()
       expect(screen.getByRole('button', { name: /Shop/i })).toBeInTheDocument()
@@ -87,6 +88,7 @@ describe('Sidebar', () => {
 
       expect(screen.getByRole('button', { name: /Shop/i })).toHaveAttribute('aria-current', 'page')
       expect(screen.getByRole('button', { name: /News/i })).not.toHaveAttribute('aria-current')
+      expect(screen.getByRole('button', { name: /Shop/i }).querySelector('.ff-public-nav-icon-active')).toBeInTheDocument()
     })
 
     it('shows My Builds directly under My Aircraft for authenticated users', () => {
@@ -134,14 +136,14 @@ describe('Sidebar', () => {
       expect(onSignIn).toHaveBeenCalled()
     })
 
-    it('shows user info when authenticated', () => {
+    it('keeps the authenticated footer minimal and hides user text details', () => {
       render(<Sidebar {...createDefaultProps({
         isAuthenticated: true,
         user: mockUser,
       })} />)
 
-      expect(screen.getByText('Test User')).toBeInTheDocument()
-      expect(screen.getByText('test@example.com')).toBeInTheDocument()
+      expect(screen.queryByText('Test User')).not.toBeInTheDocument()
+      expect(screen.queryByText('test@example.com')).not.toBeInTheDocument()
     })
 
     it('shows user avatar when available', () => {
@@ -170,7 +172,9 @@ describe('Sidebar', () => {
         user: mockUser,
       })} />)
 
-      expect(screen.getByText('Sign Out')).toBeInTheDocument()
+      const signOutButton = screen.getByRole('button', { name: 'Sign Out' })
+      expect(signOutButton).toBeInTheDocument()
+      expect(signOutButton.querySelector('svg')).not.toBeInTheDocument()
     })
 
     it('calls onSignOut when Sign Out button is clicked', () => {

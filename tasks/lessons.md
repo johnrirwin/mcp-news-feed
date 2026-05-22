@@ -112,3 +112,23 @@ Review this file at the start of each session and apply any relevant rules befor
 - Context: the main login page had been moved onto the scenic glass shell, but the separate `/auth/callback` transition screen still used legacy solid gray backgrounds.
 - Correction from user: the post-Google-return screen should be transparent like the rest of the app.
 - Rule to follow next time: when redesigning app shells, audit standalone auth callback/loading/error routes too; they are easy to miss because they sit outside the main app router.
+
+### 2026-05-21 — Audit narrow-rail CTA copy fit after simplifying layouts
+- Context: after slimming the authenticated sidebar to match the reference, the sign-out CTA still felt cramped because the icon consumed too much space in the narrow footer card.
+- Correction from user: remove the logout icon so the button can size correctly.
+- Rule to follow next time: when compressing navigation rails or footer cards, verify CTA copy still fits cleanly; on very narrow surfaces prefer text-only actions over icon-plus-label buttons.
+
+### 2026-05-21 — Keep narrow footer identity cards visually minimal
+- Context: after simplifying the logged-in sidebar, the profile footer still felt too busy because the name and email competed with the avatar in a very narrow card.
+- Correction from user: remove the screen name and email so the footer only shows the photo above the sign-out action.
+- Rule to follow next time: when adapting profile/account cards into narrow side rails, default to the avatar-only treatment unless the user explicitly wants identity text preserved.
+
+### 2026-05-21 — After visual fixes, verify the actual rendered route instead of trusting the patch
+- Context: I removed the footer identity text from the logged-in sidebar in code, but the user still saw it in the browser afterward.
+- Correction from user: the name/email were still present, so I needed to investigate the rendered result instead of assuming the rebuild had taken effect.
+- Rule to follow next time: when a user says a UI fix is still visible after a rebuild, inspect the served route/output or browser state before attributing it to caching.
+
+### 2026-05-21 — Explicitly center/crop avatar media in narrow circular shells
+- Context: the logged-in sidebar footer was simplified to an avatar-only treatment, but the profile photo still looked a few pixels off-center inside the circular frame.
+- Correction from user: the photo needed to be visually centered.
+- Rule to follow next time: when placing user-uploaded or arbitrary images into small circular avatars, always set explicit `object-cover` and `object-center` styling instead of relying on default image layout.
