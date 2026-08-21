@@ -82,6 +82,13 @@ resource "aws_ecs_task_definition" "news_refresh" {
         {
           name      = "DB_PASSWORD"
           valueFrom = aws_secretsmanager_secret.db_password.arn
+        },
+        # App initialization validates auth configuration even in refresh-once
+        # mode, so the scheduled task must receive the same signing secret as
+        # the long-running API task.
+        {
+          name      = "AUTH_JWT_SECRET"
+          valueFrom = "${aws_secretsmanager_secret.app_secrets.arn}:AUTH_JWT_SECRET::"
         }
       ]
 
